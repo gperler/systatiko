@@ -102,13 +102,14 @@ class Component1Factory
     }
 
     /**
+     * @param string $id
      * 
      * @return SingletonEntity
      */
-    public function getSingletonEntity() : SingletonEntity
+    public function getSingletonEntity(string $id) : SingletonEntity
     {
         if ($this->singletonEntity === null) {
-            $this->singletonEntity = new SingletonEntity();
+            $this->singletonEntity = new SingletonEntity($id);
         }
         return $this->singletonEntity;
     }

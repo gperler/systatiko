@@ -107,9 +107,17 @@ class ComponentFacadeGenerator
 
         $optional = $methodReturnType->canBeNull();
         $docBlockReturnType = $methodReturnType->getFullyQualifiedName();
-        $method->setReturnType($docBlockReturnType, $optional);
 
-        $return = $method->hasReturnType() ? 'return ' : '';
+        if ($docBlockReturnType !== null) {
+            $method->setReturnType($docBlockReturnType, $optional);
+        }
+
+        if ($docBlockReturnType === 'mixed') {
+            $method->setReturnType(null, false);
+
+        }
+
+        $return = $method->hasReturnType() || $docBlockReturnType === 'mixed' ? 'return ' : '';
         $method->addCodeLine($return . '$this->factory->' . $facadeMethod->getFactoryMethodName() . "()->$methodName($invocationSignature);");
 
     }

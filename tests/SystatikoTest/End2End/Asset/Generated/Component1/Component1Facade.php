@@ -66,10 +66,20 @@ class Component1Facade
     /**
      * @param mixed $x
      * 
-     * @return mixed|null
+     * @return void
      */
     public function noReturnType($x)
     {
         $this->factory->getServiceClass()->noReturnType($x);
+    }
+
+    /**
+     * @param mixed $x
+     * 
+     * @return mixed
+     */
+    public function mixedReturnType($x)
+    {
+        return $this->factory->getServiceClass()->mixedReturnType($x);
     }
 }

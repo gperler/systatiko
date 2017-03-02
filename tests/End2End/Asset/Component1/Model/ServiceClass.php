@@ -68,7 +68,6 @@ class ServiceClass
         return [];
     }
 
-
     /**
      * @FacadeExposition
      *
@@ -78,5 +77,17 @@ class ServiceClass
      */
     public function noReturnType($x)
     {
+    }
+
+    /**
+     * @FacadeExposition
+     *
+     * @param mixed $x
+     *
+     * @return mixed
+     */
+    public function mixedReturnType($x)
+    {
+        return 7;
     }
 }

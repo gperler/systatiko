@@ -10,6 +10,7 @@
   ],
   "require": {
     "php": ">=7.0.0",
+    "php-amqplib/php-amqplib": "2.6.*",
     "symfony/console": "*",
     "psr/log": "*",
     "doctrine/common": "*",

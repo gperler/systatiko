@@ -12,5 +12,14 @@ use Systatiko\Runtime\ComponentConfigurationBase;
 class Component1Configuration extends ComponentConfigurationBase
 {
 
+    const TEST_VALUE = "testValue";
+
+    /**
+     * @return null|string
+     */
+    public function getTestValue()
+    {
+        return $this->getConfigurationValue(self::TEST_VALUE);
+    }
 }
 

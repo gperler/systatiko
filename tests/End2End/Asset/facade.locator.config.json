@@ -3,6 +3,7 @@
     "x": "config"
   },
   "Component1": {
+    "testValue" : "Jamie Woon"
   },
   "Component2": {
     "c2.1": "Hello",

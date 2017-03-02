@@ -26,7 +26,7 @@ class Component2Facade
     /**
      * @param C1Event $event
      * 
-     * @return mixed|null
+     * @return void
      */
     public function eventHandler(C1Event $event)
     {
