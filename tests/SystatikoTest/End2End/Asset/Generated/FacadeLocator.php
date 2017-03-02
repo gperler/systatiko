@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\End2End\Asset\Generated;
 
+use Civis\Common\File;
 use SystatikoTest\End2End\Asset\FacadeLocatorProject;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Facade;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Factory;
@@ -12,6 +13,27 @@ use SystatikoTest\End2End\Asset\Generated\Component2\Component2Factory;
 
 class FacadeLocator extends FacadeLocatorProject
 {
+
+    /**
+     * @var FacadeLocator
+     */
+    protected static $instance;
+
+    /**
+     * @param string|null $configFileName
+     * 
+     * @return FacadeLocator
+     */
+    public static function getInstance(string $configFileName = null) : FacadeLocator
+    {
+        if (self::$instance === null) {
+            self::$instance = new FacadeLocator();
+        }
+        if ($configFileName !== null) {
+            self::$instance->setConfigurationFile(new File($configFileName));
+        }
+        return self::$instance;
+    }
 
     /**
      * @var Component1Factory

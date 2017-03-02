@@ -2,8 +2,9 @@
 
 namespace Systatiko\Runtime;
 
-use Systatiko\Contract\FacadeLocatorContract;
 use Civis\Common\ArrayUtil;
+use Civis\Common\File;
+use Systatiko\Contract\FacadeLocatorContract;
 
 class FacadeLocatorBase implements FacadeLocatorContract
 {
@@ -43,9 +44,17 @@ class FacadeLocatorBase implements FacadeLocatorContract
     }
 
     /**
+     * @param File $configFile
+     */
+    public function setConfigurationFile(File $configFile)
+    {
+        $this->setConfigurationValueList($configFile->loadAsJSONArray());
+    }
+
+    /**
      * @param array $configurationValueList
      */
-    public function setConfigurationValueList($configurationValueList)
+    public function setConfigurationValueList(array $configurationValueList)
     {
         $this->configurationValueList = $configurationValueList;
     }

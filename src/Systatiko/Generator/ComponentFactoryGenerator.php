@@ -96,7 +96,6 @@ class ComponentFactoryGenerator
     protected function addMember()
     {
         $this->classGenerator->addProtectedProperty("locator", $this->locatorClassName);
-        $this->classGenerator->addProtectedProperty("context", "string");
 
         if ($this->componentFacade !== null) {
             $this->classGenerator->addProtectedProperty($this->componentFacade->getMemberName(), $this->componentFacade->getClassName());
@@ -123,7 +122,6 @@ class ComponentFactoryGenerator
         $constructor->addParameter($this->locatorClassName, "locator");
 
         $constructor->addCodeLine('$this->locator = $locator;');
-        $constructor->addCodeLine('$this->context = $locator->getContext();');
     }
 
     /**
@@ -279,7 +277,7 @@ class ComponentFactoryGenerator
      */
     protected function addContextAwareAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method)
     {
-        $method->addSwitch('$this->context');
+        $method->addSwitch('$this->locator->getContext()');
 
         foreach ($componentFactoryClass->getOverwritingComponentFactoryClassList() as $overwriting) {
             $method->addSwitchCase('"' . $overwriting->getContext() . '"');

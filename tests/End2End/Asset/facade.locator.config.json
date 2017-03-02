@@ -1,0 +1,11 @@
+{
+  "Common": {
+    "x": "config"
+  },
+  "Component1": {
+  },
+  "Component2": {
+    "c2.1": "Hello",
+    "c2.2": false
+  }
+}

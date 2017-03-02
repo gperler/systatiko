@@ -25,6 +25,9 @@
     }
   },
   "autoload-dev": {
+    "psr-0": {
+      "SystatikoTest\\": "tests"
+    },
     "psr-4": {
       "SystatikoTest\\": "tests"
     }

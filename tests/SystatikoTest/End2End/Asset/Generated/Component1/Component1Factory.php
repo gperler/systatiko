@@ -24,11 +24,6 @@ class Component1Factory
     protected $locator;
 
     /**
-     * @var string
-     */
-    protected $context;
-
-    /**
      * @var Component1Facade
      */
     protected $component1Facade;
@@ -60,7 +55,6 @@ class Component1Factory
     public function __construct(FacadeLocator $locator)
     {
         $this->locator = $locator;
-        $this->context = $locator->getContext();
     }
 
     /**

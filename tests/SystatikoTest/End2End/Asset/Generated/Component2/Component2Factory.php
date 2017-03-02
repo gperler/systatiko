@@ -19,11 +19,6 @@ class Component2Factory
     protected $locator;
 
     /**
-     * @var string
-     */
-    protected $context;
-
-    /**
      * @var Component2Facade
      */
     protected $component2Facade;
@@ -45,7 +40,6 @@ class Component2Factory
     public function __construct(FacadeLocator $locator)
     {
         $this->locator = $locator;
-        $this->context = $locator->getContext();
     }
 
     /**
@@ -66,7 +60,7 @@ class Component2Factory
      */
     public function newBaseEntity() : BaseEntity
     {
-        switch ($this->context) {
+        switch ($this->locator->getContext()) {
             case "X":
                 return new OverWriteEntity();
             default:

@@ -20,6 +20,11 @@ class FacadeLocatorGenerator
     protected $classGenerator;
 
     /**
+     * @var GeneratorConfiguration
+     */
+    protected $configuration;
+
+    /**
      * FacadeLocatorGenerator constructor.
      *
      * @param array $componentFacadeList
@@ -34,10 +39,13 @@ class FacadeLocatorGenerator
      */
     public function generate(GeneratorConfiguration $configuration)
     {
+        $this->configuration = $configuration;
 
         $this->classGenerator = new ClassGenerator($configuration->getFacadeLocatorClassName());
 
         $this->classGenerator->setExtends($configuration->getFacadeExtendsClassName());
+
+        $this->addSingleton();
 
         $this->addMember();
 
@@ -47,10 +55,52 @@ class FacadeLocatorGenerator
     }
 
     /**
+     * @param string|null $configFileName
+     *
+     * @return static
+     */
+    public static function getInstance(string $configFileName = null)
+    {
+        if (self::$instance === null) {
+            self::$instance = new static();
+
+        }
+        if ($configFileName !== null) {
+            self::$instance->setConfigurationFile(new File($configFileName));
+        }
+        return self::$instance;
+    }
+
+
+    protected function addSingleton() {
+        $flClassName = $this->configuration->getFacadeLocatorClassName();
+        $flClassShortName = $this->configuration->getFacadeLocatorClassShortName();
+
+        $this->classGenerator->addUsedClassName('Civis\Common\File');
+        $this->classGenerator->addProtectedStaticProperty('instance', $flClassName);
+
+        $method = $this->classGenerator->addPublicStaticMethod("getInstance");
+        $method->addParameter("string", "configFileName","null");
+        $method->setReturnType($flClassName, false);
+
+        $method->addIfStart('self::$instance === null');
+        $method->addCodeLine('self::$instance = new ' . $flClassShortName . '();');
+        $method->addIfEnd();
+
+        $method->addIfStart('$configFileName !== null');
+        $method->addCodeLine('self::$instance->setConfigurationFile(new File($configFileName));');
+        $method->addIfEnd();
+
+        $method->addCodeLine('return self::$instance;');
+    }
+
+    /**
      *
      */
     protected function addMember()
     {
+
+
         foreach ($this->componentFacadeList as $componentFacade) {
             $memberName = $componentFacade->getFactoryMemberName();
             $memberType = $componentFacade->getFactoryClassName();
