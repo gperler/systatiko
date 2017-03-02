@@ -1,0 +1,162 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace Systatiko\Reader;
+
+class PHPMethodReturnType
+{
+
+    /**
+     * @var PHPMethod
+     */
+    protected $phpMethod;
+
+    /**
+     * @var string
+     */
+    protected $signatureType;
+
+    /**
+     * @var PHPClassName
+     */
+    protected $signatureTypeClassName;
+
+    /**
+     * @var PHPDocCommentType
+     */
+    protected $docBlockType;
+
+    /**
+     * @var bool
+     */
+    protected $canBeNull;
+
+    /**
+     * PHPMethodReturnType constructor.
+     *
+     * @param PHPMethod $method
+     */
+    public function __construct(PHPMethod $method)
+    {
+        $this->phpMethod = $method;
+        $this->canBeNull = false;
+        $this->extractSignatureReturnType();
+        $this->extractDocBlockReturnType();
+    }
+
+    /**
+     *
+     */
+    protected function extractSignatureReturnType()
+    {
+        $methodLine = $this->phpMethod->getMethodDefinition();
+        if (strrpos($methodLine, ":") === false) {
+            $this->canBeNull = true;
+            return;
+        }
+
+        $partList = explode(":", $methodLine);
+        $signatureType = trim($partList[1]);
+
+        $this->signatureType = $signatureType;
+        $this->signatureTypeClassName = $this->phpMethod->getClassNameForShortName($signatureType);
+    }
+
+    /**
+     *
+     */
+    protected function extractDocBlockReturnType()
+    {
+        $docBlockType = $this->phpMethod->getDocComment();
+        if (!$docBlockType) {
+            return;
+        }
+        $pattern = '/.*?@return (.*?)\s/';
+        preg_match($pattern, $this->phpMethod->getDocComment(), $matches);
+
+        if (sizeof($matches) === 0) {
+            return;
+        }
+        $docBlockType = trim($matches[1]);
+        $this->docBlockType = new PHPDocCommentType($docBlockType, $this->phpMethod);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSignatureType()
+    {
+        return $this->signatureType;
+    }
+
+    /**
+     * @return PHPClassName
+     */
+    public function getSignatureTypeClassName(): PHPClassName
+    {
+        return $this->signatureTypeClassName;
+    }
+
+    /**
+     * @return PHPDocCommentType
+     */
+    public function getDocBlockType()
+    {
+        return $this->docBlockType;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function canBeNull(): bool
+    {
+        return $this->canBeNull;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getFullyQualifiedName()
+    {
+        if ($this->docBlockType !== null) {
+            return $this->docBlockType->getFullyQualifiedName();
+        }
+
+        if ($this->signatureType !== null) {
+            return $this->signatureType;
+        }
+
+        if ($this->signatureTypeClassName->getAs() !== null) {
+            return $this->signatureTypeClassName->getAs();
+        }
+
+        return $this->signatureTypeClassName->getClassName();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAsClassName() : bool
+    {
+        if ($this->docBlockType !== null) {
+            return $this->docBlockType->isAsClassName();
+        }
+        if ($this->signatureTypeClassName !== null && $this->signatureTypeClassName->getAs() !== null) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return null|PHPClassName
+     */
+    public function getDocBlockOrTypeClassName()
+    {
+        if ($this->docBlockType !== null) {
+            return $this->docBlockType->getClassName();
+        }
+        return $this->signatureTypeClassName;
+    }
+
+}

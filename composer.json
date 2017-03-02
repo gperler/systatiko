@@ -1,0 +1,32 @@
+{
+  "name": "gm314/systatiko",
+  "description": "",
+  "minimum-stability": "stable",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Gregor Müller"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0",
+    "symfony/console": "*",
+    "psr/log": "*",
+    "doctrine/common": "*",
+    "gm314/nitria": "*",
+    "gm314/common": "*"
+  },
+  "require-dev": {
+    "codeception/codeception": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Systatiko\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SystatikoTest\\": "tests"
+    }
+  }
+}

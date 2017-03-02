@@ -1,0 +1,13 @@
+{
+  "facadeLocator": {
+    "classShortName": "FacadeLocator",
+    "namespaceName": "SystatikoTest\\End2End\\Asset\\Generated",
+    "extendsShortName" : "FacadeLocatorProject",
+    "extendsNamespaceName" : "SystatikoTest\\End2End\\Asset"
+  },
+  "includeDir": [
+    "./tests/End2End/Asset"
+  ],
+  "logger": "EchoLogger",
+  "targetDir": "./tests/"
+}
