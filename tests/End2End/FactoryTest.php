@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\End2End;
 
-use SystatikoTest\End2End\Asset\Generated\FacadeLocator;
+use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class FactoryTest extends End2EndTest
 {
@@ -14,8 +14,8 @@ class FactoryTest extends End2EndTest
      */
     public function testInstanceFactory()
     {
-        $locator = FacadeLocator::getInstance();
-        $factory = $locator->getComponent1Factory();
+        $backbone = Backbone::getInstance();
+        $factory = $backbone->getComponent1Factory();
 
         $sample = $factory->newSampleEntity("Dorfmeister");
 
@@ -30,8 +30,8 @@ class FactoryTest extends End2EndTest
      */
     public function testSingletonFactory()
     {
-        $locator = FacadeLocator::getInstance();
-        $factory = $locator->getComponent1Factory();
+        $backbone = Backbone::getInstance();
+        $factory = $backbone->getComponent1Factory();
 
         $singleton = $factory->getSingletonEntity("Dorfmeister");
 
@@ -49,8 +49,8 @@ class FactoryTest extends End2EndTest
      */
     public function testFacadeFactoryAccess()
     {
-        $locator = FacadeLocator::getInstance();
-        $factory = $locator->getComponent1Factory();
+        $backbone = Backbone::getInstance();
+        $factory = $backbone->getComponent1Factory();
 
         $facade = $factory->getComponent1Facade();
 
@@ -64,17 +64,17 @@ class FactoryTest extends End2EndTest
      */
     public function testContextDependant()
     {
-        $locator = FacadeLocator::getInstance();
-        $locator->setContext('default');
+        $backbone = Backbone::getInstance();
+        $backbone->setContext('default');
 
-        $factory2 = $locator->getComponent2Factory();
+        $factory2 = $backbone->getComponent2Factory();
         $baseEntity = $factory2->newBaseEntity();
 
         $this->assertNotNull($baseEntity);
         $this->assertInstanceOf('SystatikoTest\End2End\Asset\Component2\Entity\BaseEntity', $baseEntity);
         $this->assertNotInstanceOf('SystatikoTest\End2End\Asset\Component2\Entity\OverWriteEntity', $baseEntity);
 
-        $locator->setContext('X');
+        $backbone->setContext('X');
         $baseEntity = $factory2->newBaseEntity();
         $this->assertNotNull($baseEntity);
         $this->assertInstanceOf('SystatikoTest\End2End\Asset\Component2\Entity\BaseEntity', $baseEntity);
@@ -84,9 +84,9 @@ class FactoryTest extends End2EndTest
 
     public function testConfiguration()
     {
-        $locator = FacadeLocator::getInstance(__DIR__ . DIRECTORY_SEPARATOR . "Asset" . DIRECTORY_SEPARATOR . "facade.locator.config.json");
+        $backbone = Backbone::getInstance(__DIR__ . DIRECTORY_SEPARATOR . "Asset" . DIRECTORY_SEPARATOR . "backbone.config.json");
 
-        $factory = $locator->getComponent1Factory();
+        $factory = $backbone->getComponent1Factory();
 
         $config = $factory->getConfiguration();
         $this->assertNotNull($config);

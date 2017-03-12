@@ -5,29 +5,29 @@ declare(strict_types = 1);
 namespace SystatikoTest\End2End\Asset\Generated;
 
 use Civis\Common\File;
-use SystatikoTest\End2End\Asset\FacadeLocatorProject;
+use SystatikoTest\End2End\Asset\BackboneProject;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Facade;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Factory;
 use SystatikoTest\End2End\Asset\Generated\Component2\Component2Facade;
 use SystatikoTest\End2End\Asset\Generated\Component2\Component2Factory;
 
-class FacadeLocator extends FacadeLocatorProject
+class Backbone extends BackboneProject
 {
 
     /**
-     * @var FacadeLocator
+     * @var Backbone
      */
     protected static $instance;
 
     /**
      * @param string|null $configFileName
      * 
-     * @return FacadeLocator
+     * @return Backbone
      */
-    public static function getInstance(string $configFileName = null) : FacadeLocator
+    public static function getInstance(string $configFileName = null) : Backbone
     {
         if (self::$instance === null) {
-            self::$instance = new FacadeLocator();
+            self::$instance = new Backbone();
         }
         if ($configFileName !== null) {
             self::$instance->setConfigurationFile(new File($configFileName));

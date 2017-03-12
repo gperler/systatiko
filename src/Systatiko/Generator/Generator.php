@@ -85,7 +85,7 @@ class Generator implements LoggerAwareInterface
     {
         $phpFileList = $this->scanner->getPHPClassList();
         $this->project->addPHPClassList($phpFileList);
-        $this->project->analyze($this->generatorConfiguration->getFacadeExtendsClassName());
+        $this->project->analyze($this->generatorConfiguration->getBackboneExtendsClassName());
     }
 
     /**
@@ -100,7 +100,7 @@ class Generator implements LoggerAwareInterface
         }
         $this->generateComponentFactory();
         $this->generateComponentFacade();
-        $this->generateFacadeLocator();
+        $this->generateBackbone();
     }
 
     /**
@@ -128,9 +128,9 @@ class Generator implements LoggerAwareInterface
     /**
      *
      */
-    protected function generateFacadeLocator()
+    protected function generateBackbone()
     {
-        $flg = new FacadeLocatorGenerator($this->project->getComponentFacadeList());
+        $flg = new BackboneGenerator($this->project->getComponentFacadeList());
         $flg->generate($this->generatorConfiguration);
 
     }
@@ -139,7 +139,7 @@ class Generator implements LoggerAwareInterface
     {
         $componentFactoryCount = sizeof($this->project->getComponentFactoryList());
         $componentFacadeCount = sizeof($this->project->getComponentFacadeList());
-        $this->logger->info("Generated 1 FacadeLocator ");
+        $this->logger->info("Generated Backbone ");
         $this->logger->info("Generated $componentFactoryCount ComponentFactory|ies");
         $this->logger->info("Generated $componentFacadeCount ComponentFacade(s)");
     }

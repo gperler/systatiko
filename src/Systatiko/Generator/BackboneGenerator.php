@@ -6,7 +6,7 @@ use Nitria\ClassGenerator;
 use Systatiko\Configuration\GeneratorConfiguration;
 use Systatiko\Model\ComponentFacade;
 
-class FacadeLocatorGenerator
+class BackboneGenerator
 {
 
     /**
@@ -25,9 +25,9 @@ class FacadeLocatorGenerator
     protected $configuration;
 
     /**
-     * FacadeLocatorGenerator constructor.
+     * BackboneGenerator constructor.
      *
-     * @param array $componentFacadeList
+     * @param ComponentFacade[] $componentFacadeList
      */
     public function __construct(array $componentFacadeList)
     {
@@ -41,9 +41,9 @@ class FacadeLocatorGenerator
     {
         $this->configuration = $configuration;
 
-        $this->classGenerator = new ClassGenerator($configuration->getFacadeLocatorClassName());
+        $this->classGenerator = new ClassGenerator($configuration->getBackboneClassName());
 
-        $this->classGenerator->setExtends($configuration->getFacadeExtendsClassName());
+        $this->classGenerator->setExtends($configuration->getBackboneExtendsClassName());
 
         $this->addSingleton();
 
@@ -54,37 +54,22 @@ class FacadeLocatorGenerator
         $this->classGenerator->writeToPSR0($configuration->getTargetDir());
     }
 
-    /**
-     * @param string|null $configFileName
-     *
-     * @return static
-     */
-    public static function getInstance(string $configFileName = null)
-    {
-        if (self::$instance === null) {
-            self::$instance = new static();
 
-        }
-        if ($configFileName !== null) {
-            self::$instance->setConfigurationFile(new File($configFileName));
-        }
-        return self::$instance;
-    }
 
 
     protected function addSingleton() {
-        $flClassName = $this->configuration->getFacadeLocatorClassName();
-        $flClassShortName = $this->configuration->getFacadeLocatorClassShortName();
+        $backboneClassName = $this->configuration->getBackboneClassName();
+        $backboneClassShortName = $this->configuration->getBackboneClassShortName();
 
         $this->classGenerator->addUsedClassName('Civis\Common\File');
-        $this->classGenerator->addProtectedStaticProperty('instance', $flClassName);
+        $this->classGenerator->addProtectedStaticProperty('instance', $backboneClassName);
 
         $method = $this->classGenerator->addPublicStaticMethod("getInstance");
         $method->addParameter("string", "configFileName","null");
-        $method->setReturnType($flClassName, false);
+        $method->setReturnType($backboneClassName, false);
 
         $method->addIfStart('self::$instance === null');
-        $method->addCodeLine('self::$instance = new ' . $flClassShortName . '();');
+        $method->addCodeLine('self::$instance = new ' . $backboneClassShortName . '();');
         $method->addIfEnd();
 
         $method->addIfStart('$configFileName !== null');

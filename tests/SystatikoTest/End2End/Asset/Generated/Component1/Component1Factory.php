@@ -13,15 +13,15 @@ use SystatikoTest\End2End\Asset\Component1\Event\C1Event;
 use SystatikoTest\End2End\Asset\Component1\Model\DependencyInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\FacadeInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\ServiceClass;
-use SystatikoTest\End2End\Asset\Generated\FacadeLocator;
+use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class Component1Factory
 {
 
     /**
-     * @var FacadeLocator
+     * @var Backbone
      */
-    protected $locator;
+    protected $backbone;
 
     /**
      * @var Component1Facade
@@ -49,12 +49,12 @@ class Component1Factory
     protected $serviceClass;
 
     /**
-     * @param FacadeLocator $locator
+     * @param Backbone $backbone
      * 
      */
-    public function __construct(FacadeLocator $locator)
+    public function __construct(Backbone $backbone)
     {
-        $this->locator = $locator;
+        $this->backbone = $backbone;
     }
 
     /**
@@ -65,7 +65,7 @@ class Component1Factory
     {
         if ($this->component1Configuration === null) {
             $this->component1Configuration = new Component1Configuration();
-            $this->component1Configuration->setValueList($this->locator->getComponentConfiguration("Component1"));
+            $this->component1Configuration->setValueList($this->backbone->getComponentConfiguration("Component1"));
         }
         return $this->component1Configuration;
     }
@@ -131,7 +131,7 @@ class Component1Factory
     public function getFacadeInjection() : FacadeInjection
     {
         if ($this->facadeInjection === null) {
-            $this->facadeInjection = new FacadeInjection($this->locator->getComponent2Facade());
+            $this->facadeInjection = new FacadeInjection($this->backbone->getComponent2Facade());
         }
         return $this->facadeInjection;
     }
@@ -155,7 +155,7 @@ class Component1Factory
      */
     public function triggerC1Event(C1Event $event)
     {
-        $this->locator->getComponent2Facade()->eventHandler($event);
+        $this->backbone->getComponent2Facade()->eventHandler($event);
     }
 
     /**
@@ -164,6 +164,6 @@ class Component1Factory
      */
     public function exposeToAllFactories() : string
     {
-        return $this->locator->exposeToAllFactories();
+        return $this->backbone->exposeToAllFactories();
     }
 }

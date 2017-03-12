@@ -2,7 +2,7 @@
 
 namespace Systatiko\Contract;
 
-interface FacadeLocatorContract
+interface BackboneContract
 {
 
     /**

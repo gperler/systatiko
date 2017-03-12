@@ -193,7 +193,7 @@ class ComponentFacade
      *
      * @return null|string
      */
-    public function getLocatorAccessor(string $facadeClassName)
+    public function getBackboneAccessor(string $facadeClassName)
     {
         if ($facadeClassName === $this->getClassName()) {
             return $this->getFactoryMethodName();

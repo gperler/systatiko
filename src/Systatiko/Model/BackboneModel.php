@@ -7,7 +7,7 @@ namespace Systatiko\Model;
 use Systatiko\Reader\PHPClass;
 use Systatiko\Reader\PHPMethod;
 
-class FacadeLocatorModel
+class BackboneModel
 {
 
     const EXPOSE_IN_ALL_ANNOTATION_NAME = 'Systatiko\Annotation\ExposeInAllFactories';
@@ -23,7 +23,7 @@ class FacadeLocatorModel
     protected $exposeList;
 
     /**
-     * FacadeLocatorModel constructor.
+     * BackboneModel constructor.
      *
      * @param PHPClass $phpClass
      */

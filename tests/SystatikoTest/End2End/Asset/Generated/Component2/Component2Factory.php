@@ -8,15 +8,15 @@ use SystatikoTest\End2End\Asset\Component2\Entity\BaseEntity;
 use SystatikoTest\End2End\Asset\Component2\Entity\OverWriteEntity;
 use SystatikoTest\End2End\Asset\Component2\Model\EventHandler;
 use SystatikoTest\End2End\Asset\Component2\Model\OtherService;
-use SystatikoTest\End2End\Asset\Generated\FacadeLocator;
+use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class Component2Factory
 {
 
     /**
-     * @var FacadeLocator
+     * @var Backbone
      */
-    protected $locator;
+    protected $backbone;
 
     /**
      * @var Component2Facade
@@ -34,12 +34,12 @@ class Component2Factory
     protected $otherService;
 
     /**
-     * @param FacadeLocator $locator
+     * @param Backbone $backbone
      * 
      */
-    public function __construct(FacadeLocator $locator)
+    public function __construct(Backbone $backbone)
     {
-        $this->locator = $locator;
+        $this->backbone = $backbone;
     }
 
     /**
@@ -60,7 +60,7 @@ class Component2Factory
      */
     public function newBaseEntity() : BaseEntity
     {
-        switch ($this->locator->getContext()) {
+        switch ($this->backbone->getContext()) {
             case "X":
                 return new OverWriteEntity();
             default:
@@ -107,6 +107,6 @@ class Component2Factory
      */
     public function exposeToAllFactories() : string
     {
-        return $this->locator->exposeToAllFactories();
+        return $this->backbone->exposeToAllFactories();
     }
 }

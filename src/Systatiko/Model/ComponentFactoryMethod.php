@@ -187,9 +187,9 @@ class ComponentFactoryMethod
             return;
         }
 
-        $accesor = $project->getLocatorAccessor($parameterClass->getClassName());
+        $accesor = $project->getBackboneAccessor($parameterClass->getClassName());
         if ($accesor !== null) {
-            $this->constructorInvocationSignatureList[] = '$this->locator->' . $accesor . '()';
+            $this->constructorInvocationSignatureList[] = '$this->backbone->' . $accesor . '()';
             return;
 
         }

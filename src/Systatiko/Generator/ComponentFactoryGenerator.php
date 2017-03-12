@@ -42,7 +42,7 @@ class ComponentFactoryGenerator
     /**
      * @var
      */
-    protected $locatorClassName;
+    protected $backboneClassName;
 
     /**
      * @var ClassGenerator
@@ -69,7 +69,7 @@ class ComponentFactoryGenerator
      */
     public function generate(GeneratorConfiguration $configuration)
     {
-        $this->locatorClassName = $configuration->getFacadeLocatorClassName();
+        $this->backboneClassName = $configuration->getBackboneClassName();
 
         $this->classGenerator = new ClassGenerator($this->componentFactory->getClassName());
 
@@ -85,7 +85,7 @@ class ComponentFactoryGenerator
 
         $this->addTriggerMethodList();
 
-        $this->addGlobalFacadeLocatorExposeList();
+        $this->addBackboneExposeList();
 
         $this->classGenerator->writeToPSR0($configuration->getTargetDir());
     }
@@ -95,7 +95,7 @@ class ComponentFactoryGenerator
      */
     protected function addMember()
     {
-        $this->classGenerator->addProtectedProperty("locator", $this->locatorClassName);
+        $this->classGenerator->addProtectedProperty("backbone", $this->backboneClassName);
 
         if ($this->componentFacade !== null) {
             $this->classGenerator->addProtectedProperty($this->componentFacade->getMemberName(), $this->componentFacade->getClassName());
@@ -119,9 +119,9 @@ class ComponentFactoryGenerator
     protected function addConstructor()
     {
         $constructor = $this->classGenerator->addMethod("__construct");
-        $constructor->addParameter($this->locatorClassName, "locator");
+        $constructor->addParameter($this->backboneClassName, "backbone");
 
-        $constructor->addCodeLine('$this->locator = $locator;');
+        $constructor->addCodeLine('$this->backbone = $backbone;');
     }
 
     /**
@@ -142,7 +142,7 @@ class ComponentFactoryGenerator
 
         $method->addIfStart("$member === null");
         $method->addCodeLine("$member = new $classShortName();");
-        $method->addCodeLine($member . '->setValueList($this->locator->getComponentConfiguration("' . $componentName . '"));');
+        $method->addCodeLine($member . '->setValueList($this->backbone->getComponentConfiguration("' . $componentName . '"));');
         $method->addIfEnd();
 
         $method->addCodeLine("return $member;");
@@ -196,18 +196,18 @@ class ComponentFactoryGenerator
             $facadeAccess = $eventHandler->getFacadeAccessMethod();
             $facadeMethodName = $eventHandler->getFacadeMethodName();
 
-            $method->addCodeLine('$this->locator->' . $facadeAccess . '()->' . $facadeMethodName . '($event);');
+            $method->addCodeLine('$this->backbone->' . $facadeAccess . '()->' . $facadeMethodName . '($event);');
         }
     }
 
-    protected function addGlobalFacadeLocatorExposeList()
+    protected function addBackboneExposeList()
     {
         foreach ($this->project->getGlobalExposeMethodList() as $phpMethod) {
-            $this->addGlobalFacadeLocatorExpose($phpMethod);
+            $this->addBackboneExpose($phpMethod);
         }
     }
 
-    protected function addGlobalFacadeLocatorExpose(PHPMethod $exposedMethod)
+    protected function addBackboneExpose(PHPMethod $exposedMethod)
     {
         $method = $this->classGenerator->addMethod($exposedMethod->getMethodName());
 
@@ -229,7 +229,7 @@ class ComponentFactoryGenerator
         $method->setReturnType($docBlockReturnType, $optional );
         $return = $method->hasReturnType() ? 'return ' : '';
         $invocationSignature = $exposedMethod->getInvocationSignature();
-        $method->addCodeLine($return . '$this->locator->' . $exposedMethod->getMethodName() . "($invocationSignature);");
+        $method->addCodeLine($return . '$this->backbone->' . $exposedMethod->getMethodName() . "($invocationSignature);");
     }
 
     /**
@@ -277,7 +277,7 @@ class ComponentFactoryGenerator
      */
     protected function addContextAwareAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method)
     {
-        $method->addSwitch('$this->locator->getContext()');
+        $method->addSwitch('$this->backbone->getContext()');
 
         foreach ($componentFactoryClass->getOverwritingComponentFactoryClassList() as $overwriting) {
             $method->addSwitchCase('"' . $overwriting->getContext() . '"');

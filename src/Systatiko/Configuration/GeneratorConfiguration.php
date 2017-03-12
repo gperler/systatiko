@@ -2,35 +2,28 @@
 
 namespace Systatiko\Configuration;
 
-
-
-use Civis\Common\File;
 use Civis\Common\ArrayUtil;
+use Civis\Common\File;
+use Systatiko\Reader\PHPClassName;
 
 class GeneratorConfiguration
 {
-
-    const DEFAULT_FACTORYLOCATOR_BASE_SHORT_NAME = "FacadeLocatorBase";
-
-    const DEFAULT_FACTORYLOCATOR_NAMESPACE_NAME = "Systatiko\\Runtime";
 
     const EXCEPTION_FILE_DOES_NOT_EXIST = "Configuration file '%s' does not exist.";
 
     const EXCEPTION_CONFIGURATION_INVALID_OR_EMPTY = "Configuration file '%s' either empty or invalid json.";
 
-    const EXCEPTION_FL_NOT_DEFINED = "Configuration file '%s' does not contain facadeLocator.classShortName or facadeLocator.namespaceName";
+    const EXCEPTION_BACKBONE_CLASS_NOT_DEFINED = "Configuration file '%s' does not contain backbone.className";
 
     const EXCEPTION_NO_INCLUDE_DIR = "Configuration file '%s' parameter includeDir must be defined as an array with at least one directory";
 
-    const FACTORY_LOCATOR = "facadeLocator";
+    const BACKBONE = "backbone";
 
-    const FL_CLASS_SHORT_NAME = "classShortName";
+    const BACKBONE_CLASS = "className";
 
-    const FL_NAMESPACE_NAME = "namespaceName";
+    const BACKBONE_EXTENDS = "extendsClassName";
 
-    const FL_EXTENDS_SHORT_NAME = "extendsShortName";
-
-    const FL_EXTENDS_NAMESPACE_NAME = "extendsNamespaceName";
+    const BACKBONE_EXTENDS_DEFAULT = "Systatiko\\Runtime\\BackboneBase";
 
     const INCLUDE_DIR = "includeDir";
 
@@ -39,43 +32,71 @@ class GeneratorConfiguration
     const TARGET_DIR = "targetDir";
 
     /**
+     * @var File
+     */
+    protected $configFile;
+
+    /**
      * @var array
      */
     protected $configurationValueList;
 
-    public function __construct($fileName)
+    /**
+     * @var PHPClassName
+     */
+    protected $backboneClassName;
+
+    /**
+     * @var PHPClassName
+     */
+    protected $extendsClassName;
+
+    /**
+     * GeneratorConfiguration constructor.
+     *
+     * @param string $fileName
+     */
+    public function __construct(string $fileName)
     {
-        $file = new File($fileName);
-        $this->parseConfigFile($file);
+        $this->configFile = new File($fileName);
+        $this->loadConfigValues();
+        $this->parseBackboneConfig();
+    }
+
+    protected function loadConfigValues()
+    {
+        $fileName = $this->configFile->getAbsoluteFileName();
+        if (!$this->configFile->exists()) {
+            throw new ConfigurationException(sprintf(self::EXCEPTION_FILE_DOES_NOT_EXIST, $fileName));
+        }
+
+        $this->configurationValueList = $this->configFile->loadAsJSONArray();
+    }
+
+    protected function parseConfigFile()
+    {
+        $this->parseBackboneConfig();
+        $includeDir = $this->getIncludeDirectories();
+        if ($includeDir === null || !is_array($includeDir) || sizeof($includeDir) === 0) {
+            throw new ConfigurationException(sprintf(self::EXCEPTION_NO_INCLUDE_DIR, $this->configFile->getAbsoluteFileName()));
+        }
+
     }
 
     /**
-     * @param File $file
-     *
      * @throws ConfigurationException
      */
-    protected function parseConfigFile(File $file)
+    protected function parseBackboneConfig()
     {
-        $filePath = $file->getAbsoluteFileName();
-        if (!$file->exists()) {
-            throw new ConfigurationException(sprintf(self::EXCEPTION_FILE_DOES_NOT_EXIST, $filePath));
+        $backboneClassName = $this->getSubConfigValue(self::BACKBONE, self::BACKBONE_CLASS);
+        if (!$backboneClassName) {
+            $exception = sprintf(self::EXCEPTION_BACKBONE_CLASS_NOT_DEFINED, $this->configFile->getAbsoluteFileName());
+            throw new ConfigurationException($exception);
         }
+        $this->backboneClassName = new PHPClassName($backboneClassName);
 
-        $this->configurationValueList = $file->loadAsJSONArray();
-
-        if ($this->configurationValueList === null) {
-            throw new ConfigurationException(sprintf(self::EXCEPTION_CONFIGURATION_INVALID_OR_EMPTY, $filePath));
-        }
-
-        if ($this->getFacadeLocatorClassShortName() === null || $this->getFacadeLocatorNamespaceName() === null) {
-            throw new ConfigurationException(sprintf(self::EXCEPTION_FL_NOT_DEFINED, $filePath));
-        }
-
-        $includeDir = $this->getIncludeDirectories();
-        if ($includeDir === null || !is_array($includeDir) || sizeof($includeDir) === 0) {
-            throw new ConfigurationException(sprintf(self::EXCEPTION_NO_INCLUDE_DIR, $filePath));
-        }
-
+        $extendsClassName = $this->getSubConfigValue(self::BACKBONE, self::BACKBONE_EXTENDS, self::BACKBONE_EXTENDS_DEFAULT);
+        $this->extendsClassName = new PHPClassName($extendsClassName);
     }
 
     /**
@@ -84,79 +105,24 @@ class GeneratorConfiguration
      *
      * @return null|string
      */
-    protected function getConfigurationValue(string $key, string $default = null)
+    protected function getConfigValue(string $key, string $default = null)
     {
         $value = ArrayUtil::getFromArray($this->configurationValueList, $key);
-        if ($value !== null) {
-            return $value;
-        }
-        return $default;
+        return $value ?: $default;
     }
 
     /**
+     * @param string $key
+     * @param string $subkey
+     * @param string|null $default
+     *
      * @return null|string
      */
-    protected function getFacadeLocator()
+    protected function getSubConfigValue(string $key, string $subkey, string $default = null)
     {
-        return $this->getConfigurationValue(self::FACTORY_LOCATOR);
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getFacadeLocatorClassShortName()
-    {
-        return trim(ArrayUtil::getFromArray($this->getFacadeLocator(), self::FL_CLASS_SHORT_NAME), "\\");
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getFacadeLocatorNamespaceName()
-    {
-        return trim(ArrayUtil::getFromArray($this->getFacadeLocator(), self::FL_NAMESPACE_NAME), "\\");
-    }
-
-    /**
-     * @return string
-     */
-    public function getFacadeLocatorClassName()
-    {
-        return $this->getFacadeLocatorNamespaceName() . "\\" . $this->getFacadeLocatorClassShortName();
-    }
-
-    /**
-     * @return string
-     */
-    public function getFacadeExtendsShortName() : string
-    {
-        $facadeLocator = $this->getFacadeLocator();
-        $shortName = ArrayUtil::getFromArray($facadeLocator, self::FL_EXTENDS_SHORT_NAME);
-        if (!empty($shortName)) {
-            return $shortName;
-        }
-        return self::DEFAULT_FACTORYLOCATOR_BASE_SHORT_NAME;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFacadeExtendsNamespaceName() : string
-    {
-        $facadeLocator = $this->getFacadeLocator();
-        $shortName = ArrayUtil::getFromArray($facadeLocator, self::FL_EXTENDS_NAMESPACE_NAME);
-        if (!empty($shortName)) {
-            return $shortName;
-        }
-        return self::DEFAULT_FACTORYLOCATOR_NAMESPACE_NAME;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFacadeExtendsClassName() : string
-    {
-        return $this->getFacadeExtendsNamespaceName() . "\\" . $this->getFacadeExtendsShortName();
+        $subConfig = $this->getConfigValue($key);
+        $value = ArrayUtil::getFromArray($subConfig, $subkey);
+        return $value ?: $default;
     }
 
     /**
@@ -164,7 +130,7 @@ class GeneratorConfiguration
      */
     public function getIncludeDirectories()
     {
-        return $this->getConfigurationValue(self::INCLUDE_DIR);
+        return $this->getConfigValue(self::INCLUDE_DIR);
     }
 
     /**
@@ -172,7 +138,7 @@ class GeneratorConfiguration
      */
     public function getLogger()
     {
-        return $this->getConfigurationValue(self::LOGGER);
+        return $this->getConfigValue(self::LOGGER);
     }
 
     /**
@@ -180,6 +146,30 @@ class GeneratorConfiguration
      */
     public function getTargetDir()
     {
-        return $this->getConfigurationValue(self::TARGET_DIR);
+        return $this->getConfigValue(self::TARGET_DIR);
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackboneClassName()
+    {
+        return $this->backboneClassName->getClassName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackboneClassShortName()
+    {
+        return $this->backboneClassName->getClassShortName();
+    }
+
+    /**
+     * @return string
+     */
+    public function getBackboneExtendsClassName()
+    {
+        return $this->extendsClassName->getClassName();
     }
 }

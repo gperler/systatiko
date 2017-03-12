@@ -35,9 +35,9 @@ class Project implements LoggerAwareInterface
     protected $projectClassList;
 
     /**
-     * @var FacadeLocatorModel
+     * @var BackboneModel
      */
-    protected $facadeLocatorModel;
+    protected $backboneModel;
 
     /**
      * @var ComponentFactory[]
@@ -97,12 +97,12 @@ class Project implements LoggerAwareInterface
     }
 
     /**
-     * @param string $facadeLocatorName
+     * @param string $backboneExtendsName
      */
-    public function analyze(string $facadeLocatorName)
+    public function analyze(string $backboneExtendsName)
     {
-        $facadeLocatorBaseClass = $this->getPHPClassByName($facadeLocatorName);
-        $this->facadeLocatorModel = new FacadeLocatorModel($facadeLocatorBaseClass);
+        $backboneExtendsBaseClass = $this->getPHPClassByName($backboneExtendsName);
+        $this->backboneModel = new BackboneModel($backboneExtendsBaseClass);
 
         foreach ($this->phpClassList as $phpClass) {
             $this->analyzePHPClass($phpClass);
@@ -116,7 +116,7 @@ class Project implements LoggerAwareInterface
      */
     public function getGlobalExposeMethodList()
     {
-        return $this->facadeLocatorModel->getExposeList();
+        return $this->backboneModel->getExposeList();
     }
 
     protected function update()
@@ -362,10 +362,10 @@ class Project implements LoggerAwareInterface
      *
      * @return null|string
      */
-    public function getLocatorAccessor(string $className)
+    public function getBackboneAccessor(string $className)
     {
         foreach ($this->componentFacadeList as $componentFacade) {
-            $accessor = $componentFacade->getLocatorAccessor($className);
+            $accessor = $componentFacade->getBackboneAccessor($className);
             if ($accessor !== null) {
                 return $accessor;
             }

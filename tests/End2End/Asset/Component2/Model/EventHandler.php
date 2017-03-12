@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\End2End\Asset\Component2\Model;
 
+use SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent;
 use SystatikoTest\End2End\Asset\Component1\Event\C1Event;
 
 /**
@@ -29,6 +30,19 @@ class EventHandler
      * @return void
      */
     public function eventHandler(C1Event $event)
+    {
+
+    }
+
+    /**
+     * @FacadeExposition
+     * @EventHandler
+     *
+     * @param AsyncEvent $event
+     *
+     * @return void
+     */
+    public function handleAsyncEvent(AsyncEvent $event)
     {
 
     }

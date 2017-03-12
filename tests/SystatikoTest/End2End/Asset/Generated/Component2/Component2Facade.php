@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\End2End\Asset\Generated\Component2;
 
+use SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent;
 use SystatikoTest\End2End\Asset\Component1\Event\C1Event;
 
 class Component2Facade
@@ -31,5 +32,15 @@ class Component2Facade
     public function eventHandler(C1Event $event)
     {
         $this->factory->getEventHandler()->eventHandler($event);
+    }
+
+    /**
+     * @param AsyncEvent $event
+     * 
+     * @return void
+     */
+    public function handleAsyncEvent(AsyncEvent $event)
+    {
+        $this->factory->getEventHandler()->handleAsyncEvent($event);
     }
 }

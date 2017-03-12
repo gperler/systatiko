@@ -1,9 +1,7 @@
 {
-  "facadeLocator": {
-    "classShortName": "FacadeLocator",
-    "namespaceName": "SystatikoTest\\End2End\\Asset\\Generated",
-    "extendsShortName" : "FacadeLocatorProject",
-    "extendsNamespaceName" : "SystatikoTest\\End2End\\Asset"
+  "backbone": {
+    "className": "SystatikoTest\\End2End\\Asset\\Generated\\Backbone",
+    "extendsClassName" : "SystatikoTest\\End2End\\Asset\\BackboneProject"
   },
   "includeDir": [
     "./tests/End2End/Asset"
