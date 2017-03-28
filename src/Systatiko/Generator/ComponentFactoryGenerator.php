@@ -166,7 +166,7 @@ class ComponentFactoryGenerator
         $method->setReturnType($facadeClassName, false);
 
         $method->addIfStart($memberFullName . " === null");
-        $method->addCodeLine($memberFullName . " = new " . $facadeClassShortName . '($this);');
+        $method->addCodeLine($memberFullName . " = new " . $facadeClassShortName . '($this->backbone, $this);');
         $method->addIfEnd();
         $method->addCodeLine("return $memberFullName;");
 

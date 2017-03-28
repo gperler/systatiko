@@ -6,21 +6,29 @@ namespace SystatikoTest\End2End\Asset\Generated\Component2;
 
 use SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent;
 use SystatikoTest\End2End\Asset\Component1\Event\C1Event;
+use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class Component2Facade
 {
 
     /**
-     * @var Component2Facade
+     * @var Backbone
+     */
+    protected $backbone;
+
+    /**
+     * @var Component2Factory
      */
     protected $factory;
 
     /**
+     * @param Backbone $backbone
      * @param Component2Factory $factory
      * 
      */
-    public function __construct(Component2Factory $factory)
+    public function __construct(Backbone $backbone, Component2Factory $factory)
     {
+        $this->backbone = $backbone;
         $this->factory = $factory;
     }
 
@@ -42,5 +50,15 @@ class Component2Facade
     public function handleAsyncEvent(AsyncEvent $event)
     {
         $this->factory->getEventHandler()->handleAsyncEvent($event);
+    }
+
+    /**
+     * @param string $roleName
+     * 
+     * @return void
+     */
+    public function isInRole(string $roleName)
+    {
+        $this->factory->getSecurityService()->isInRole($roleName);
     }
 }

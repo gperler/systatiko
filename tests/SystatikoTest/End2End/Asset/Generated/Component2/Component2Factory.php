@@ -8,6 +8,7 @@ use SystatikoTest\End2End\Asset\Component2\Entity\BaseEntity;
 use SystatikoTest\End2End\Asset\Component2\Entity\OverWriteEntity;
 use SystatikoTest\End2End\Asset\Component2\Model\EventHandler;
 use SystatikoTest\End2End\Asset\Component2\Model\OtherService;
+use SystatikoTest\End2End\Asset\Component2\Model\SecurityService;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class Component2Factory
@@ -34,6 +35,11 @@ class Component2Factory
     protected $otherService;
 
     /**
+     * @var SecurityService
+     */
+    protected $securityService;
+
+    /**
      * @param Backbone $backbone
      * 
      */
@@ -49,7 +55,7 @@ class Component2Factory
     public function getComponent2Facade() : Component2Facade
     {
         if ($this->component2Facade === null) {
-            $this->component2Facade = new Component2Facade($this);
+            $this->component2Facade = new Component2Facade($this->backbone, $this);
         }
         return $this->component2Facade;
     }
@@ -99,6 +105,18 @@ class Component2Factory
             $this->otherService = new OtherService();
         }
         return $this->otherService;
+    }
+
+    /**
+     * 
+     * @return SecurityService
+     */
+    public function getSecurityService() : SecurityService
+    {
+        if ($this->securityService === null) {
+            $this->securityService = new SecurityService();
+        }
+        return $this->securityService;
     }
 
     /**

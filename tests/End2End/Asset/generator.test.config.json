@@ -1,8 +1,11 @@
 {
   "backbone": {
     "className": "SystatikoTest\\End2End\\Asset\\Generated\\Backbone",
-    "extendsClassName" : "SystatikoTest\\End2End\\Asset\\BackboneProject"
+    "extendsClassName": "SystatikoTest\\End2End\\Asset\\BackboneProject"
   },
+  "facadeGeneratorExtension": [
+    "SystatikoTest\\End2End\\Asset\\Extension\\GeneratorExtension"
+  ],
   "includeDir": [
     "./tests/End2End/Asset"
   ],

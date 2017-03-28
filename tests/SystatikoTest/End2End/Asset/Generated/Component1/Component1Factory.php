@@ -77,7 +77,7 @@ class Component1Factory
     public function getComponent1Facade() : Component1Facade
     {
         if ($this->component1Facade === null) {
-            $this->component1Facade = new Component1Facade($this);
+            $this->component1Facade = new Component1Facade($this->backbone, $this);
         }
         return $this->component1Facade;
     }

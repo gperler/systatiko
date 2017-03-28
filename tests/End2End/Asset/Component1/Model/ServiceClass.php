@@ -22,6 +22,7 @@ class ServiceClass
 
     /**
      * @FacadeExposition
+     * @CustomAnnotation(roleRequired="myRole")
      *
      * @param SampleEntity $entity
      *

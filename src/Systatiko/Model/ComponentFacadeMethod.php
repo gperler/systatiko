@@ -120,4 +120,22 @@ class ComponentFacadeMethod
 
     }
 
+    /**
+     * @param $className
+     *
+     * @return mixed|null
+     */
+    public function getMethodAnnotation($className)
+    {
+        return $this->phpMethod->getMethodAnnotation($className);
+    }
+
+    /**
+     * @return string
+     */
+    public function getDelegatedClassName()
+    {
+        return $this->projectClass->getClassName();
+    }
+
 }

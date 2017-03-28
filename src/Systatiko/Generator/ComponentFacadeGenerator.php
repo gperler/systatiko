@@ -2,8 +2,8 @@
 
 namespace Systatiko\Generator;
 
-
 use Nitria\ClassGenerator;
+use Nitria\Method;
 use Systatiko\Configuration\GeneratorConfiguration;
 use Systatiko\Model\ComponentFacade;
 use Systatiko\Model\ComponentFacadeMethod;
@@ -28,6 +28,11 @@ class ComponentFacadeGenerator
     protected $classGenerator;
 
     /**
+     * @var GeneratorConfiguration
+     */
+    protected $configuration;
+
+    /**
      * ComponentFacadeGenerator constructor.
      *
      * @param Project $project
@@ -44,6 +49,7 @@ class ComponentFacadeGenerator
      */
     public function generate(GeneratorConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $this->classGenerator = new ClassGenerator($this->componentFacade->getClassName());
 
         $this->addMember();
@@ -60,7 +66,8 @@ class ComponentFacadeGenerator
      */
     protected function addMember()
     {
-        $this->classGenerator->addProtectedProperty("factory", $this->componentFacade->getClassName());
+        $this->classGenerator->addProtectedProperty("backbone", $this->configuration->getBackboneClassName());
+        $this->classGenerator->addProtectedProperty("factory", $this->componentFacade->getFactoryClassName());
     }
 
     /**
@@ -69,7 +76,9 @@ class ComponentFacadeGenerator
     protected function addConstructor()
     {
         $constructor = $this->classGenerator->addMethod("__construct");
+        $constructor->addParameter($this->configuration->getBackboneClassName(), 'backbone');
         $constructor->addParameter($this->componentFacade->getFactoryClassName(), 'factory');
+        $constructor->addCodeLine('$this->backbone = $backbone;');
         $constructor->addCodeLine('$this->factory = $factory;');
     }
 
@@ -114,12 +123,47 @@ class ComponentFacadeGenerator
 
         if ($docBlockReturnType === 'mixed') {
             $method->setReturnType(null, false);
-
         }
+
+        $this->addBeforeDelegation($facadeMethod, $method, $methodName);
 
         $return = $method->hasReturnType() || $docBlockReturnType === 'mixed' ? 'return ' : '';
         $method->addCodeLine($return . '$this->factory->' . $facadeMethod->getFactoryMethodName() . "()->$methodName($invocationSignature);");
 
+        $this->addAfterDelegation($facadeMethod, $method, $methodName);
+
+    }
+
+    /**
+     * @param ComponentFacadeMethod $facadeMethod
+     * @param Method $method
+     * @param string $methodName
+     */
+    protected function addBeforeDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
+    {
+        foreach ($this->configuration->getFacadeGeneratorExtension() as $extension) {
+            $annotation = $facadeMethod->getMethodAnnotation($extension->getAnnotationClassName());
+            if ($annotation === null) {
+                continue;
+            }
+            $extension->beforeDelegation($method, $annotation, $this->componentFacade->getClassName(), $facadeMethod->getDelegatedClassName(), $methodName, $facadeMethod->getMethodParameterList());
+        }
+    }
+
+    /**
+     * @param ComponentFacadeMethod $facadeMethod
+     * @param Method $method
+     * @param string $methodName
+     */
+    protected function addAfterDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
+    {
+        foreach ($this->configuration->getFacadeGeneratorExtension() as $extension) {
+            $annotation = $facadeMethod->getMethodAnnotation($extension->getAnnotationClassName());
+            if ($annotation === null) {
+                continue;
+            }
+            $extension->afterDelegation($method, $annotation, $this->componentFacade->getClassName(), $facadeMethod->getDelegatedClassName(), $methodName, $facadeMethod->getMethodParameterList());
+        }
     }
 
 }

@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Systatiko\Reader;
 
 use Civis\Common\StringUtil;
+use Codeception\Util\Debug;
 
 class PHPDocCommentType
 {
@@ -140,6 +141,7 @@ class PHPDocCommentType
      */
     public function getFullyQualifiedName()
     {
+        Debug::debug($this->typeName);
         if ($this->isVoid()) {
             return null;
         }

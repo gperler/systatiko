@@ -4,6 +4,7 @@ namespace Systatiko\Configuration;
 
 use Civis\Common\ArrayUtil;
 use Civis\Common\File;
+use Systatiko\Contract\FacadeGeneratorExtension;
 use Systatiko\Reader\PHPClassName;
 
 class GeneratorConfiguration
@@ -17,6 +18,12 @@ class GeneratorConfiguration
 
     const EXCEPTION_NO_INCLUDE_DIR = "Configuration file '%s' parameter includeDir must be defined as an array with at least one directory";
 
+    const EXCEPTION_FACADE_GENERATOR_EXTENSION_NO_ARRAY = "'facadeGeneratorExtension' is not an array []";
+
+    const EXCEPTION_FACADE_GENERATOR_EXTENSION_DOES_NOT_IMPLEMENT = "Facade generator extension '%s' does not implement '%s'";
+
+    const FACADE_GENERATOR_EXTENSION_INTERFACE = 'Systatiko\Contract\FacadeGeneratorExtension';
+
     const BACKBONE = "backbone";
 
     const BACKBONE_CLASS = "className";
@@ -24,6 +31,8 @@ class GeneratorConfiguration
     const BACKBONE_EXTENDS = "extendsClassName";
 
     const BACKBONE_EXTENDS_DEFAULT = "Systatiko\\Runtime\\BackboneBase";
+
+    const FACADE_GENERATOR_EXTENSION = "facadeGeneratorExtension";
 
     const INCLUDE_DIR = "includeDir";
 
@@ -52,6 +61,11 @@ class GeneratorConfiguration
     protected $extendsClassName;
 
     /**
+     * @var FacadeGeneratorExtension[]
+     */
+    protected $facadeGeneratorExtension;
+
+    /**
      * GeneratorConfiguration constructor.
      *
      * @param string $fileName
@@ -59,8 +73,10 @@ class GeneratorConfiguration
     public function __construct(string $fileName)
     {
         $this->configFile = new File($fileName);
+        $this->facadeGeneratorExtension = [];
         $this->loadConfigValues();
         $this->parseBackboneConfig();
+        $this->parseFacadeGeneratorExtensionConfig();
     }
 
     protected function loadConfigValues()
@@ -76,11 +92,8 @@ class GeneratorConfiguration
     protected function parseConfigFile()
     {
         $this->parseBackboneConfig();
-        $includeDir = $this->getIncludeDirectories();
-        if ($includeDir === null || !is_array($includeDir) || sizeof($includeDir) === 0) {
-            throw new ConfigurationException(sprintf(self::EXCEPTION_NO_INCLUDE_DIR, $this->configFile->getAbsoluteFileName()));
-        }
-
+        $this->parseIncludeDirectoryConfig();
+        $this->parseFacadeGeneratorExtensionConfig();
     }
 
     /**
@@ -97,6 +110,41 @@ class GeneratorConfiguration
 
         $extendsClassName = $this->getSubConfigValue(self::BACKBONE, self::BACKBONE_EXTENDS, self::BACKBONE_EXTENDS_DEFAULT);
         $this->extendsClassName = new PHPClassName($extendsClassName);
+    }
+
+    /**
+     * @throws ConfigurationException
+     */
+    protected function parseIncludeDirectoryConfig()
+    {
+        $includeDir = $this->getIncludeDirectories();
+        if ($includeDir === null || !is_array($includeDir) || sizeof($includeDir) === 0) {
+            throw new ConfigurationException(sprintf(self::EXCEPTION_NO_INCLUDE_DIR, $this->configFile->getAbsoluteFileName()));
+        }
+    }
+
+    protected function parseFacadeGeneratorExtensionConfig()
+    {
+        $generatorExtensionClassList = ArrayUtil::getFromArray($this->configurationValueList, self::FACADE_GENERATOR_EXTENSION);
+        if ($generatorExtensionClassList === null) {
+            return;
+        }
+
+        if (!is_array($generatorExtensionClassList)) {
+            throw new ConfigurationException(self::EXCEPTION_FACADE_GENERATOR_EXTENSION_NO_ARRAY);
+        }
+
+        foreach ($generatorExtensionClassList as $generatorExtensionClassName) {
+            $reflect = new \ReflectionClass($generatorExtensionClassName);
+
+            if (!$reflect->implementsInterface(self::FACADE_GENERATOR_EXTENSION_INTERFACE)) {
+                $message = sprintf(self::EXCEPTION_FACADE_GENERATOR_EXTENSION_DOES_NOT_IMPLEMENT, $generatorExtensionClassName, self::FACADE_GENERATOR_EXTENSION_INTERFACE);
+                throw new ConfigurationException($message);
+            }
+
+            $this->facadeGeneratorExtension[] = $reflect->newInstance();
+        }
+
     }
 
     /**
@@ -172,4 +220,13 @@ class GeneratorConfiguration
     {
         return $this->extendsClassName->getClassName();
     }
+
+    /**
+     * @return FacadeGeneratorExtension[]
+     */
+    public function getFacadeGeneratorExtension(): array
+    {
+        return $this->facadeGeneratorExtension;
+    }
+
 }

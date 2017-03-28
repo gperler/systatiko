@@ -5,21 +5,29 @@ declare(strict_types = 1);
 namespace SystatikoTest\End2End\Asset\Generated\Component1;
 
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
+use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class Component1Facade
 {
 
     /**
-     * @var Component1Facade
+     * @var Backbone
+     */
+    protected $backbone;
+
+    /**
+     * @var Component1Factory
      */
     protected $factory;
 
     /**
+     * @param Backbone $backbone
      * @param Component1Factory $factory
      * 
      */
-    public function __construct(Component1Factory $factory)
+    public function __construct(Backbone $backbone, Component1Factory $factory)
     {
+        $this->backbone = $backbone;
         $this->factory = $factory;
     }
 
@@ -30,6 +38,12 @@ class Component1Facade
      */
     public function hasReturnType(SampleEntity $entity) : SampleEntity
     {
+        // SystatikoTest\End2End\Asset\Generated\Component1\Component1Facade
+        // SystatikoTest\End2End\Asset\Component1\Model\ServiceClass
+        // hasReturnType
+        // myRole
+        // SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity entity
+        $this->backbone->getComponent2Facade()->isInRole("myRole");
         return $this->factory->getServiceClass()->hasReturnType($entity);
     }
 

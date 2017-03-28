@@ -127,6 +127,10 @@ class PHPMethodReturnType
             return $this->signatureType;
         }
 
+        if ($this->signatureTypeClassName === null) {
+            return null;
+        }
+
         if ($this->signatureTypeClassName->getAs() !== null) {
             return $this->signatureTypeClassName->getAs();
         }
