@@ -6,10 +6,10 @@ use Civis\Common\ArrayUtil;
 use Civis\Common\File;
 use Systatiko\Contract\AsynchronousEvent;
 use Systatiko\Contract\AsynchronousEventHandler;
-use Systatiko\Contract\Event;
 use Systatiko\Contract\BackboneContract;
 use Systatiko\Contract\SynchronousEvent;
 use Systatiko\Contract\SynchronousEventHandler;
+use Systatiko\Exception\EventNotDefinedException;
 
 abstract class BackboneBase implements BackboneContract
 {
@@ -112,10 +112,13 @@ abstract class BackboneBase implements BackboneContract
     public abstract function dispatchInboundAsynchronousEvent(AsynchronousEvent $event);
 
     /**
-     * @param string $name
+     * @param string $eventName
+     * @param array $payload
      *
      * @return AsynchronousEvent
+     *
+     * @throws EventNotDefinedException
      */
-    public abstract function newEvent(string $name) : AsynchronousEvent;
+    public abstract function newAsynchronousEvent(string $eventName, array $payload) : AsynchronousEvent;
 
 }

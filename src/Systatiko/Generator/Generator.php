@@ -130,7 +130,7 @@ class Generator implements LoggerAwareInterface
      */
     protected function generateBackbone()
     {
-        $flg = new BackboneGenerator($this->project->getComponentFacadeList());
+        $flg = new BackboneGenerator($this->project->getComponentFacadeList(), $this->project->getComponentEventList());
         $flg->generate($this->generatorConfiguration);
 
     }

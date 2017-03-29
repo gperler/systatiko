@@ -38,11 +38,6 @@ class Component1Facade
      */
     public function hasReturnType(SampleEntity $entity) : SampleEntity
     {
-        // SystatikoTest\End2End\Asset\Generated\Component1\Component1Facade
-        // SystatikoTest\End2End\Asset\Component1\Model\ServiceClass
-        // hasReturnType
-        // myRole
-        // SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity entity
         $this->backbone->getComponent2Facade()->isInRole("myRole");
         return $this->factory->getServiceClass()->hasReturnType($entity);
     }

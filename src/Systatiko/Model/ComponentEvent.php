@@ -4,11 +4,20 @@ declare(strict_types = 1);
 
 namespace Systatiko\Model;
 
-
 use Civis\Common\StringUtil;
+use Systatiko\Annotation\Event;
 
 class ComponentEvent
 {
+
+    const ASYNCHRONOUS_EVENT = 'Systatiko\Contract\AsynchronousEvent';
+
+    const SYNCHRONOUS_EVENT = 'Systatiko\Contract\SynchronousEvent';
+
+    /**
+     * @var string
+     */
+    protected $eventName;
 
     /**
      * @var ProjectClass
@@ -26,15 +35,21 @@ class ComponentEvent
     protected $eventHandlerList;
 
     /**
+     * @var ComponentFactory
+     */
+    protected $responsibleFactory;
+
+    /**
      * ComponentEvent constructor.
      *
      * @param ProjectClass $projectClass
-     * @param string $namespace
+     * @param Event $event
      */
-    public function __construct(ProjectClass $projectClass, string $namespace)
+    public function __construct(ProjectClass $projectClass, Event $event)
     {
         $this->projectClass = $projectClass;
-        $this->namespace = $namespace;
+        $this->namespace = $event->getNamespace();
+        $this->eventName = $event->name;
         $this->eventHandlerList = [];
     }
 
@@ -92,6 +107,46 @@ class ComponentEvent
     public function getEventHandlerList()
     {
         return $this->eventHandlerList;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAsynchronousEvent() : bool
+    {
+        return $this->projectClass->implementsInterface(self::ASYNCHRONOUS_EVENT);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSynchronousEvent() : bool
+    {
+        return $this->projectClass->implementsInterface(self::SYNCHRONOUS_EVENT);
+    }
+
+    /**
+     * @return string
+     */
+    public function getEventName()
+    {
+        return $this->eventName;
+    }
+
+    /**
+     * @return ComponentFactory
+     */
+    public function getResponsibleFactory(): ComponentFactory
+    {
+        return $this->responsibleFactory;
+    }
+
+    /**
+     * @param ComponentFactory $responsibleFactory
+     */
+    public function setResponsibleFactory(ComponentFactory $responsibleFactory)
+    {
+        $this->responsibleFactory = $responsibleFactory;
     }
 
 }

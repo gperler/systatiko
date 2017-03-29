@@ -2,10 +2,8 @@
 
 namespace Systatiko\Generator;
 
-
 use Nitria\ClassGenerator;
 use Nitria\Method;
-use SebastianBergmann\CodeCoverage\Report\PHP;
 use Systatiko\Configuration\GeneratorConfiguration;
 use Systatiko\Model\ComponentEvent;
 use Systatiko\Model\ComponentFacade;
@@ -191,6 +189,22 @@ class ComponentFactoryGenerator
         $method = $this->classGenerator->addMethod($componentEvent->getTriggerMethodName());
         $method->addParameter($componentEvent->getEventClassName(), "event");
 
+        if ($componentEvent->isAsynchronousEvent()) {
+            $method->addCodeLine('$this->backbone->dispatchOutboundAsynchronousEvent($event);');
+        }
+
+        if ($componentEvent->isSynchronousEvent()) {
+            $this->addSynchronousEventHandling($componentEvent, $method);
+        }
+
+    }
+
+    /**
+     * @param ComponentEvent $componentEvent
+     * @param Method $method
+     */
+    protected function addSynchronousEventHandling(ComponentEvent $componentEvent, Method $method)
+    {
         foreach ($componentEvent->getEventHandlerList() as $eventHandler) {
 
             $facadeAccess = $eventHandler->getFacadeAccessMethod();
@@ -198,7 +212,10 @@ class ComponentFactoryGenerator
 
             $method->addCodeLine('$this->backbone->' . $facadeAccess . '()->' . $facadeMethodName . '($event);');
         }
+        $method->addCodeLine('$this->backbone->dispatchSynchronousEvent($event);');
     }
+
+
 
     protected function addBackboneExposeList()
     {
@@ -211,7 +228,6 @@ class ComponentFactoryGenerator
     {
         $method = $this->classGenerator->addMethod($exposedMethod->getMethodName());
 
-
         foreach ($exposedMethod->getMethodParameterList() as $parameter) {
             if ($parameter->isAsClassName()) {
                 $className = $parameter->getClassName();
@@ -221,12 +237,11 @@ class ComponentFactoryGenerator
             $method->addParameter($fqn, $parameter->getName(), $parameter->getDefault());
         }
 
-
         $methodReturnType = $exposedMethod->getMethodReturnType();
 
         $optional = $methodReturnType->canBeNull();
         $docBlockReturnType = $methodReturnType->getFullyQualifiedName();
-        $method->setReturnType($docBlockReturnType, $optional );
+        $method->setReturnType($docBlockReturnType, $optional);
         $return = $method->hasReturnType() ? 'return ' : '';
         $invocationSignature = $exposedMethod->getInvocationSignature();
         $method->addCodeLine($return . '$this->backbone->' . $exposedMethod->getMethodName() . "($invocationSignature);");

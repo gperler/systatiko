@@ -87,6 +87,7 @@ class ComponentFactory
      */
     public function addComponentEvent(ComponentEvent $componentEvent)
     {
+        $componentEvent->setResponsibleFactory($this);
         $this->componentEventList[] = $componentEvent;
     }
 

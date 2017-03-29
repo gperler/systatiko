@@ -9,6 +9,7 @@ use SystatikoTest\End2End\Asset\Component1\Contract\SampleInterface;
 use SystatikoTest\End2End\Asset\Component1\Entity\DifferentReturnEntity;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 use SystatikoTest\End2End\Asset\Component1\Entity\SingletonEntity;
+use SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent;
 use SystatikoTest\End2End\Asset\Component1\Event\C1Event;
 use SystatikoTest\End2End\Asset\Component1\Model\DependencyInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\FacadeInjection;
@@ -115,6 +116,15 @@ class Component1Factory
     }
 
     /**
+     * 
+     * @return AsyncEvent
+     */
+    public function newAsyncEvent() : AsyncEvent
+    {
+        return new AsyncEvent();
+    }
+
+    /**
      * @param mixed $entity
      * 
      * @return DependencyInjection
@@ -149,6 +159,16 @@ class Component1Factory
     }
 
     /**
+     * @param AsyncEvent $event
+     * 
+     * @return void
+     */
+    public function triggerAsyncEvent(AsyncEvent $event)
+    {
+        $this->backbone->dispatchOutboundAsynchronousEvent($event);
+    }
+
+    /**
      * @param C1Event $event
      * 
      * @return void
@@ -156,6 +176,7 @@ class Component1Factory
     public function triggerC1Event(C1Event $event)
     {
         $this->backbone->getComponent2Facade()->eventHandler($event);
+        $this->backbone->dispatchSynchronousEvent($event);
     }
 
     /**

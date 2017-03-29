@@ -16,6 +16,11 @@ class Event
     public $namespace;
 
     /**
+     * @var string
+     */
+    public $name;
+
+    /**
      * @return string
      */
     public function getNamespace()

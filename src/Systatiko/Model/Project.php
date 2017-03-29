@@ -274,7 +274,7 @@ class Project implements LoggerAwareInterface
             return;
         }
 
-        $this->componentEventList[] = new ComponentEvent($projectClass, $eventAnnotation->namespace);
+        $this->componentEventList[] = new ComponentEvent($projectClass, $eventAnnotation);
     }
 
     /**
@@ -417,6 +417,14 @@ class Project implements LoggerAwareInterface
     public function getComponentFacadeList()
     {
         return $this->componentFacadeList;
+    }
+
+    /**
+     * @return ComponentEvent[]
+     */
+    public function getComponentEventList()
+    {
+        return $this->componentEventList;
     }
 
     /**

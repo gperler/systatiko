@@ -6,10 +6,13 @@ namespace SystatikoTest\End2End\Asset\Generated;
 
 use Civis\Common\File;
 use SystatikoTest\End2End\Asset\BackboneProject;
+use SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Facade;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Factory;
 use SystatikoTest\End2End\Asset\Generated\Component2\Component2Facade;
 use SystatikoTest\End2End\Asset\Generated\Component2\Component2Factory;
+use Systatiko\Contract\AsynchronousEvent;
+use Systatiko\Exception\EventNotDefinedException;
 
 class Backbone extends BackboneProject
 {
@@ -85,5 +88,37 @@ class Backbone extends BackboneProject
             $this->component2Factory = new Component2Factory($this); 
         }
         return $this->component2Factory;
+    }
+
+    /**
+     * @param string $eventName
+     * @param array $payload
+     * 
+     * @return AsynchronousEvent
+     * @throws EventNotDefinedException
+     */
+    public function newAsynchronousEvent(string $eventName, array $payload) : AsynchronousEvent
+    {
+        switch ($eventName) {
+            case "com.test.myevent.event1":
+                $event = $this->getComponent1Factory()->newAsyncEvent();
+                break;
+            default:
+                throw new EventNotDefinedException($eventName . " not defined");
+        }
+        $event->fromPayload($payload);
+        return $event;
+    }
+
+    /**
+     * @param AsynchronousEvent $event
+     * 
+     * @return void
+     */
+    public function dispatchInboundAsynchronousEvent(AsynchronousEvent $event)
+    {
+        if ($event instanceof AsyncEvent) {
+            $this->getComponent2Facade()->handleAsyncEvent($event);
+        }
     }
 }

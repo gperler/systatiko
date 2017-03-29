@@ -29,15 +29,7 @@ class GeneratorExtension implements FacadeGeneratorExtension
      */
     public function beforeDelegation(Method $method, $annotation, string $facadeName, string $delegatedClass, string $delegatedMethodName, array $parameterList)
     {
-        $method->addInlineComment($facadeName);
-        $method->addInlineComment($delegatedClass);
-        $method->addInlineComment($delegatedMethodName);
-        $method->addInlineComment($annotation->roleRequired);
-        foreach($parameterList as $parameter) {
-            $method->addInlineComment($parameter->getFullyQualifiedName() . " " . $parameter->getName());
-        }
         $method->addCodeLine('$this->backbone->getComponent2Facade()->isInRole("' . $annotation->roleRequired .  '");');
-
     }
 
     /**
