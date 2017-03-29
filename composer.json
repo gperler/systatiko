@@ -32,5 +32,8 @@
     "psr-4": {
       "SystatikoTest\\": "tests"
     }
-  }
+  },
+  "bin": [
+    "src/Systatiko/Console/systatiko"
+  ]
 }
