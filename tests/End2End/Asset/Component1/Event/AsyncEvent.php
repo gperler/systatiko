@@ -41,4 +41,5 @@ class AsyncEvent implements AsynchronousEvent
         $this->payload = $payload;
     }
 
+
 }

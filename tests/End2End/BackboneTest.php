@@ -6,6 +6,7 @@ namespace SystatikoTest\End2End;
 
 use Civis\Common\ArrayUtil;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
+use SystatikoTest\End2End\Asset\TestAsyncEventHandler;
 
 class BackboneTest extends End2EndTest
 {
@@ -67,6 +68,54 @@ class BackboneTest extends End2EndTest
 
         $this->assertNotNull($facade);
         $this->assertInstanceOf('SystatikoTest\End2End\Asset\Generated\Component1\Component1Facade', $facade);
+
+    }
+
+    public function testFacadeInjection()
+    {
+        $backbone = Backbone::getInstance();
+        $facade = $backbone->getComponent1Facade();
+        $this->assertTrue($facade->getInjectionStatus());
+        $this->assertTrue($facade->getFacadeInjectionStatus());
+
+        $factory = $backbone->getComponent1Factory();
+
+        $sampleEntity = $factory->newSampleEntity("hello");
+        $service = $factory->getNoInjection($sampleEntity);
+        $this->assertSame("hello", $service->getTestValue());
+    }
+
+    public function testAsyncEventDispatchOutbound()
+    {
+        $backbone = Backbone::getInstance();
+
+        $testHandler = new TestAsyncEventHandler();
+        $backbone->addOutboundAsynchronousEventHandler($testHandler);
+
+        $facade = $backbone->getComponent1Facade();
+        $facade->triggerAsyncEvent([
+            "hello" => "async"
+        ]);
+
+        $receivedArray = $testHandler->getPayload();
+        $this->assertSame("async", $receivedArray["hello"]);
+
+    }
+
+    public function testAsyncEventDispatchInbound()
+    {
+
+        $backbone = Backbone::getInstance();
+        $event = $backbone->newAsynchronousEvent("com.test.myevent.event1", []);
+
+        $this->assertNotNull($event);
+        $this->assertInstanceOf('SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent', $event);
+
+        $backbone->dispatchInboundAsynchronousEvent($event);
+
+        $payload = $event->getPayload();
+        $this->assertNotNull($payload);
+        $this->assertTrue($payload["async_handler"]);
 
     }
 }

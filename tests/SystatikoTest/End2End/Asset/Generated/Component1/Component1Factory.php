@@ -12,7 +12,9 @@ use SystatikoTest\End2End\Asset\Component1\Entity\SingletonEntity;
 use SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent;
 use SystatikoTest\End2End\Asset\Component1\Event\C1Event;
 use SystatikoTest\End2End\Asset\Component1\Model\DependencyInjection;
+use SystatikoTest\End2End\Asset\Component1\Model\EventTriggerService;
 use SystatikoTest\End2End\Asset\Component1\Model\FacadeInjection;
+use SystatikoTest\End2End\Asset\Component1\Model\NoInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\ServiceClass;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
 
@@ -40,9 +42,19 @@ class Component1Factory
     protected $singletonEntity;
 
     /**
+     * @var EventTriggerService
+     */
+    protected $eventTriggerService;
+
+    /**
      * @var FacadeInjection
      */
     protected $facadeInjection;
+
+    /**
+     * @var NoInjection
+     */
+    protected $noInjection;
 
     /**
      * @var ServiceClass
@@ -125,13 +137,24 @@ class Component1Factory
     }
 
     /**
-     * @param mixed $entity
      * 
      * @return DependencyInjection
      */
-    public function newDependencyInjection($entity) : DependencyInjection
+    public function newDependencyInjection() : DependencyInjection
     {
-        return new DependencyInjection($this, $this->getConfiguration(), $entity);
+        return new DependencyInjection($this, $this->getConfiguration());
+    }
+
+    /**
+     * 
+     * @return EventTriggerService
+     */
+    public function getEventTriggerService() : EventTriggerService
+    {
+        if ($this->eventTriggerService === null) {
+            $this->eventTriggerService = new EventTriggerService($this);
+        }
+        return $this->eventTriggerService;
     }
 
     /**
@@ -144,6 +167,19 @@ class Component1Factory
             $this->facadeInjection = new FacadeInjection($this->backbone->getComponent2Facade());
         }
         return $this->facadeInjection;
+    }
+
+    /**
+     * @param SampleEntity $entity
+     * 
+     * @return NoInjection
+     */
+    public function getNoInjection(SampleEntity $entity) : NoInjection
+    {
+        if ($this->noInjection === null) {
+            $this->noInjection = new NoInjection($entity);
+        }
+        return $this->noInjection;
     }
 
     /**

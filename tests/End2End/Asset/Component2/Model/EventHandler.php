@@ -44,7 +44,10 @@ class EventHandler
      */
     public function handleAsyncEvent(AsyncEvent $event)
     {
-
+        $event->fromPayload([
+            "async_handler" => true
+        ]);
     }
+
 
 }

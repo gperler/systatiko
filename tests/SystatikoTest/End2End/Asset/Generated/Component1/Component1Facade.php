@@ -32,6 +32,34 @@ class Component1Facade
     }
 
     /**
+     * 
+     * @return bool
+     */
+    public function getInjectionStatus() : bool
+    {
+        return $this->factory->newDependencyInjection()->getInjectionStatus();
+    }
+
+    /**
+     * @param array $payload
+     * 
+     * @return void
+     */
+    public function triggerAsyncEvent(array $payload)
+    {
+        $this->factory->getEventTriggerService()->triggerAsyncEvent($payload);
+    }
+
+    /**
+     * 
+     * @return bool
+     */
+    public function getFacadeInjectionStatus() : bool
+    {
+        return $this->factory->getFacadeInjection()->getFacadeInjectionStatus();
+    }
+
+    /**
      * @param SampleEntity $entity
      * 
      * @return SampleEntity
