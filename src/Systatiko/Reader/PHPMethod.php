@@ -2,6 +2,7 @@
 
 namespace Systatiko\Reader;
 
+use Civis\Common\ArrayUtil;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 
 class PHPMethod
@@ -50,11 +51,12 @@ class PHPMethod
         $pattern = '/function .*?\((.*?)\)/';
         preg_match($pattern, $this->getMethodDefinition(), $matchList);
 
-        if ($matchList[1] === "") {
+        $parameterList = ArrayUtil::getFromArray($matchList, 1);
+        if ($parameterList === "" || $parameterList === null) {
             return;
         }
 
-        foreach (explode(",", $matchList[1]) as $signatureElement) {
+        foreach (explode(",", $parameterList) as $signatureElement) {
             $this->parameterList[] = new PHPParameter($this, $signatureElement);
         }
     }
@@ -109,6 +111,8 @@ class PHPMethod
         $content = $this->phpClass->getClassContent();
         $pattern = "/($modifier function " . $this->getMethodName() . '\(.*?\).*?)\{/s';
         preg_match($pattern, $content, $matches);
+        $methodDefinition = ArrayUtil::getFromArray($matches, 1);
+
         return trim($matches[1]);
     }
 

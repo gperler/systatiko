@@ -9,7 +9,6 @@ use Systatiko\Contract\AsynchronousEventHandler;
 use Systatiko\Contract\BackboneContract;
 use Systatiko\Contract\SynchronousEvent;
 use Systatiko\Contract\SynchronousEventHandler;
-use Systatiko\Exception\EventNotDefinedException;
 
 abstract class BackboneBase implements BackboneContract
 {
@@ -27,12 +26,12 @@ abstract class BackboneBase implements BackboneContract
     /**
      * @var AsynchronousEventHandler[]
      */
-    protected $asynchronousHandlerList;
+    protected $asynchronousEventHandlerList;
 
     /**
      * @var SynchronousEventHandler[]
      */
-    protected $synchronousEventHandler;
+    protected $synchronousEventHandlerList;
 
     /**
      * @return string
@@ -89,7 +88,7 @@ abstract class BackboneBase implements BackboneContract
      */
     public function dispatchOutboundAsynchronousEvent(AsynchronousEvent $event)
     {
-        foreach ($this->asynchronousHandlerList as $handler) {
+        foreach ($this->asynchronousEventHandlerList as $handler) {
             $handler->handleEvent($event);
         }
     }
@@ -99,26 +98,25 @@ abstract class BackboneBase implements BackboneContract
      */
     public function dispatchSynchronousEvent(SynchronousEvent $event)
     {
-        foreach ($this->synchronousEventHandler as $handler) {
+        foreach ($this->synchronousEventHandlerList as $handler) {
             $handler->handleEvent($event);
         }
     }
 
     /**
-     * @param AsynchronousEvent $event
-     *
-     * @return void
+     * @param AsynchronousEventHandler $handler
      */
-    public abstract function dispatchInboundAsynchronousEvent(AsynchronousEvent $event);
+    public function addOutboundAsynchronousEventHandler(AsynchronousEventHandler $handler)
+    {
+        $this->asynchronousEventHandlerList[] = $handler;
+    }
 
     /**
-     * @param string $eventName
-     * @param array $payload
-     *
-     * @return AsynchronousEvent
-     *
-     * @throws EventNotDefinedException
+     * @param SynchronousEventHandler $handler
      */
-    public abstract function newAsynchronousEvent(string $eventName, array $payload) : AsynchronousEvent;
+    public function addSynchronousEventHandler(SynchronousEventHandler $handler)
+    {
+        $this->synchronousEventHandlerList[] = $handler;
+    }
 
 }

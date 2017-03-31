@@ -13,27 +13,32 @@ class AsyncEvent implements AsynchronousEvent
 {
 
     /**
+     * @var array
+     */
+    protected $payload;
+
+    /**
      * @Factory(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
      * AsyncEvent constructor.
      */
     public function __construct()
     {
-
+        $this->payload = [];
     }
 
     public function getPayload() : array
     {
-        // TODO: Implement getPayload() method.
+        return $this->payload;
     }
 
     public function getConfig() : string
     {
-        // TODO: Implement getConfig() method.
+        return 's';
     }
 
     public function fromPayload(array $payload)
     {
-        // TODO: Implement fromPayload() method.
+        $this->payload = $payload;
     }
 
 }
