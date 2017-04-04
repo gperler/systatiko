@@ -197,13 +197,14 @@ class ComponentFactoryGenerator
             $this->addSynchronousEventHandling($componentEvent, $method);
         }
 
+        $this->addInternalDispatching($componentEvent, $method);
     }
 
     /**
      * @param ComponentEvent $componentEvent
      * @param Method $method
      */
-    protected function addSynchronousEventHandling(ComponentEvent $componentEvent, Method $method)
+    protected function addInternalDispatching(ComponentEvent $componentEvent, Method $method)
     {
         foreach ($componentEvent->getEventHandlerList() as $eventHandler) {
 
@@ -212,10 +213,16 @@ class ComponentFactoryGenerator
 
             $method->addCodeLine('$this->backbone->' . $facadeAccess . '()->' . $facadeMethodName . '($event);');
         }
-        $method->addCodeLine('$this->backbone->dispatchSynchronousEvent($event);');
     }
 
-
+    /**
+     * @param ComponentEvent $componentEvent
+     * @param Method $method
+     */
+    protected function addSynchronousEventHandling(ComponentEvent $componentEvent, Method $method)
+    {
+        $method->addCodeLine('$this->backbone->dispatchSynchronousEvent($event);');
+    }
 
     protected function addBackboneExposeList()
     {

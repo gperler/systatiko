@@ -104,7 +104,6 @@ class BackboneTest extends End2EndTest
 
     public function testAsyncEventDispatchInbound()
     {
-
         $backbone = Backbone::getInstance();
         $event = $backbone->newAsynchronousEvent("com.test.myevent.event1", []);
 

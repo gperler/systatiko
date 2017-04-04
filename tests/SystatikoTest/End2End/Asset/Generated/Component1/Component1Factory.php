@@ -202,6 +202,7 @@ class Component1Factory
     public function triggerAsyncEvent(AsyncEvent $event)
     {
         $this->backbone->dispatchOutboundAsynchronousEvent($event);
+        $this->backbone->getComponent2Facade()->handleAsyncEvent($event);
     }
 
     /**
@@ -211,8 +212,8 @@ class Component1Factory
      */
     public function triggerC1Event(C1Event $event)
     {
-        $this->backbone->getComponent2Facade()->eventHandler($event);
         $this->backbone->dispatchSynchronousEvent($event);
+        $this->backbone->getComponent2Facade()->eventHandler($event);
     }
 
     /**
