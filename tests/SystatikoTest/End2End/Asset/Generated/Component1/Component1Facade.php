@@ -33,6 +33,45 @@ class Component1Facade
 
     /**
      * 
+     * @return void
+     */
+    public function testMethod1()
+    {
+        $this->backbone->getComponent2Facade()->isInRole("myRole");
+        $this->factory->newCustomAnnotationClass()->testMethod1();
+    }
+
+    /**
+     * 
+     * @return void
+     */
+    public function testMethod2()
+    {
+        $this->backbone->getComponent2Facade()->isInRole("myRole");
+        $this->factory->newCustomAnnotationClass()->testMethod2();
+    }
+
+    /**
+     * 
+     * @return void
+     */
+    public function methodWithCustomExtension()
+    {
+        $this->backbone->getComponent2Facade()->isInRole("myRole");
+        $this->factory->newCustomAnnotationMethod()->methodWithCustomExtension();
+    }
+
+    /**
+     * 
+     * @return void
+     */
+    public function methodWithoutCustomExtension()
+    {
+        $this->factory->newCustomAnnotationMethod()->methodWithoutCustomExtension();
+    }
+
+    /**
+     * 
      * @return bool
      */
     public function getInjectionStatus() : bool
@@ -66,7 +105,6 @@ class Component1Facade
      */
     public function hasReturnType(SampleEntity $entity) : SampleEntity
     {
-        $this->backbone->getComponent2Facade()->isInRole("myRole");
         return $this->factory->getServiceClass()->hasReturnType($entity);
     }
 

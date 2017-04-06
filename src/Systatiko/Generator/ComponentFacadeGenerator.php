@@ -142,7 +142,7 @@ class ComponentFacadeGenerator
     protected function addBeforeDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
     {
         foreach ($this->configuration->getFacadeGeneratorExtension() as $extension) {
-            $annotation = $facadeMethod->getMethodAnnotation($extension->getAnnotationClassName());
+            $annotation = $facadeMethod->getMethodOrClassAnnotation($extension->getAnnotationClassName());
             if ($annotation === null) {
                 continue;
             }
@@ -158,7 +158,7 @@ class ComponentFacadeGenerator
     protected function addAfterDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
     {
         foreach ($this->configuration->getFacadeGeneratorExtension() as $extension) {
-            $annotation = $facadeMethod->getMethodAnnotation($extension->getAnnotationClassName());
+            $annotation = $facadeMethod->getMethodOrClassAnnotation($extension->getAnnotationClassName());
             if ($annotation === null) {
                 continue;
             }

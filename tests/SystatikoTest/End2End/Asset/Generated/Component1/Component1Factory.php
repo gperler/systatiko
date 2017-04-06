@@ -11,6 +11,8 @@ use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 use SystatikoTest\End2End\Asset\Component1\Entity\SingletonEntity;
 use SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent;
 use SystatikoTest\End2End\Asset\Component1\Event\C1Event;
+use SystatikoTest\End2End\Asset\Component1\Model\CustomAnnotationClass;
+use SystatikoTest\End2End\Asset\Component1\Model\CustomAnnotationMethod;
 use SystatikoTest\End2End\Asset\Component1\Model\DependencyInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\EventTriggerService;
 use SystatikoTest\End2End\Asset\Component1\Model\FacadeInjection;
@@ -134,6 +136,24 @@ class Component1Factory
     public function newAsyncEvent() : AsyncEvent
     {
         return new AsyncEvent();
+    }
+
+    /**
+     * 
+     * @return CustomAnnotationClass
+     */
+    public function newCustomAnnotationClass() : CustomAnnotationClass
+    {
+        return new CustomAnnotationClass();
+    }
+
+    /**
+     * 
+     * @return CustomAnnotationMethod
+     */
+    public function newCustomAnnotationMethod() : CustomAnnotationMethod
+    {
+        return new CustomAnnotationMethod();
     }
 
     /**

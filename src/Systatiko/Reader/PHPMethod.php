@@ -113,7 +113,7 @@ class PHPMethod
         preg_match($pattern, $content, $matches);
         $methodDefinition = ArrayUtil::getFromArray($matches, 1);
 
-        return trim($matches[1]);
+        return trim($methodDefinition);
     }
 
     /**

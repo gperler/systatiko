@@ -56,6 +56,11 @@ class ProjectClass
         return $this->phpClass->getClassAnnotation(self::EVENT_ANNOTATION_NAME);
     }
 
+    public function getAnnotation(string $className)
+    {
+        return $this->phpClass->getClassAnnotation($className);
+    }
+
     /**
      * @return PHPMethod[]
      */
