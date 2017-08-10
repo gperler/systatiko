@@ -1,12 +1,14 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Systatiko\Reader;
 
 use Civis\Common\File;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
-class PHPClassScanner
+class PHPClassScanner implements LoggerAwareInterface
 {
     const DEFAULT_PHP_SUFFIX = ".php";
 
@@ -14,6 +16,11 @@ class PHPClassScanner
      * @var PHPClass[]
      */
     protected $phpClassList;
+
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
 
     /**
      *
@@ -29,7 +36,7 @@ class PHPClassScanner
      *
      * @return bool
      */
-    public function addBaseDir(string $baseDirPath, string $suffix = self::DEFAULT_PHP_SUFFIX) : bool
+    public function addBaseDir(string $baseDirPath, string $suffix = self::DEFAULT_PHP_SUFFIX): bool
     {
         $baseDir = new File($baseDirPath);
 
@@ -63,7 +70,15 @@ class PHPClassScanner
         $definedClassList = $this->getDefinedPhpClasses($phpFileContent);
 
         foreach ($definedClassList as $definedClass) {
-            $this->phpClassList[] = new PHPClass($phpFile, $definedClass);
+            $phpClass = new PHPClass($phpFile, $definedClass);
+
+            if ($phpClass->hasError()) {
+                $this->logger->warning("Ignored file " . $phpFile->getAbsoluteFileName());
+                $this->logger->warning($phpClass->getErrorMessage());
+                return;
+            }
+
+            $this->phpClassList[] = $phpClass;
         }
     }
 
@@ -72,7 +87,7 @@ class PHPClassScanner
      *
      * @return array
      */
-    protected function getDefinedPhpClasses(string $phpcode) : array
+    protected function getDefinedPhpClasses(string $phpcode): array
     {
         // taken from stackoverflow
         // http://stackoverflow.com/questions/928928/determining-what-classes-are-defined-in-a-php-class-file
@@ -99,6 +114,11 @@ class PHPClassScanner
             }
         }
         return $classList;
+    }
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
 }

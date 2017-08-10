@@ -153,6 +153,7 @@ class Generator implements LoggerAwareInterface
     {
         $this->logger = $logger;
         $this->project->setLogger($logger);
+        $this->scanner->setLogger($logger);
         return null;
     }
 

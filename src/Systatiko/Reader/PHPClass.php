@@ -33,6 +33,11 @@ class PHPClass
     protected $usedClassNameList;
 
     /**
+     * @var string
+     */
+    protected $errorMessage;
+
+    /**
      * @param File $file
      * @param string $className
      */
@@ -41,6 +46,7 @@ class PHPClass
         $this->file = $file;
         $this->className = new PHPClassName($className);
         $this->usedClassNameList = [];
+        $this->errorMessage = null;
         $this->reflect($className);
 
     }
@@ -53,8 +59,7 @@ class PHPClass
         try {
             @include_once($this->file->getAbsoluteFileName());
         } catch (\Throwable $t) {
-            echo "ignoring " . $t->getFile() . PHP_EOL;
-            echo $t->getMessage();
+            $this->errorMessage = $t->getMessage();
             return;
         }
 
@@ -68,6 +73,22 @@ class PHPClass
             $as = ($as !== $className) ? $as : null;
             $this->usedClassNameList[] = new PHPClassName($className, $as);
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasError(): bool
+    {
+        return $this->errorMessage !== null;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getErrorMessage()
+    {
+        return $this->errorMessage;
     }
 
     /**
