@@ -2,9 +2,9 @@
 
 namespace Systatiko\Reader;
 
-use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use Civis\Common\ArrayUtil;
 use Civis\Common\File;
+use Doctrine\Common\Annotations\SimpleAnnotationReader;
 
 /**
  * @author Gregor Müller
@@ -50,7 +50,14 @@ class PHPClass
      */
     protected function reflect(string $className)
     {
-        require_once $this->file->getAbsoluteFileName();
+        try {
+            @include_once($this->file->getAbsoluteFileName());
+        } catch (\Throwable $t) {
+            echo "ignoring " . $t->getFile() . PHP_EOL;
+            echo $t->getMessage();
+            return;
+        }
+
         $this->reflectClass = new ExtendedReflectionClass($className);
 
         foreach ($this->reflectClass->getUseStatements() as $statement) {
@@ -110,7 +117,7 @@ class PHPClass
      *
      * @return bool
      */
-    public function isSubclassOf(string $className) : bool
+    public function isSubclassOf(string $className): bool
     {
         return $this->reflectClass->isSubclassOf($className);
     }
