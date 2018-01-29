@@ -155,7 +155,7 @@ class BackboneGenerator
         $this->classGenerator->addUsedClassName('Systatiko\Exception\EventNotDefinedException');
 
         $method = $this->classGenerator->addPublicMethod("newAsynchronousEvent");
-        $method->addThrows('EventNotDefinedException');
+        $method->addException('EventNotDefinedException');
         $method->addParameter('string', 'eventName');
         $method->addParameter('array', 'payload');
         $method->setReturnType(ComponentEvent::ASYNCHRONOUS_EVENT, false);

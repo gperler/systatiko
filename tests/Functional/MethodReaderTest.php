@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\Functional;
 
+use Civis\Common\File;
 use Codeception\Util\Debug;
 use Systatiko\Reader\PHPClass;
 use Systatiko\Reader\PHPMethod;
-use Civis\Common\File;
 
 class MethodReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,12 +25,13 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         $methodList = $phpClass->getPHPMethodList();
 
         $this->assertNotNull($methodList);
-        $this->assertSame(5, sizeof($methodList));
+        $this->assertSame(6, sizeof($methodList));
 
         $this->testMethodOne($methodList[0]);
         $this->testMethodTwo($methodList[1]);
 
         $this->testMethodFour($methodList[3]);
+        $this->testMethodFive($methodList[5]);
 
     }
 
@@ -50,7 +51,7 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         $returnType = $method->getMethodReturnType();
         $this->assertNotNull($returnType);
         $this->assertTrue($returnType->canBeNull());
-        $this->assertNull($returnType->getSignatureType());
+        $this->assertSame('array', $returnType->getSignatureType());
         $docBlockType = $returnType->getDocBlockType();
         $this->assertNotNull($docBlockType);
         $this->assertNotNull($docBlockType->getClassName());
@@ -245,4 +246,17 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
 
     }
 
+
+    protected function testMethodFive(PHPMethod $method) {
+        $returnType = $method->getMethodReturnType();
+
+        $this->assertTrue($returnType->canBeNull());
+        $this->assertSame('string', $returnType->getFullyQualifiedName());
+
+        $exceptionList = $method->getThrownExceptionList();
+
+        $this->assertSame($exceptionList[0]->getClassName(), 'SystatikoTest\Functional\Asset\TestException1');
+        $this->assertSame($exceptionList[1]->getClassName(), 'SystatikoTest\Functional\Asset\TestException2');
+        $this->assertSame($exceptionList[2]->getClassName(), 'Systatiko\Exception\EventNotDefinedException');
+    }
 }

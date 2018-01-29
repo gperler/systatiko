@@ -3,6 +3,7 @@
 namespace Systatiko\Reader;
 
 use Civis\Common\ArrayUtil;
+use Codeception\Util\Debug;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 
 class PHPMethod
@@ -28,6 +29,11 @@ class PHPMethod
     protected $methodReturnType;
 
     /**
+     * @var string[]
+     */
+    protected $exceptionList;
+
+    /**
      * PHPMethod constructor.
      *
      * @param PHPClass $phpClass
@@ -38,6 +44,7 @@ class PHPMethod
         $this->phpClass = $phpClass;
         $this->reflectionMethod = $reflectionMethod;
         $this->parameterList = [];
+        $this->exceptionList = [];
         $this->extractParameterList();
         $this->extractMethodReturnType();
     }
@@ -98,6 +105,22 @@ class PHPMethod
         $reader->addNamespace($className->getNamespaceName());
         return $reader->getMethodAnnotation($this->reflectionMethod, $annotationName);
     }
+
+    /**
+     * @return PHPClassName[]
+     */
+    public function getThrownExceptionList() : array {
+        $docComment = $this->getDocComment();
+
+        preg_match_all("/@throws ([\\a-zA-Z0-9_.-]*?)\s/", $docComment,$matches);
+
+        foreach($matches[1] as $exception) {
+            $exceptionClassName = $this->getClassNameForShortName($exception);
+            $this->exceptionList[] = $exceptionClassName;
+        }
+        return $this->exceptionList;
+    }
+
 
     /**
      * @return string

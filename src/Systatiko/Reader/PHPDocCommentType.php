@@ -141,7 +141,6 @@ class PHPDocCommentType
      */
     public function getFullyQualifiedName()
     {
-        Debug::debug($this->typeName);
         if ($this->isVoid()) {
             return null;
         }

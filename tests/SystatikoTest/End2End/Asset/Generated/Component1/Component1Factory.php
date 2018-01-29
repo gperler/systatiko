@@ -15,6 +15,7 @@ use SystatikoTest\End2End\Asset\Component1\Model\CustomAnnotationClass;
 use SystatikoTest\End2End\Asset\Component1\Model\CustomAnnotationMethod;
 use SystatikoTest\End2End\Asset\Component1\Model\DependencyInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\EventTriggerService;
+use SystatikoTest\End2End\Asset\Component1\Model\ExceptionClass;
 use SystatikoTest\End2End\Asset\Component1\Model\FacadeInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\NoInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\ServiceClass;
@@ -49,6 +50,11 @@ class Component1Factory
     protected $eventTriggerService;
 
     /**
+     * @var ExceptionClass
+     */
+    protected $exceptionClass;
+
+    /**
      * @var FacadeInjection
      */
     protected $facadeInjection;
@@ -76,7 +82,7 @@ class Component1Factory
      * 
      * @return Component1Configuration|null
      */
-    public function getConfiguration()
+    public function getConfiguration() : ?Component1Configuration
     {
         if ($this->component1Configuration === null) {
             $this->component1Configuration = new Component1Configuration();
@@ -175,6 +181,18 @@ class Component1Factory
             $this->eventTriggerService = new EventTriggerService($this);
         }
         return $this->eventTriggerService;
+    }
+
+    /**
+     * 
+     * @return ExceptionClass
+     */
+    public function getExceptionClass() : ExceptionClass
+    {
+        if ($this->exceptionClass === null) {
+            $this->exceptionClass = new ExceptionClass();
+        }
+        return $this->exceptionClass;
     }
 
     /**

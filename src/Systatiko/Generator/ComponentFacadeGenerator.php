@@ -111,6 +111,10 @@ class ComponentFacadeGenerator
             $method->addParameter($fqn, $parameter->getName(), $parameter->getDefault());
         }
 
+        foreach($facadeMethod->getThrownExceptionList() as $exception) {
+            $method->addException($exception->getClassName());
+        }
+
         // return type
         $methodReturnType = $facadeMethod->getMethodReturnType();
 

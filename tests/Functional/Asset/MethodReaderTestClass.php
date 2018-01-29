@@ -1,12 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\Functional\Asset;
 
+use Civis\Common\File as Test;
+use Systatiko\Exception\EventNotDefinedException;
 use Systatiko\Reader\ExtendedReflectionClass;
 use Systatiko\Reader\PHPType;
-use Civis\Common\File as Test;
 
 class MethodReaderTestClass
 {
@@ -19,7 +20,7 @@ class MethodReaderTestClass
      *
      * @return Test[]|null
      */
-    public function testMe(Test $file = null, array $array, $mixed)
+    public function testMe(Test $file = null, array $array, $mixed): ?array
     {
         return [];
     }
@@ -31,7 +32,7 @@ class MethodReaderTestClass
      *
      * @return PHPType[]
      */
-    public function testMeToo(string $test = "hello", array $array = null, array $typeList) : array
+    public function testMeToo(string $test = "hello", array $array = null, array $typeList): array
     {
         return [];
     }
@@ -45,7 +46,7 @@ class MethodReaderTestClass
      *
      * @return ExtendedReflectionClass
      */
-    public function sameNamespaceTest(ClassReaderTestClass $class) : ExtendedReflectionClass
+    public function sameNamespaceTest(ClassReaderTestClass $class): ExtendedReflectionClass
     {
 
     }
@@ -56,6 +57,28 @@ class MethodReaderTestClass
     public function refersToThisClass(MethodReaderTestClass $that)
     {
 
+    }
+
+    /**
+     * @return null|string
+     * @throws TestException1
+     * @throws TestException2
+     * @throws EventNotDefinedException
+     */
+    public function testOptionalReturn(): ?string
+    {
+        if ($this->sameNamespaceTest(null) === null) {
+            throw new TestException1();
+        }
+        if ($this->sameNamespaceTest(new ClassReaderTestClass(null,null)) === null) {
+            throw new TestException2();
+        }
+
+        if (time() > 0) {
+            throw new EventNotDefinedException();
+        }
+
+        return 'Hello';
     }
 
 }

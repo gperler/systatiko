@@ -6,6 +6,7 @@ namespace SystatikoTest\End2End\Asset\Generated\Component1;
 
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
+use Systatiko\Exception\EventNotDefinedException;
 
 class Component1Facade
 {
@@ -90,6 +91,17 @@ class Component1Facade
     }
 
     /**
+     * @param SampleEntity $entity
+     * 
+     * @return SampleEntity|null
+     * @throws EventNotDefinedException
+     */
+    public function throwsException(SampleEntity $entity) : ?SampleEntity
+    {
+        return $this->factory->getExceptionClass()->throwsException($entity);
+    }
+
+    /**
      * 
      * @return bool
      */
@@ -113,7 +125,7 @@ class Component1Facade
      * 
      * @return SampleEntity|null
      */
-    public function hasOptionalReturnType(SampleEntity $entity)
+    public function hasOptionalReturnType(SampleEntity $entity) : ?SampleEntity
     {
         return $this->factory->getServiceClass()->hasOptionalReturnType($entity);
     }
@@ -133,7 +145,7 @@ class Component1Facade
      * 
      * @return SampleEntity[]|null
      */
-    public function hasOptionalArrayReturnType(SampleEntity $entity)
+    public function hasOptionalArrayReturnType(SampleEntity $entity) : ?array
     {
         return $this->factory->getServiceClass()->hasOptionalArrayReturnType($entity);
     }

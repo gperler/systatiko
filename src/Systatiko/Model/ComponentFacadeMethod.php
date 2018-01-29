@@ -2,6 +2,7 @@
 
 namespace Systatiko\Model;
 
+use Systatiko\Reader\PHPClassName;
 use Systatiko\Reader\PHPMethod;
 use Systatiko\Reader\PHPMethodReturnType;
 use Systatiko\Reader\PHPParameter;
@@ -51,7 +52,7 @@ class ComponentFacadeMethod
     /**
      * @return string
      */
-    public function getMethodLine() : string
+    public function getMethodLine(): string
     {
         return $this->phpMethod->getMethodDefinition();
     }
@@ -59,15 +60,23 @@ class ComponentFacadeMethod
     /**
      * @return string
      */
-    public function getMethodName() : string
+    public function getMethodName(): string
     {
         return $this->phpMethod->getMethodName();
     }
 
     /**
+     * @return PHPClassName[]
+     */
+    public function getThrownExceptionList(): array
+    {
+        return $this->phpMethod->getThrownExceptionList();
+    }
+
+    /**
      * @return string
      */
-    public function getInvocationSignature() : string
+    public function getInvocationSignature(): string
     {
         $parameterList = [];
         foreach ($this->phpMethod->getMethodParameterList() as $parameter) {

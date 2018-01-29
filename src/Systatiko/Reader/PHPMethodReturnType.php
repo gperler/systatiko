@@ -59,6 +59,12 @@ class PHPMethodReturnType
         $partList = explode(":", $methodLine);
         $signatureType = trim($partList[1]);
 
+        if (strpos($signatureType, '?') !== false) {
+            $this->canBeNull = true;
+        }
+
+        $signatureType = trim($signatureType, '?');
+
         $this->signatureType = $signatureType;
         $this->signatureTypeClassName = $this->phpMethod->getClassNameForShortName($signatureType);
     }
