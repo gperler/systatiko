@@ -127,4 +127,16 @@ class Component2Factory
     {
         return $this->backbone->exposeToAllFactories();
     }
+
+    /**
+     * 
+     * @return void
+     */
+    public function resetSingleton()
+    {
+        $this->component2Facade = null;
+        $this->eventHandler = null;
+        $this->otherService = null;
+        $this->securityService = null;
+    }
 }

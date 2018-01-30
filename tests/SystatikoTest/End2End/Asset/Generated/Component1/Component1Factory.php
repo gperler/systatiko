@@ -262,4 +262,19 @@ class Component1Factory
     {
         return $this->backbone->exposeToAllFactories();
     }
+
+    /**
+     * 
+     * @return void
+     */
+    public function resetSingleton()
+    {
+        $this->component1Facade = null;
+        $this->singletonEntity = null;
+        $this->eventTriggerService = null;
+        $this->exceptionClass = null;
+        $this->facadeInjection = null;
+        $this->noInjection = null;
+        $this->serviceClass = null;
+    }
 }

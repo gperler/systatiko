@@ -85,6 +85,8 @@ class ComponentFactoryGenerator
 
         $this->addBackboneExposeList();
 
+        $this->addResetSingletonMethod();
+
         $this->classGenerator->writeToPSR0($configuration->getTargetDir());
     }
 
@@ -120,6 +122,20 @@ class ComponentFactoryGenerator
         $constructor->addParameter($this->backboneClassName, "backbone");
 
         $constructor->addCodeLine('$this->backbone = $backbone;');
+    }
+
+    protected function addResetSingletonMethod()
+    {
+        $resetMethod = $this->classGenerator->addMethod("resetSingleton");
+        if ($this->componentFacade !== null) {
+            $resetMethod->addCodeLine('$this->' . $this->componentFacade->getMemberName() . ' = null;');
+        }
+        foreach ($this->componentFactory->getComponentFactoryMethodList() as $componentClass) {
+            if (!$componentClass->isSingleton()) {
+                continue;
+            }
+            $resetMethod->addCodeLine('$this->' . $componentClass->getMemberName() . ' = null;');
+        }
     }
 
     /**

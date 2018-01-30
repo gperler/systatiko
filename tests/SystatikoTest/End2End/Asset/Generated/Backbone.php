@@ -121,4 +121,14 @@ class Backbone extends BackboneProject
             $this->getComponent2Facade()->handleAsyncEvent($event);
         }
     }
+
+    /**
+     * 
+     * @return void
+     */
+    public function resetSingleton()
+    {
+        $this->component1Factory = null;
+        $this->component2Factory = null;
+    }
 }

@@ -64,6 +64,8 @@ class BackboneGenerator
 
         $this->addDispatchInboundAsynchronousEvent();
 
+        $this->addResetSingleton();
+
         $this->classGenerator->writeToPSR0($configuration->getTargetDir());
     }
 
@@ -100,6 +102,16 @@ class BackboneGenerator
             $memberName = $componentFacade->getFactoryMemberName();
             $memberType = $componentFacade->getFactoryClassName();
             $this->classGenerator->addProtectedProperty($memberName, $memberType);
+        }
+    }
+
+    protected function addResetSingleton()
+    {
+        $resetMethod = $this->classGenerator->addMethod("resetSingleton");
+
+        foreach ($this->componentFacadeList as $componentFacade) {
+            $memberName = $componentFacade->getFactoryMemberName();
+            $resetMethod->addCodeLine('$this->' . $memberName . ' = null;');
         }
     }
 
