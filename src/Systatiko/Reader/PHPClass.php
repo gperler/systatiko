@@ -38,8 +38,10 @@ class PHPClass
     protected $errorMessage;
 
     /**
+     * PHPClass constructor.
      * @param File $file
      * @param string $className
+     * @throws \ReflectionException
      */
     public function __construct(File $file, string $className)
     {
@@ -53,15 +55,11 @@ class PHPClass
 
     /**
      * @param string $className
+     * @throws \ReflectionException
      */
     protected function reflect(string $className)
     {
-        try {
-            @include_once($this->file->getAbsoluteFileName());
-        } catch (\Throwable $t) {
-            $this->errorMessage = $t->getMessage();
-            return;
-        }
+        include_once($this->file->getAbsoluteFileName());
 
         $this->reflectClass = new ExtendedReflectionClass($className);
 
