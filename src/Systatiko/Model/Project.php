@@ -25,6 +25,12 @@ class Project implements LoggerAwareInterface
     const CONFIGURATION_INTERFACE = 'Systatiko\Contract\ComponentConfiguration';
 
     /**
+     * @var string[][]
+     */
+    private $dependencyList;
+
+
+    /**
      * @var PHPClass[]
      */
     protected $phpClassList;
@@ -86,6 +92,7 @@ class Project implements LoggerAwareInterface
         $this->componentFacadeList = [];
         $this->componentConfigurationList = [];
         $this->componentEventList = [];
+        $this->dependencyList = [];
     }
 
     /**
@@ -282,7 +289,7 @@ class Project implements LoggerAwareInterface
      *
      * @return ComponentFactory
      */
-    protected function getOrCreateResponsibleComponentFactory(Factory $factory) : ComponentFactory
+    protected function getOrCreateResponsibleComponentFactory(Factory $factory): ComponentFactory
     {
         $componentFactory = $this->getResponsibleComponentFactory($factory->getNamespace());
         if ($componentFactory !== null) {
@@ -329,7 +336,7 @@ class Project implements LoggerAwareInterface
      *
      * @return ComponentFacade
      */
-    protected function getOrCreateResponsibleComponentFacade(FacadeExposition $facadeExposition, ComponentFactory $componentFactory) : ComponentFacade
+    protected function getOrCreateResponsibleComponentFacade(FacadeExposition $facadeExposition, ComponentFactory $componentFactory): ComponentFacade
     {
         $componentFacade = $this->getResponsibleComponentFacade($facadeExposition->getNamespace());
         if ($componentFacade !== null) {
@@ -359,19 +366,43 @@ class Project implements LoggerAwareInterface
 
     /**
      * @param string $className
+     * @paran string $usingComponent
      *
      * @return null|string
      */
-    public function getBackboneAccessor(string $className)
+    public function getBackboneAccessor(string $className, string $usingComponent)
     {
         foreach ($this->componentFacadeList as $componentFacade) {
             $accessor = $componentFacade->getBackboneAccessor($className);
             if ($accessor !== null) {
+                $usedComponent = $componentFacade->getNamespaceName();
+                $this->addDependency($usingComponent, $usedComponent);
                 return $accessor;
             }
         }
         return null;
     }
+
+    /**
+     * @param string $usingComponent
+     * @param string $usedComponent
+     */
+    private function addDependency(string $usingComponent, string $usedComponent)
+    {
+        if (!isset($this->dependencyList[$usedComponent])) {
+            $this->dependencyList[$usedComponent] = [];
+        }
+        $this->dependencyList[$usedComponent][] = $usingComponent;
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function getDependencyList(): array
+    {
+        return $this->dependencyList;
+    }
+
 
     /**
      * @param string $className

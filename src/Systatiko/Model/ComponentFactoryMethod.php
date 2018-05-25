@@ -187,7 +187,9 @@ class ComponentFactoryMethod
             return;
         }
 
-        $accesor = $project->getBackboneAccessor($parameterClass->getClassName());
+        $nameSpace = $this->factoryAnnotation->namespace;
+
+        $accesor = $project->getBackboneAccessor($parameterClass->getClassName(), $nameSpace);
         if ($accesor !== null) {
             $this->constructorInvocationSignatureList[] = '$this->backbone->' . $accesor . '()';
             return;

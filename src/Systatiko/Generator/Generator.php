@@ -3,6 +3,7 @@
 namespace Systatiko\Generator;
 
 
+use Civis\Common\File;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Systatiko\Configuration\ConfigurationException;
@@ -101,6 +102,7 @@ class Generator implements LoggerAwareInterface
         $this->generateComponentFactory();
         $this->generateComponentFacade();
         $this->generateBackbone();
+        $this->writeDependencyFile();
     }
 
     /**
@@ -133,6 +135,18 @@ class Generator implements LoggerAwareInterface
         $flg = new BackboneGenerator($this->project->getComponentFacadeList(), $this->project->getComponentEventList());
         $flg->generate($this->generatorConfiguration);
 
+    }
+
+    protected function writeDependencyFile()
+    {
+        $dependencyFile = $this->generatorConfiguration->getDependencyFile();
+        if ($dependencyFile === null) {
+            return;
+        }
+        $dependencyList = $this->project->getDependencyList();
+        $jsonString = json_encode($dependencyList, JSON_PRETTY_PRINT);
+        $file = new File($dependencyFile);
+        $file->putContents($jsonString);
     }
 
     protected function logSummary()

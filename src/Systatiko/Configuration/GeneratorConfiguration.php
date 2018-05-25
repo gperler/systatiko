@@ -32,6 +32,8 @@ class GeneratorConfiguration
 
     const BACKBONE_EXTENDS_DEFAULT = "Systatiko\\Runtime\\BackboneBase";
 
+    const BACKBONE_DEPENDENCY_FILE = 'dependencyFile';
+
     const FACADE_GENERATOR_EXTENSION = "facadeGeneratorExtension";
 
     const INCLUDE_DIR = "includeDir";
@@ -195,6 +197,14 @@ class GeneratorConfiguration
     public function getTargetDir()
     {
         return $this->getConfigValue(self::TARGET_DIR);
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getDependencyFile()
+    {
+        return $this->getConfigValue(self::BACKBONE_DEPENDENCY_FILE);
     }
 
     /**

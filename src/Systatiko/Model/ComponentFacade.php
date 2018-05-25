@@ -50,6 +50,9 @@ class ComponentFacade
         $this->eventHandlerList = [];
     }
 
+
+
+
     /**
      * @param Project $project
      */

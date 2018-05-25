@@ -10,5 +10,6 @@
     "./tests/End2End/Asset"
   ],
   "logger": "EchoLogger",
-  "targetDir": "./tests/"
+  "targetDir": "./tests/",
+  "dependencyFile" : "./tests/dependency.json"
 }
