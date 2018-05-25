@@ -392,6 +392,9 @@ class Project implements LoggerAwareInterface
         if (!isset($this->dependencyList[$usedComponent])) {
             $this->dependencyList[$usedComponent] = [];
         }
+        if (in_array($usingComponent, $this->dependencyList[$usedComponent])) {
+            return;
+        }
         $this->dependencyList[$usedComponent][] = $usingComponent;
     }
 
