@@ -55,17 +55,24 @@ class PHPMethod
     protected function extractParameterList()
     {
         // find signature
-        $pattern = '/function .*?\((.*?)\)/';
-        preg_match($pattern, $this->getMethodDefinition(), $matchList);
+//        $pattern = '/function .*?\((.*?)\)/';
+//        preg_match($pattern, $this->getMethodDefinition(), $matchList);
+//
+//        $parameterList = ArrayUtil::getFromArray($matchList, 1);
+//        if ($parameterList === "" || $parameterList === null) {
+//            return;
+//        }
 
-        $parameterList = ArrayUtil::getFromArray($matchList, 1);
-        if ($parameterList === "" || $parameterList === null) {
-            return;
+        $reflectionParameterList = $this->reflectionMethod->getParameters();
+
+        foreach($reflectionParameterList as $reflectionParameter) {
+            $this->parameterList[] = new PHPParameter($this, $reflectionParameter);
         }
 
-        foreach (explode(",", $parameterList) as $signatureElement) {
-            $this->parameterList[] = new PHPParameter($this, $signatureElement);
-        }
+//
+//        foreach (explode(",", $parameterList) as $signatureElement) {
+//            $this->parameterList[] = new PHPParameter($this, $signatureElement);
+//        }
     }
 
     /**

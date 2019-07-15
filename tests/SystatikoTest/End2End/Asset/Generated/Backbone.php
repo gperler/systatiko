@@ -95,7 +95,7 @@ class Backbone extends BackboneProject
      * @param array $payload
      * 
      * @return AsynchronousEvent
-     * @throws \EventNotDefinedException
+     * @throws EventNotDefinedException
      */
     public function newAsynchronousEvent(string $eventName, array $payload) : AsynchronousEvent
     {

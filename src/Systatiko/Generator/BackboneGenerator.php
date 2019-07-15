@@ -5,6 +5,7 @@ namespace Systatiko\Generator;
 use Nitria\ClassGenerator;
 use Nitria\Method;
 use Systatiko\Configuration\GeneratorConfiguration;
+use Systatiko\Exception\EventNotDefinedException;
 use Systatiko\Model\ComponentEvent;
 use Systatiko\Model\ComponentFacade;
 
@@ -164,10 +165,10 @@ class BackboneGenerator
 
     protected function addNewAsynchronousEvent()
     {
-        $this->classGenerator->addUsedClassName('Systatiko\Exception\EventNotDefinedException');
+        $this->classGenerator->addUsedClassName(EventNotDefinedException::class);
 
         $method = $this->classGenerator->addPublicMethod("newAsynchronousEvent");
-        $method->addException('EventNotDefinedException');
+        $method->addException(EventNotDefinedException::class);
         $method->addParameter('string', 'eventName');
         $method->addParameter('array', 'payload');
         $method->setReturnType(ComponentEvent::ASYNCHRONOUS_EVENT, false);

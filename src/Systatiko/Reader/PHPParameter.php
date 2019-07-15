@@ -11,92 +11,96 @@ class PHPParameter
     /**
      * @var PHPMethod
      */
-    protected $phpMethod;
+    private $phpMethod;
 
     /**
      * @var PHPDocCommentType
      */
-    protected $docBlockType;
+    private $docBlockType;
 
     /**
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * @var string
      */
-    protected $type;
+    private $type;
 
     /**
      * @var string
      */
-    protected $default;
+    private $default;
 
     /**
      * @var PHPClassName
      */
-    protected $className;
+    private $className;
+
+
+    /**
+     * @var bool
+     */
+    private $allowsNull;
 
     /**
      * PHPParameter constructor.
-     *
      * @param PHPMethod $method
-     * @param string|null $signaturePart
+     * @param \ReflectionParameter $reflectionParameter
      */
-    public function __construct(PHPMethod $method, string $signaturePart)
+    public function __construct(PHPMethod $method, \ReflectionParameter $reflectionParameter)
     {
         $this->phpMethod = $method;
-        $this->readSignaturePart($signaturePart);
+        $this->readSignaturePart($reflectionParameter);
     }
 
     /**
-     * @param string $signaturePart
+     * @param \ReflectionParameter $reflectionParameter
      */
-    protected function readSignaturePart(string $signaturePart)
+    private function readSignaturePart(\ReflectionParameter $reflectionParameter)
     {
-        $typeNameDefault = explode("=", trim($signaturePart));
-        $this->extractTypeAndName(ArrayUtil::getFromArray($typeNameDefault, 0));
-        $this->setDefault(ArrayUtil::getFromArray($typeNameDefault, 1));
+        $this->name = $reflectionParameter->getName();
+
+        $this->extractType($reflectionParameter);
+        $this->extractDefaultValue($reflectionParameter);
         $this->extractDocBlockType();
     }
 
     /**
-     * @param string $typeName
+     * @param \ReflectionParameter $reflectionParameter
      */
-    protected function extractTypeAndName(string $typeName)
+    private function extractType(\ReflectionParameter $reflectionParameter)
     {
-        $typeName = trim(preg_replace('/ +/', ' ', $typeName));
-        $typeNameList = explode(" ", $typeName);
-
-        if (sizeof($typeNameList) === 1) {
-            $this->setName($typeNameList[0]);
+        $type = $reflectionParameter->getType();
+        if ($type === null) {
             return;
         }
-        $this->extractWithType($typeNameList);
+        if ($type->isBuiltin()) {
+            $this->type = $type->getName();
+        } else {
+            $this->className = new PHPClassName($type->getName());
+        }
     }
 
+
     /**
-     * @param string[] $typeNameList
+     * @param \ReflectionParameter $reflectionParameter
      */
-    protected function extractWithType(array $typeNameList)
+    private function extractDefaultValue(\ReflectionParameter $reflectionParameter)
     {
-        $this->setName($typeNameList[1]);
+        $this->allowsNull = $reflectionParameter->allowsNull();
 
-        $type = $typeNameList[0];
-        $className = $this->phpMethod->getClassNameForShortName($type);
-
-        if ($className !== null) {
-            $this->setClassName($className);
-            return;
+        if ($reflectionParameter->isDefaultValueAvailable()) {
+            $this->default = $reflectionParameter->getDefaultValue();
         }
-        $this->setType($type);
+
     }
 
     /**
      *
      */
-    protected function extractDocBlockType()
+    private function extractDocBlockType()
     {
         $pattern = '/.*?@param (.*?) \$' . $this->getName() . '.*?/';
         $docComment = $this->phpMethod->getDocComment();
@@ -111,10 +115,12 @@ class PHPParameter
         $this->docBlockType = new PHPDocCommentType($docBlockType, $this->phpMethod);
     }
 
+
+
     /**
      * @return string
      */
-    public function getSignatureSnippet() : string
+    public function getSignatureSnippet(): string
     {
         $default = ($this->default !== null) ? " = " . $this->default : "";
 
@@ -140,7 +146,7 @@ class PHPParameter
      */
     public function setName(string $name)
     {
-        $this->name = str_replace('$', '', $name);
+        $this->name = $name;
     }
 
     /**
@@ -174,6 +180,17 @@ class PHPParameter
     {
         $this->default = StringUtil::trimToNull($default);
     }
+
+    /**
+     * @return bool
+     */
+    public function isAllowsNull(): bool
+    {
+        return $this->allowsNull;
+    }
+
+
+
 
     /**
      * @return PHPClassName
@@ -226,7 +243,7 @@ class PHPParameter
     /**
      * @return bool
      */
-    public function isAsClassName() : bool
+    public function isAsClassName(): bool
     {
         if ($this->docBlockType !== null) {
             return $this->docBlockType->isAsClassName();

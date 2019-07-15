@@ -91,6 +91,16 @@ class Component1Facade
     }
 
     /**
+     * @param string|null $test
+     * 
+     * @return void
+     */
+    public function testNullableParameter(?string $test)
+    {
+        $this->factory->getEventTriggerService()->testNullableParameter($test);
+    }
+
+    /**
      * @param SampleEntity $entity
      * 
      * @return SampleEntity|null
@@ -151,7 +161,7 @@ class Component1Facade
     }
 
     /**
-     * @param mixed $x
+     * @param mixed|null $x
      * 
      * @return void
      */
@@ -161,7 +171,7 @@ class Component1Facade
     }
 
     /**
-     * @param mixed $x
+     * @param mixed|null $x
      * 
      * @return mixed
      */
