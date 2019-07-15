@@ -4,6 +4,7 @@ namespace Systatiko\Reader;
 
 use Civis\Common\ArrayUtil;
 use Civis\Common\StringUtil;
+use Codeception\Util\Debug;
 
 class PHPParameter
 {
@@ -144,16 +145,39 @@ class PHPParameter
      */
     private function getDefaultForSignature(): string
     {
-        if (!$this->hasDefault) {
+        $nitriaDefault = $this->getNitriaDefault();
+        if ($nitriaDefault === null) {
             return "";
         }
+        return " = " . $nitriaDefault;
+    }
+
+
+    /**
+     * @return null|string
+     */
+    public function getNitriaDefault(): ?string
+    {
+        if (!$this->hasDefault) {
+            return null;
+        }
         if ($this->default === null) {
-            return " = null";
+            return "null";
         }
         if ($this->type === "string") {
-            return ' = "' . $this->default . '"';
+            return '"' . $this->default . '"';
         }
-        return " = " . $this->default;
+        if ($this->default === true) {
+            return "true";
+        }
+        if ($this->default === false) {
+            return "false";
+        }
+        if ($this->type === 'array') {
+            return json_encode($this->default);
+        }
+
+        return $this->default;
     }
 
 
@@ -197,29 +221,7 @@ class PHPParameter
         return $this->default;
     }
 
-    /**
-     * @return null|string
-     */
-    public function getNitriaDefault(): ?string
-    {
-        if (!$this->hasDefault) {
-            return null;
-        }
-        if ($this->default === null) {
-            return "null";
-        }
-        if ($this->type === "string") {
-            return '"' . $this->default . '"';
-        }
-        if ($this->default === true) {
-            return "true";
-        }
-        if ($this->default === false) {
-            return "false";
-        }
 
-        return $this->default;
-    }
 
     /**
      * @param string $default

@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Generated\Component1;
 
 use Civis\Common\File as Test;
+use Systatiko\Exception\EventNotDefinedException;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
-use Systatiko\Exception\EventNotDefinedException;
 
 class Component1Facade
 {
@@ -25,7 +25,7 @@ class Component1Facade
     /**
      * @param Backbone $backbone
      * @param Component1Factory $factory
-     * 
+     *
      */
     public function __construct(Backbone $backbone, Component1Factory $factory)
     {
@@ -34,7 +34,7 @@ class Component1Facade
     }
 
     /**
-     * 
+     *
      * @return void
      */
     public function testMethod1()
@@ -44,7 +44,7 @@ class Component1Facade
     }
 
     /**
-     * 
+     *
      * @return void
      */
     public function testMethod2()
@@ -54,7 +54,7 @@ class Component1Facade
     }
 
     /**
-     * 
+     *
      * @return void
      */
     public function methodWithCustomExtension()
@@ -64,7 +64,7 @@ class Component1Facade
     }
 
     /**
-     * 
+     *
      * @return void
      */
     public function methodWithoutCustomExtension()
@@ -73,17 +73,17 @@ class Component1Facade
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function getInjectionStatus() : bool
+    public function getInjectionStatus(): bool
     {
         return $this->factory->newDependencyInjection()->getInjectionStatus();
     }
 
     /**
      * @param array $payload
-     * 
+     *
      * @return void
      */
     public function triggerAsyncEvent(array $payload)
@@ -93,7 +93,7 @@ class Component1Facade
 
     /**
      * @param string|null $test
-     * 
+     *
      * @return void
      */
     public function testNullableParameter(?string $test)
@@ -103,17 +103,17 @@ class Component1Facade
 
     /**
      * @param SampleEntity $entity
-     * 
+     *
      * @return SampleEntity|null
      * @throws EventNotDefinedException
      */
-    public function throwsException(SampleEntity $entity) : ?SampleEntity
+    public function throwsException(SampleEntity $entity): ?SampleEntity
     {
         return $this->factory->getExceptionClass()->throwsException($entity);
     }
 
     /**
-     * 
+     *
      * @return void
      * @throws \Exception
      */
@@ -123,10 +123,10 @@ class Component1Facade
     }
 
     /**
-     * 
+     *
      * @return bool
      */
-    public function getFacadeInjectionStatus() : bool
+    public function getFacadeInjectionStatus(): bool
     {
         return $this->factory->getFacadeInjection()->getFacadeInjectionStatus();
     }
@@ -135,10 +135,10 @@ class Component1Facade
      * @param Test|null $file
      * @param string[] $array
      * @param mixed|null $mixed
-     * 
+     *
      * @return Test[]|null
      */
-    public function methodReaderTestMe(Test $file = null, array $array, $mixed) : ?array
+    public function methodReaderTestMe(Test $file = null, array $array, $mixed): ?array
     {
         return $this->factory->newMethodParameterTest()->methodReaderTestMe($file, $array, $mixed);
     }
@@ -147,17 +147,17 @@ class Component1Facade
      * @param string $test
      * @param array|null $array
      * @param array $typeList
-     * 
+     *
      * @return array
      */
-    public function methodReaderTestMeToo(string $test = "null", array $array = null, array $typeList) : array
+    public function methodReaderTestMeToo(string $test = "null", array $array = null, array $typeList): array
     {
         return $this->factory->newMethodParameterTest()->methodReaderTestMeToo($test, $array, $typeList);
     }
 
     /**
      * @param int $test
-     * 
+     *
      * @return void
      */
     public function numberTest(int $test = 2)
@@ -167,7 +167,7 @@ class Component1Facade
 
     /**
      * @param bool $test
-     * 
+     *
      * @return void
      */
     public function boolTestTrue(bool $test = true)
@@ -177,7 +177,7 @@ class Component1Facade
 
     /**
      * @param bool $test
-     * 
+     *
      * @return void
      */
     public function boolTestFalse(bool $test = false)
@@ -186,48 +186,58 @@ class Component1Facade
     }
 
     /**
+     * @param array $test
+     *
+     * @return void
+     */
+    public function arrayParameter(array $test = ["Gregor"])
+    {
+        $this->factory->newMethodParameterTest()->arrayParameter($test);
+    }
+
+    /**
      * @param SampleEntity $entity
-     * 
+     *
      * @return SampleEntity
      */
-    public function hasReturnType(SampleEntity $entity) : SampleEntity
+    public function hasReturnType(SampleEntity $entity): SampleEntity
     {
         return $this->factory->getServiceClass()->hasReturnType($entity);
     }
 
     /**
      * @param SampleEntity $entity
-     * 
+     *
      * @return SampleEntity|null
      */
-    public function hasOptionalReturnType(SampleEntity $entity) : ?SampleEntity
+    public function hasOptionalReturnType(SampleEntity $entity): ?SampleEntity
     {
         return $this->factory->getServiceClass()->hasOptionalReturnType($entity);
     }
 
     /**
      * @param SampleEntity $entity
-     * 
+     *
      * @return SampleEntity[]
      */
-    public function hasArrayReturnType(SampleEntity $entity) : array
+    public function hasArrayReturnType(SampleEntity $entity): array
     {
         return $this->factory->getServiceClass()->hasArrayReturnType($entity);
     }
 
     /**
      * @param SampleEntity $entity
-     * 
+     *
      * @return SampleEntity[]|null
      */
-    public function hasOptionalArrayReturnType(SampleEntity $entity) : ?array
+    public function hasOptionalArrayReturnType(SampleEntity $entity): ?array
     {
         return $this->factory->getServiceClass()->hasOptionalArrayReturnType($entity);
     }
 
     /**
      * @param mixed|null $x
-     * 
+     *
      * @return void
      */
     public function noReturnType($x)
@@ -237,7 +247,7 @@ class Component1Facade
 
     /**
      * @param mixed|null $x
-     * 
+     *
      * @return mixed
      */
     public function mixedReturnType($x)

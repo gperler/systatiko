@@ -90,4 +90,13 @@ class MethodParameterTest
 
     }
 
+    /**
+     * @FacadeExposition()
+     * @param array $test
+     */
+    public function arrayParameter(array $test = ["Gregor"])
+    {
+
+    }
+
 }
