@@ -14,7 +14,7 @@
     "symfony/console": "*",
     "psr/log": "*",
     "doctrine/common": "*",
-    "gm314/nitria": "*",
+    "gm314/nitria": "0.1.13",
     "gm314/common": "*"
   },
   "require-dev": {

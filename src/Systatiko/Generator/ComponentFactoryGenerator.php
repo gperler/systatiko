@@ -87,7 +87,13 @@ class ComponentFactoryGenerator
 
         $this->addResetSingletonMethod();
 
-        $this->classGenerator->writeToPSR0($configuration->getTargetDir());
+        if ($configuration->isPSR0()) {
+            $this->classGenerator->writeToPSR0($configuration->getTargetDir());
+        }
+
+        if ($configuration->isPSR4()) {
+            $this->classGenerator->writeToPSR4($configuration->getTargetDir(), $configuration->getPSR4Prefix());
+        }
     }
 
     /**

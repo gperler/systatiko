@@ -22,6 +22,8 @@ class GeneratorConfiguration
 
     const EXCEPTION_FACADE_GENERATOR_EXTENSION_DOES_NOT_IMPLEMENT = "Facade generator extension '%s' does not implement '%s'";
 
+    const EXCEPTION_NO_PSR4_PREFIX = "For PSR-4 a the psr4Prefix must be set";
+
     const FACADE_GENERATOR_EXTENSION_INTERFACE = 'Systatiko\Contract\FacadeGeneratorExtension';
 
     const BACKBONE = "backbone";
@@ -42,46 +44,60 @@ class GeneratorConfiguration
 
     const TARGET_DIR = "targetDir";
 
+
+    const PSR_MODE = "psrMode";
+
+    const PSR_MODE_PSR0 = 'psr0';
+
+    const PSR_MODE_PSR4 = 'psr4';
+
+    const PSR4_PREFIX = 'psr4Prefix';
+
+
     /**
      * @var File
      */
-    protected $configFile;
+    private $configFile;
 
     /**
      * @var array
      */
-    protected $configurationValueList;
+    private $configurationValueList;
 
     /**
      * @var PHPClassName
      */
-    protected $backboneClassName;
+    private $backboneClassName;
 
     /**
      * @var PHPClassName
      */
-    protected $extendsClassName;
+    private $extendsClassName;
 
     /**
      * @var FacadeGeneratorExtension[]
      */
-    protected $facadeGeneratorExtension;
+    private $facadeGeneratorExtension;
 
     /**
      * GeneratorConfiguration constructor.
-     *
      * @param string $fileName
+     * @throws ConfigurationException
+     * @throws \ReflectionException
      */
     public function __construct(string $fileName)
     {
         $this->configFile = new File($fileName);
         $this->facadeGeneratorExtension = [];
         $this->loadConfigValues();
-        $this->parseBackboneConfig();
-        $this->parseFacadeGeneratorExtensionConfig();
+        $this->parseConfigFile();
     }
 
-    protected function loadConfigValues()
+    /**
+     * @throws ConfigurationException
+     * @throws \Exception
+     */
+    private function loadConfigValues()
     {
         $fileName = $this->configFile->getAbsoluteFileName();
         if (!$this->configFile->exists()) {
@@ -91,17 +107,22 @@ class GeneratorConfiguration
         $this->configurationValueList = $this->configFile->loadAsJSONArray();
     }
 
-    protected function parseConfigFile()
+    /**
+     * @throws ConfigurationException
+     * @throws \ReflectionException
+     */
+    private function parseConfigFile()
     {
         $this->parseBackboneConfig();
         $this->parseIncludeDirectoryConfig();
+        $this->parsePSR4Prefix();
         $this->parseFacadeGeneratorExtensionConfig();
     }
 
     /**
      * @throws ConfigurationException
      */
-    protected function parseBackboneConfig()
+    private function parseBackboneConfig()
     {
         $backboneClassName = $this->getSubConfigValue(self::BACKBONE, self::BACKBONE_CLASS);
         if (!$backboneClassName) {
@@ -117,7 +138,7 @@ class GeneratorConfiguration
     /**
      * @throws ConfigurationException
      */
-    protected function parseIncludeDirectoryConfig()
+    private function parseIncludeDirectoryConfig()
     {
         $includeDir = $this->getIncludeDirectories();
         if ($includeDir === null || !is_array($includeDir) || sizeof($includeDir) === 0) {
@@ -125,7 +146,22 @@ class GeneratorConfiguration
         }
     }
 
-    protected function parseFacadeGeneratorExtensionConfig()
+    /**
+     * @throws ConfigurationException
+     */
+    private function parsePSR4Prefix()
+    {
+        if (!$this->isPSR4() || $this->getPSR4Prefix() !== null) {
+            return;
+        }
+        throw new ConfigurationException(self::EXCEPTION_NO_PSR4_PREFIX);
+    }
+
+    /**
+     * @throws ConfigurationException
+     * @throws \ReflectionException
+     */
+    private function parseFacadeGeneratorExtensionConfig()
     {
         $generatorExtensionClassList = ArrayUtil::getFromArray($this->configurationValueList, self::FACADE_GENERATOR_EXTENSION);
         if ($generatorExtensionClassList === null) {
@@ -155,7 +191,7 @@ class GeneratorConfiguration
      *
      * @return null|string
      */
-    protected function getConfigValue(string $key, string $default = null)
+    private function getConfigValue(string $key, string $default = null)
     {
         $value = ArrayUtil::getFromArray($this->configurationValueList, $key);
         return $value ?: $default;
@@ -168,7 +204,7 @@ class GeneratorConfiguration
      *
      * @return null|string
      */
-    protected function getSubConfigValue(string $key, string $subkey, string $default = null)
+    private function getSubConfigValue(string $key, string $subkey, string $default = null)
     {
         $subConfig = $this->getConfigValue($key);
         $value = ArrayUtil::getFromArray($subConfig, $subkey);
@@ -197,6 +233,39 @@ class GeneratorConfiguration
     public function getTargetDir()
     {
         return $this->getConfigValue(self::TARGET_DIR);
+    }
+
+
+    /**
+     * @return string
+     */
+    private function getPSRMode(): string
+    {
+        return $this->getConfigValue(self::PSR_MODE, self::PSR_MODE_PSR0);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPSR0(): bool
+    {
+        return $this->getPSRMode() === self::PSR_MODE_PSR0;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPSR4(): bool
+    {
+        return $this->getPSRMode() === self::PSR_MODE_PSR4;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPSR4Prefix(): ?string
+    {
+        return $this->getConfigValue(self::PSR4_PREFIX);
     }
 
     /**
