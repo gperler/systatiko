@@ -257,7 +257,7 @@ class ComponentFactoryGenerator
                 $this->classGenerator->addUsedClassName($className->getClassName(), $className->getAs());
             }
             $fqn = $parameter->getFullyQualifiedName();
-            $method->addParameter($fqn, $parameter->getName(), $parameter->getDefault());
+            $method->addParameter($fqn, $parameter->getName(), $parameter->getNitriaDefault());
         }
 
         $methodReturnType = $exposedMethod->getMethodReturnType();
@@ -299,7 +299,7 @@ class ComponentFactoryGenerator
                 $this->classGenerator->addUsedClassName($className->getClassName(), $className->getAs());
             }
             $fqn = $parameter->getFullyQualifiedName();
-            $method->addParameter($fqn, $parameter->getName(), $parameter->getDefault());
+            $method->addParameter($fqn, $parameter->getName(), $parameter->getNitriaDefault());
         }
 
         if ($componentFactoryMethod->hasOverwritingComponentFactoryClassList()) {

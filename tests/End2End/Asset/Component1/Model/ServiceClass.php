@@ -1,9 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Component1\Model;
 
+use Systatiko\Annotation\FacadeExposition;
+use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 
 /**
@@ -28,7 +30,7 @@ class ServiceClass
      *
      * @return SampleEntity
      */
-    public function hasReturnType(SampleEntity $entity) : SampleEntity
+    public function hasReturnType(SampleEntity $entity): SampleEntity
     {
         return $entity;
     }
@@ -52,7 +54,7 @@ class ServiceClass
      *
      * @return SampleEntity[]
      */
-    public function hasArrayReturnType(SampleEntity $entity) : array
+    public function hasArrayReturnType(SampleEntity $entity): array
     {
         return [];
     }

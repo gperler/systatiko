@@ -1,9 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Component1\Model;
 
+use Systatiko\Annotation\FacadeExposition;
+use Systatiko\Annotation\Factory;
 use Systatiko\Exception\EventNotDefinedException;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 
@@ -22,14 +24,14 @@ class ExceptionClass
     }
 
     /**
-     * @FacadeExposition
+     * @FacadeExposition()
      *
      * @param SampleEntity $entity
      *
      * @return null|SampleEntity
      * @throws EventNotDefinedException
      */
-    public function throwsException(SampleEntity $entity) : ?SampleEntity
+    public function throwsException(SampleEntity $entity): ?SampleEntity
     {
         if ($entity === null) {
             throw new EventNotDefinedException();
@@ -37,5 +39,14 @@ class ExceptionClass
         return $entity;
     }
 
+
+    /**
+     * @FacadeExposition()
+     * @throws \Exception
+     */
+    public function throwsDefaultException()
+    {
+        throw new \Exception();
+    }
 
 }

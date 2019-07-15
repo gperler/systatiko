@@ -108,7 +108,7 @@ class ComponentFacadeGenerator
                 $this->classGenerator->addUsedClassName($className->getClassName(), $className->getAs());
             }
             $fqn = $parameter->getFullyQualifiedName();
-            $method->addParameter($fqn, $parameter->getName(), $parameter->getDefault(), null, $parameter->isAllowsNull());
+            $method->addParameter($fqn, $parameter->getName(), $parameter->getNitriaDefault(), null, $parameter->isAllowsNull());
         }
 
         foreach($facadeMethod->getThrownExceptionList() as $exception) {

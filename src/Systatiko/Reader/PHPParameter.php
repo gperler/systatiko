@@ -45,6 +45,11 @@ class PHPParameter
     private $allowsNull;
 
     /**
+     * @var bool
+     */
+    private $hasDefault;
+
+    /**
      * PHPParameter constructor.
      * @param PHPMethod $method
      * @param \ReflectionParameter $reflectionParameter
@@ -79,7 +84,8 @@ class PHPParameter
         if ($type->isBuiltin()) {
             $this->type = $type->getName();
         } else {
-            $this->className = new PHPClassName($type->getName());
+            $shortName = $this->phpMethod->getShortNameForClassName($type->getName());
+            $this->className = new PHPClassName($type->getName(), $shortName);
         }
     }
 
@@ -93,6 +99,7 @@ class PHPParameter
 
         if ($reflectionParameter->isDefaultValueAvailable()) {
             $this->default = $reflectionParameter->getDefaultValue();
+            $this->hasDefault = true;
         }
 
     }
@@ -116,13 +123,12 @@ class PHPParameter
     }
 
 
-
     /**
      * @return string
      */
     public function getSignatureSnippet(): string
     {
-        $default = ($this->default !== null) ? " = " . $this->default : "";
+        $default = $this->getDefaultForSignature();
 
         if ($this->type === null && $this->className === null) {
             return '$' . $this->name . $default;
@@ -132,6 +138,24 @@ class PHPParameter
 
         return $signatureType . ' $' . $this->name . $default;
     }
+
+    /**
+     * @return string
+     */
+    private function getDefaultForSignature(): string
+    {
+        if (!$this->hasDefault) {
+            return "";
+        }
+        if ($this->default === null) {
+            return " = null";
+        }
+        if ($this->type === "string") {
+            return ' = "' . $this->default . '"';
+        }
+        return " = " . $this->default;
+    }
+
 
     /**
      * @return string
@@ -174,6 +198,20 @@ class PHPParameter
     }
 
     /**
+     * @return null|string
+     */
+    public function getNitriaDefault(): ?string
+    {
+        if (!$this->hasDefault) {
+            return null;
+        }
+        if ($this->default === null) {
+            return "null";
+        }
+        return '"' . $this->default . '"';
+    }
+
+    /**
      * @param string $default
      */
     public function setDefault(string $default = null)
@@ -188,8 +226,6 @@ class PHPParameter
     {
         return $this->allowsNull;
     }
-
-
 
 
     /**
