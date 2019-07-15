@@ -1,8 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Component1\Model;
+
+use Systatiko\Annotation\FacadeExposition;
+use Systatiko\Annotation\Factory;
+use SystatikoTest\End2End\Asset\Extension\CustomAnnotation;
 
 /**
  * @FacadeExposition(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
@@ -23,7 +27,7 @@ class CustomAnnotationMethod
     }
 
     /**
-     * @FacadeExposition
+     * @FacadeExposition()
      * @CustomAnnotation(roleRequired="myRole")
      */
     public function methodWithCustomExtension()

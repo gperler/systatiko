@@ -3,6 +3,7 @@
 namespace Systatiko\Reader;
 
 use Civis\Common\ArrayUtil;
+use Civis\Common\StringUtil;
 use Codeception\Util\Debug;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 
@@ -54,18 +55,20 @@ class PHPMethod
      */
     protected function extractParameterList()
     {
-        // find signature
-        $pattern = '/function .*?\((.*?)\)/';
-        preg_match($pattern, $this->getMethodDefinition(), $matchList);
+        $reflectionParameterList = $this->reflectionMethod->getParameters();
 
-        $parameterList = ArrayUtil::getFromArray($matchList, 1);
-        if ($parameterList === "" || $parameterList === null) {
-            return;
+        foreach ($reflectionParameterList as $reflectionParameter) {
+            $this->parameterList[] = new PHPParameter($this, $reflectionParameter);
         }
+    }
 
-        foreach (explode(",", $parameterList) as $signatureElement) {
-            $this->parameterList[] = new PHPParameter($this, $signatureElement);
-        }
+    /**
+     * @param string|null $className
+     * @return null|string
+     */
+    public function getShortNameForClassName(string $className = null): ?string
+    {
+        return $this->phpClass->getShortNameForClassName($className);
     }
 
     /**
@@ -79,7 +82,7 @@ class PHPMethod
     /**
      * @return string
      */
-    public function getMethodName() : string
+    public function getMethodName(): string
     {
         return $this->reflectionMethod->getName();
     }
@@ -109,13 +112,20 @@ class PHPMethod
     /**
      * @return PHPClassName[]
      */
-    public function getThrownExceptionList() : array {
+    public function getThrownExceptionList(): array
+    {
         $docComment = $this->getDocComment();
 
-        preg_match_all("/@throws ([\\a-zA-Z0-9_.-]*?)\s/", $docComment,$matches);
+        preg_match_all("/@throws ([\\a-zA-Z0-9_.-]*?)\s/", $docComment, $matches);
 
-        foreach($matches[1] as $exception) {
-            $exceptionClassName = $this->getClassNameForShortName($exception);
+        foreach ($matches[1] as $exception) {
+            if (StringUtil::startsWith($exception,"\\")) {
+                Debug::debug("starts with \\");
+                $exceptionClassName = new PHPClassName($exception);
+            } else {
+                $exceptionClassName = $this->getClassNameForShortName($exception);
+            }
+
             $this->exceptionList[] = $exceptionClassName;
         }
         return $this->exceptionList;
@@ -125,7 +135,7 @@ class PHPMethod
     /**
      * @return string
      */
-    public function getMethodDefinition() : string
+    public function getMethodDefinition(): string
     {
         $modifier = $this->reflectionMethod->isPublic() ? "public" : "";
         $modifier = $this->reflectionMethod->isProtected() ? "protected" : $modifier;
@@ -142,7 +152,7 @@ class PHPMethod
     /**
      * @return string
      */
-    public function getInvocationSignature() : string
+    public function getInvocationSignature(): string
     {
         $parameterList = [];
         foreach ($this->getMethodParameterList() as $methodParameter) {
@@ -154,7 +164,7 @@ class PHPMethod
     /**
      * @return PHPMethodReturnType
      */
-    public function getMethodReturnType() : PHPMethodReturnType
+    public function getMethodReturnType(): PHPMethodReturnType
     {
         return $this->methodReturnType;
     }
@@ -162,7 +172,7 @@ class PHPMethod
     /**
      * @return PHPParameter[]
      */
-    public function getMethodParameterList() : array
+    public function getMethodParameterList(): array
     {
         return $this->parameterList;
     }

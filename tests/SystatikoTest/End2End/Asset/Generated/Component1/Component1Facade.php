@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\End2End\Asset\Generated\Component1;
 
+use Civis\Common\File as Test;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
 use Systatiko\Exception\EventNotDefinedException;
@@ -91,6 +92,16 @@ class Component1Facade
     }
 
     /**
+     * @param string|null $test
+     * 
+     * @return void
+     */
+    public function testNullableParameter(?string $test)
+    {
+        $this->factory->getEventTriggerService()->testNullableParameter($test);
+    }
+
+    /**
      * @param SampleEntity $entity
      * 
      * @return SampleEntity|null
@@ -103,11 +114,45 @@ class Component1Facade
 
     /**
      * 
+     * @return void
+     * @throws \Exception
+     */
+    public function throwsDefaultException()
+    {
+        $this->factory->getExceptionClass()->throwsDefaultException();
+    }
+
+    /**
+     * 
      * @return bool
      */
     public function getFacadeInjectionStatus() : bool
     {
         return $this->factory->getFacadeInjection()->getFacadeInjectionStatus();
+    }
+
+    /**
+     * @param Test|null $file
+     * @param string[] $array
+     * @param mixed|null $mixed
+     * 
+     * @return Test[]|null
+     */
+    public function methodReaderTestMe(Test $file = null, array $array, $mixed) : ?array
+    {
+        return $this->factory->newMethodParameterTest()->methodReaderTestMe($file, $array, $mixed);
+    }
+
+    /**
+     * @param string $test
+     * @param array|null $array
+     * @param array $typeList
+     * 
+     * @return array
+     */
+    public function methodReaderTestMeToo(string $test = "null", array $array = null, array $typeList) : array
+    {
+        return $this->factory->newMethodParameterTest()->methodReaderTestMeToo($test, $array, $typeList);
     }
 
     /**
@@ -151,7 +196,7 @@ class Component1Facade
     }
 
     /**
-     * @param mixed $x
+     * @param mixed|null $x
      * 
      * @return void
      */
@@ -161,7 +206,7 @@ class Component1Facade
     }
 
     /**
-     * @param mixed $x
+     * @param mixed|null $x
      * 
      * @return mixed
      */

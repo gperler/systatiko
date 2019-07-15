@@ -58,7 +58,13 @@ class ComponentFacadeGenerator
 
         $this->addFacadeMethodList();
 
-        $this->classGenerator->writeToPSR0($configuration->getTargetDir());
+        if ($configuration->isPSR0()) {
+            $this->classGenerator->writeToPSR0($configuration->getTargetDir());
+        }
+
+        if ($configuration->isPSR4()) {
+            $this->classGenerator->writeToPSR4($configuration->getTargetDir(), $configuration->getPSR4Prefix());
+        }
     }
 
     /**
@@ -108,7 +114,7 @@ class ComponentFacadeGenerator
                 $this->classGenerator->addUsedClassName($className->getClassName(), $className->getAs());
             }
             $fqn = $parameter->getFullyQualifiedName();
-            $method->addParameter($fqn, $parameter->getName(), $parameter->getDefault());
+            $method->addParameter($fqn, $parameter->getName(), $parameter->getNitriaDefault(), null, $parameter->isAllowsNull());
         }
 
         foreach($facadeMethod->getThrownExceptionList() as $exception) {

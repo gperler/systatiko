@@ -1,9 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Component1\Model;
 
+use Systatiko\Annotation\FacadeExposition;
+use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Generated\Component2\Component2Facade;
 
 /**
@@ -28,7 +30,7 @@ class FacadeInjection
      * @FacadeExposition
      * @return bool
      */
-    public function getFacadeInjectionStatus() : bool
+    public function getFacadeInjectionStatus(): bool
     {
         return $this->facade !== null;
     }

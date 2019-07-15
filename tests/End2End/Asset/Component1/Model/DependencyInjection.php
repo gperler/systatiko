@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\End2End\Asset\Component1\Model;
 
+use Systatiko\Annotation\FacadeExposition;
+use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Component1\Component1Configuration;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Factory;
 
@@ -29,6 +31,9 @@ class DependencyInjection
      *     singleton=false,
      * )
      * ServiceClass constructor.
+     *
+     * @param Component1Factory $factory
+     * @param Component1Configuration $configuration
      */
     public function __construct(Component1Factory $factory, Component1Configuration $configuration)
     {
@@ -37,7 +42,7 @@ class DependencyInjection
     }
 
     /**
-     * @FacadeExposition
+     * @FacadeExposition()
      * @return bool
      */
     public function getInjectionStatus() : bool

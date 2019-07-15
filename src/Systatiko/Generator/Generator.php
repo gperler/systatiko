@@ -47,6 +47,7 @@ class Generator implements LoggerAwareInterface
 
     /**
      * @param string $configFile
+     * @throws \ReflectionException
      */
     public function start(string $configFile)
     {

@@ -206,6 +206,24 @@ class PHPClass
     }
 
     /**
+     * @param string|null $className
+     * @return string
+     */
+    public function getShortNameForClassName(string $className = null): ?string
+    {
+        if ($className === null) {
+            return null;
+        }
+        foreach ($this->usedClassNameList as $usedClassName) {
+            if ($usedClassName->getClassName() === $className) {
+                return $usedClassName->getAs();
+            }
+        }
+        return null;
+    }
+
+
+    /**
      * @param string $classShortName
      *
      * @return null|PHPClassName

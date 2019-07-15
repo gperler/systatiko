@@ -71,7 +71,7 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Test', $parameterClassName->getClassShortName());
         $this->assertSame('Test', $parameterClassName->getAs());
         $this->assertSame('Civis\Common\File', $parameterClassName->getClassName());
-        $this->assertSame('null', $parameter0->getDefault());
+        $this->assertSame(null, $parameter0->getDefault());
         $this->assertSame('file', $parameter0->getName());
         $this->assertSame('Test $file = null', $parameter0->getSignatureSnippet());
 
@@ -150,12 +150,12 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         //
         // param 0
         //
-        // string $test = "hello"
+        // string $test = "null"
         $parameter0 = $parameterList[0];
         $this->assertSame(null, $parameter0->getClassName());
-        $this->assertSame('"hello"', $parameter0->getDefault());
+        $this->assertSame('null', $parameter0->getDefault());
         $this->assertSame('test', $parameter0->getName());
-        $this->assertSame('string $test = "hello"', $parameter0->getSignatureSnippet());
+        $this->assertSame('string $test = "null"', $parameter0->getSignatureSnippet());
         $this->assertSame('string', $parameter0->getType());
 
         // string $test
@@ -174,7 +174,7 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
 
         $parameter = $parameterList[1];
         $this->assertSame(null, $parameter->getClassName());
-        $this->assertSame('null', $parameter->getDefault());
+        $this->assertSame(null, $parameter->getDefault());
         $this->assertSame('array', $parameter->getName());
         $this->assertSame('array $array = null', $parameter->getSignatureSnippet());
         $this->assertSame('array', $parameter->getType());

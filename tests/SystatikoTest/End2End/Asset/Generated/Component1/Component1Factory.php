@@ -17,6 +17,7 @@ use SystatikoTest\End2End\Asset\Component1\Model\DependencyInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\EventTriggerService;
 use SystatikoTest\End2End\Asset\Component1\Model\ExceptionClass;
 use SystatikoTest\End2End\Asset\Component1\Model\FacadeInjection;
+use SystatikoTest\End2End\Asset\Component1\Model\MethodParameterTest;
 use SystatikoTest\End2End\Asset\Component1\Model\NoInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\ServiceClass;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
@@ -205,6 +206,15 @@ class Component1Factory
             $this->facadeInjection = new FacadeInjection($this->backbone->getComponent2Facade());
         }
         return $this->facadeInjection;
+    }
+
+    /**
+     * 
+     * @return MethodParameterTest
+     */
+    public function newMethodParameterTest() : MethodParameterTest
+    {
+        return new MethodParameterTest();
     }
 
     /**

@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Component1\Model;
 
+use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 
 class NoInjection
@@ -15,7 +16,7 @@ class NoInjection
     protected $entity;
 
     /**
-     *  @Factory(namespace="SystatikoTest\End2End\Asset\Generated\Component1", singleton=true, noInjection="$entity")
+     * @Factory(namespace="SystatikoTest\End2End\Asset\Generated\Component1", singleton=true, noInjection="$entity")
      *
      * @param SampleEntity $entity
      */
@@ -25,7 +26,11 @@ class NoInjection
     }
 
 
-    public function getTestValue() {
+    /**
+     * @return string
+     */
+    public function getTestValue()
+    {
         return $this->entity->test;
     }
 }

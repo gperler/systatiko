@@ -87,7 +87,13 @@ class ComponentFactoryGenerator
 
         $this->addResetSingletonMethod();
 
-        $this->classGenerator->writeToPSR0($configuration->getTargetDir());
+        if ($configuration->isPSR0()) {
+            $this->classGenerator->writeToPSR0($configuration->getTargetDir());
+        }
+
+        if ($configuration->isPSR4()) {
+            $this->classGenerator->writeToPSR4($configuration->getTargetDir(), $configuration->getPSR4Prefix());
+        }
     }
 
     /**
@@ -257,7 +263,7 @@ class ComponentFactoryGenerator
                 $this->classGenerator->addUsedClassName($className->getClassName(), $className->getAs());
             }
             $fqn = $parameter->getFullyQualifiedName();
-            $method->addParameter($fqn, $parameter->getName(), $parameter->getDefault());
+            $method->addParameter($fqn, $parameter->getName(), $parameter->getNitriaDefault());
         }
 
         $methodReturnType = $exposedMethod->getMethodReturnType();
@@ -299,7 +305,7 @@ class ComponentFactoryGenerator
                 $this->classGenerator->addUsedClassName($className->getClassName(), $className->getAs());
             }
             $fqn = $parameter->getFullyQualifiedName();
-            $method->addParameter($fqn, $parameter->getName(), $parameter->getDefault());
+            $method->addParameter($fqn, $parameter->getName(), $parameter->getNitriaDefault());
         }
 
         if ($componentFactoryMethod->hasOverwritingComponentFactoryClassList()) {

@@ -5,6 +5,7 @@ namespace Systatiko\Generator;
 use Nitria\ClassGenerator;
 use Nitria\Method;
 use Systatiko\Configuration\GeneratorConfiguration;
+use Systatiko\Exception\EventNotDefinedException;
 use Systatiko\Model\ComponentEvent;
 use Systatiko\Model\ComponentFacade;
 
@@ -66,7 +67,13 @@ class BackboneGenerator
 
         $this->addResetSingleton();
 
-        $this->classGenerator->writeToPSR0($configuration->getTargetDir());
+        if ($configuration->isPSR0()) {
+            $this->classGenerator->writeToPSR0($configuration->getTargetDir());
+        }
+
+        if ($configuration->isPSR4()) {
+            $this->classGenerator->writeToPSR4($configuration->getTargetDir(), $configuration->getPSR4Prefix());
+        }
     }
 
     protected function addSingleton()
@@ -164,10 +171,10 @@ class BackboneGenerator
 
     protected function addNewAsynchronousEvent()
     {
-        $this->classGenerator->addUsedClassName('Systatiko\Exception\EventNotDefinedException');
+        $this->classGenerator->addUsedClassName(EventNotDefinedException::class);
 
         $method = $this->classGenerator->addPublicMethod("newAsynchronousEvent");
-        $method->addException('EventNotDefinedException');
+        $method->addException(EventNotDefinedException::class);
         $method->addParameter('string', 'eventName');
         $method->addParameter('array', 'payload');
         $method->setReturnType(ComponentEvent::ASYNCHRONOUS_EVENT, false);
