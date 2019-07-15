@@ -208,7 +208,17 @@ class PHPParameter
         if ($this->default === null) {
             return "null";
         }
-        return '"' . $this->default . '"';
+        if ($this->type === "string") {
+            return '"' . $this->default . '"';
+        }
+        if ($this->default === true) {
+            return "true";
+        }
+        if ($this->default === false) {
+            return "false";
+        }
+
+        return $this->default;
     }
 
     /**

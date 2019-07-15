@@ -7,7 +7,6 @@ namespace SystatikoTest\End2End\Asset\Component1\Model;
 use Civis\Common\File as Test;
 use Systatiko\Annotation\FacadeExposition;
 use Systatiko\Annotation\Factory;
-use Systatiko\Reader\PHPType;
 
 
 /**
@@ -59,6 +58,36 @@ class MethodParameterTest
     public function methodReaderTestMeToo(string $test = "null", array $array = null, array $typeList): array
     {
         return [];
+    }
+
+    /**
+     * @FacadeExposition()
+     *
+     * @param int $test
+     */
+    public function numberTest(int $test = 2)
+    {
+
+    }
+
+    /**
+     * @FacadeExposition()
+     *
+     * @param bool $test
+     */
+    public function boolTestTrue(bool $test = true)
+    {
+
+    }
+
+    /**
+     * @FacadeExposition()
+     *
+     * @param bool $test
+     */
+    public function boolTestFalse(bool $test = false)
+    {
+
     }
 
 }

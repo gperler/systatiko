@@ -156,6 +156,36 @@ class Component1Facade
     }
 
     /**
+     * @param int $test
+     * 
+     * @return void
+     */
+    public function numberTest(int $test = 2)
+    {
+        $this->factory->newMethodParameterTest()->numberTest($test);
+    }
+
+    /**
+     * @param bool $test
+     * 
+     * @return void
+     */
+    public function boolTestTrue(bool $test = true)
+    {
+        $this->factory->newMethodParameterTest()->boolTestTrue($test);
+    }
+
+    /**
+     * @param bool $test
+     * 
+     * @return void
+     */
+    public function boolTestFalse(bool $test = false)
+    {
+        $this->factory->newMethodParameterTest()->boolTestFalse($test);
+    }
+
+    /**
      * @param SampleEntity $entity
      * 
      * @return SampleEntity
