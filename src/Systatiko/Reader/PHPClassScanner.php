@@ -15,12 +15,12 @@ class PHPClassScanner implements LoggerAwareInterface
     /**
      * @var PHPClass[]
      */
-    protected $phpClassList;
+    private $phpClassList;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    private $logger;
 
     /**
      *
@@ -63,8 +63,9 @@ class PHPClassScanner implements LoggerAwareInterface
 
     /**
      * @param File $phpFile
+     * @throws \ReflectionException
      */
-    protected function extractPHPClassList(File $phpFile)
+    private function extractPHPClassList(File $phpFile)
     {
         $phpFileContent = $phpFile->getContents();
         $definedClassList = $this->getDefinedPhpClasses($phpFileContent);
@@ -87,7 +88,7 @@ class PHPClassScanner implements LoggerAwareInterface
      *
      * @return array
      */
-    protected function getDefinedPhpClasses(string $phpcode): array
+    private function getDefinedPhpClasses(string $phpcode): array
     {
         // taken from stackoverflow
         // http://stackoverflow.com/questions/928928/determining-what-classes-are-defined-in-a-php-class-file

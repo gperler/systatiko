@@ -16,6 +16,7 @@ use Systatiko\Annotation\Factory;
 class MethodParameterTest
 {
 
+    const SOME_CONSTANT = 'some_value';
 
     /**
      * @Factory(
@@ -73,6 +74,17 @@ class MethodParameterTest
     /**
      * @FacadeExposition()
      *
+     * @param int $test
+     */
+    public function numberTest2(int $test = 0)
+    {
+
+    }
+
+
+    /**
+     * @FacadeExposition()
+     *
      * @param bool $test
      */
     public function boolTestTrue(bool $test = true)
@@ -97,6 +109,56 @@ class MethodParameterTest
     public function arrayParameter(array $test = ["Gregor"])
     {
 
+    }
+
+    /**
+     * @FacadeExposition()
+     * @param array $test
+     */
+    public function arrayParameter2(array $test = [])
+    {
+
+    }
+
+    /**
+     * @FacadeExposition()
+     *
+     * @param string $test
+     */
+    public function constantParameter(string $test = self::SOME_CONSTANT)
+    {
+
+    }
+
+
+    /**
+     * @FacadeExposition()
+     *
+     * @return MethodParameterTest[]
+     */
+    public function returnTypeTest1(): array
+    {
+        return [];
+    }
+
+    /**
+     * @FacadeExposition()
+     *
+     * @return MethodParameterTest
+     */
+    public function returnTypeTest2(): MethodParameterTest
+    {
+        return $this;
+    }
+
+    /**
+     * @FacadeExposition()
+     *
+     * @return MethodParameterTest|null
+     */
+    public function returnTypeTest3(): ?MethodParameterTest
+    {
+        return $this;
     }
 
 }

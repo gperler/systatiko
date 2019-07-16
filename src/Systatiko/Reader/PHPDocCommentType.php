@@ -13,37 +13,37 @@ class PHPDocCommentType
     /**
      * @var PHPMethod
      */
-    protected $method;
+    private $method;
 
     /**
      * @var string
      */
-    protected $original;
+    private $original;
 
     /**
      * @var bool
      */
-    protected $isArray;
+    private $isArray;
 
     /**
      * @var bool
      */
-    protected $isVoid;
+    private $isVoid;
 
     /**
      * @var bool
      */
-    protected $canBeNull;
+    private $canBeNull;
 
     /**
      * @var  PHPClassName
      */
-    protected $className;
+    private $className;
 
     /**
      * @var string
      */
-    protected $typeName;
+    private $typeName;
 
     /**
      * PHPDocBlockType constructor.
@@ -64,7 +64,7 @@ class PHPDocCommentType
     /**
      *
      */
-    protected function extract()
+    private function extract()
     {
         $typeList = explode("|", $this->original);
 
@@ -80,7 +80,7 @@ class PHPDocCommentType
     /**
      * @param string $type
      */
-    protected function analyzeType(string $type)
+    private function analyzeType(string $type)
     {
         $this->isArray = StringUtil::endsWith($type, "[]");
         $type = trim($type, '[]');

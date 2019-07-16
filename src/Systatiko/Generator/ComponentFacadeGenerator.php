@@ -15,22 +15,22 @@ class ComponentFacadeGenerator
     /**
      * @var Project
      */
-    protected $project;
+    private $project;
 
     /**
      * @var ComponentFacade
      */
-    protected $componentFacade;
+    private $componentFacade;
 
     /**
      * @var ClassGenerator
      */
-    protected $classGenerator;
+    private $classGenerator;
 
     /**
      * @var GeneratorConfiguration
      */
-    protected $configuration;
+    private $configuration;
 
     /**
      * ComponentFacadeGenerator constructor.
@@ -70,16 +70,16 @@ class ComponentFacadeGenerator
     /**
      *
      */
-    protected function addMember()
+    private function addMember()
     {
-        $this->classGenerator->addProtectedProperty("backbone", $this->configuration->getBackboneClassName());
-        $this->classGenerator->addProtectedProperty("factory", $this->componentFacade->getFactoryClassName());
+        $this->classGenerator->addprivateProperty("backbone", $this->configuration->getBackboneClassName());
+        $this->classGenerator->addprivateProperty("factory", $this->componentFacade->getFactoryClassName());
     }
 
     /**
      *
      */
-    protected function addConstructor()
+    private function addConstructor()
     {
         $constructor = $this->classGenerator->addMethod("__construct");
         $constructor->addParameter($this->configuration->getBackboneClassName(), 'backbone');
@@ -91,7 +91,7 @@ class ComponentFacadeGenerator
     /**
      *
      */
-    protected function addFacadeMethodList()
+    private function addFacadeMethodList()
     {
         foreach ($this->componentFacade->getComponentFacadeMethodList() as $method) {
             $this->addFacadeMethod($method);
@@ -101,7 +101,7 @@ class ComponentFacadeGenerator
     /**
      * @param ComponentFacadeMethod $facadeMethod
      */
-    protected function addFacadeMethod(ComponentFacadeMethod $facadeMethod)
+    private function addFacadeMethod(ComponentFacadeMethod $facadeMethod)
     {
         $methodName = $facadeMethod->getMethodName();
         $invocationSignature = $facadeMethod->getInvocationSignature();
@@ -149,7 +149,7 @@ class ComponentFacadeGenerator
      * @param Method $method
      * @param string $methodName
      */
-    protected function addBeforeDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
+    private function addBeforeDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
     {
         foreach ($this->configuration->getFacadeGeneratorExtension() as $extension) {
             $annotation = $facadeMethod->getMethodOrClassAnnotation($extension->getAnnotationClassName());
@@ -165,7 +165,7 @@ class ComponentFacadeGenerator
      * @param Method $method
      * @param string $methodName
      */
-    protected function addAfterDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
+    private function addAfterDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
     {
         foreach ($this->configuration->getFacadeGeneratorExtension() as $extension) {
             $annotation = $facadeMethod->getMethodOrClassAnnotation($extension->getAnnotationClassName());

@@ -1,27 +1,31 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Systatiko\Reader;
 
 class PHPType
 {
+    const BOOL = "bool";
 
-    protected $isScalar;
+    const INT = "int";
 
-    protected $isMixed;
+    const FLOAT = "float";
 
-    protected $className;
+    const STRING = "string";
 
+    const ARRAY = "array";
+
+    const CALLABLE = "callable";
 
 
     const SCALAR_TYPE_LIST = [
-        "bool",
-        "int",
-        "float",
-        "string",
-        "array",
-        "callable"
+        self::BOOL,
+        self::INT,
+        self::FLOAT,
+        self::STRING,
+        self::ARRAY,
+        self::CALLABLE
     ];
 
     public function __construct(string $name = null, array $registeredClassNameList = [])

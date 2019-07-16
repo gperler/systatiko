@@ -1,43 +1,41 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Systatiko\Model;
 
 use Civis\Common\StringUtil;
 use Systatiko\Annotation\Event;
+use Systatiko\Contract\AsynchronousEvent;
+use Systatiko\Contract\SynchronousEvent;
 
 class ComponentEvent
 {
 
-    const ASYNCHRONOUS_EVENT = 'Systatiko\Contract\AsynchronousEvent';
-
-    const SYNCHRONOUS_EVENT = 'Systatiko\Contract\SynchronousEvent';
-
     /**
      * @var string
      */
-    protected $eventName;
+    private $eventName;
 
     /**
      * @var ProjectClass
      */
-    protected $projectClass;
+    private $projectClass;
 
     /**
      * @var string
      */
-    protected $namespace;
+    private $namespace;
 
     /**
      * @var ComponentEventHandler[]
      */
-    protected $eventHandlerList;
+    private $eventHandlerList;
 
     /**
      * @var ComponentFactory
      */
-    protected $responsibleFactory;
+    private $responsibleFactory;
 
     /**
      * ComponentEvent constructor.
@@ -72,7 +70,7 @@ class ComponentEvent
     /**
      * @return string
      */
-    public function getEventClassName() : string
+    public function getEventClassName(): string
     {
         return $this->projectClass->getClassName();
     }
@@ -80,7 +78,7 @@ class ComponentEvent
     /**
      * @return string
      */
-    public function getEventClassShortName() : string
+    public function getEventClassShortName(): string
     {
         return StringUtil::getEndAfterLast($this->getEventClassName(), "\\");
     }
@@ -88,7 +86,7 @@ class ComponentEvent
     /**
      * @return string
      */
-    public function getTriggerMethodName() : string
+    public function getTriggerMethodName(): string
     {
         return "trigger" . ucfirst($this->getEventClassShortName());
     }
@@ -112,17 +110,17 @@ class ComponentEvent
     /**
      * @return bool
      */
-    public function isAsynchronousEvent() : bool
+    public function isAsynchronousEvent(): bool
     {
-        return $this->projectClass->implementsInterface(self::ASYNCHRONOUS_EVENT);
+        return $this->projectClass->implementsInterface(AsynchronousEvent::class);
     }
 
     /**
      * @return bool
      */
-    public function isSynchronousEvent() : bool
+    public function isSynchronousEvent(): bool
     {
-        return $this->projectClass->implementsInterface(self::SYNCHRONOUS_EVENT);
+        return $this->projectClass->implementsInterface(SynchronousEvent::class);
     }
 
     /**

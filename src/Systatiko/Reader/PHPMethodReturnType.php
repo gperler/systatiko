@@ -10,27 +10,27 @@ class PHPMethodReturnType
     /**
      * @var PHPMethod
      */
-    protected $phpMethod;
+    private $phpMethod;
 
     /**
      * @var string
      */
-    protected $signatureType;
+    private $signatureType;
 
     /**
      * @var PHPClassName
      */
-    protected $signatureTypeClassName;
+    private $signatureTypeClassName;
 
     /**
      * @var PHPDocCommentType
      */
-    protected $docBlockType;
+    private $docBlockType;
 
     /**
      * @var bool
      */
-    protected $canBeNull;
+    private $canBeNull;
 
     /**
      * PHPMethodReturnType constructor.
@@ -48,31 +48,27 @@ class PHPMethodReturnType
     /**
      *
      */
-    protected function extractSignatureReturnType()
+    private function extractSignatureReturnType()
     {
-        $methodLine = $this->phpMethod->getMethodDefinition();
-        if (strrpos($methodLine, ":") === false) {
-            $this->canBeNull = true;
+
+        $reflectMethod = $this->phpMethod->getReflectMethod();
+
+        $returnType = $reflectMethod->getReturnType();
+
+        if ($returnType === null) {
             return;
         }
 
-        $partList = explode(":", $methodLine);
-        $signatureType = trim($partList[1]);
+        $this->canBeNull = $returnType->allowsNull();
 
-        if (strpos($signatureType, '?') !== false) {
-            $this->canBeNull = true;
-        }
-
-        $signatureType = trim($signatureType, '?');
-
-        $this->signatureType = $signatureType;
-        $this->signatureTypeClassName = $this->phpMethod->getClassNameForShortName($signatureType);
+        $this->signatureType =  $returnType->getName();
+        $this->signatureTypeClassName = $this->phpMethod->getClassNameForShortName($this->signatureType);
     }
 
     /**
      *
      */
-    protected function extractDocBlockReturnType()
+    private function extractDocBlockReturnType()
     {
         $docBlockType = $this->phpMethod->getDocComment();
         if (!$docBlockType) {

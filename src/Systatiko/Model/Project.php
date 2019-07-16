@@ -33,52 +33,52 @@ class Project implements LoggerAwareInterface
     /**
      * @var PHPClass[]
      */
-    protected $phpClassList;
+    private $phpClassList;
 
     /**
      * @var ProjectClass[]
      */
-    protected $projectClassList;
+    private $projectClassList;
 
     /**
      * @var BackboneModel
      */
-    protected $backboneModel;
+    private $backboneModel;
 
     /**
      * @var ComponentFactory[]
      */
-    protected $componentFactoryList;
+    private $componentFactoryList;
 
     /**
      * @var ComponentFacade[]
      */
-    protected $componentFacadeList;
+    private $componentFacadeList;
 
     /**
      * @var ComponentConfigurationModel[]
      */
-    protected $componentConfigurationList;
+    private $componentConfigurationList;
 
     /**
      * @var ComponentEvent[]
      */
-    protected $componentEventList;
+    private $componentEventList;
 
     /**
      * @var LoggerInterface
      */
-    protected $loggerInterface;
+    private $loggerInterface;
 
     /**
      * @var int
      */
-    protected $errorCount;
+    private $errorCount;
 
     /**
      * @var int
      */
-    protected $warningCount;
+    private $warningCount;
 
     /**
      * Project constructor.
@@ -126,7 +126,7 @@ class Project implements LoggerAwareInterface
         return $this->backboneModel->getExposeList();
     }
 
-    protected function update()
+    private function update()
     {
         $this->logDebug("updating model");
 
@@ -151,7 +151,7 @@ class Project implements LoggerAwareInterface
     /**
      * @param ComponentConfigurationModel $componentConfiguration
      */
-    protected function updateComponentConfiguration(ComponentConfigurationModel $componentConfiguration)
+    private function updateComponentConfiguration(ComponentConfigurationModel $componentConfiguration)
     {
         $namespace = $componentConfiguration->getNamespace();
         $className = $componentConfiguration->getClassName();
@@ -185,7 +185,7 @@ class Project implements LoggerAwareInterface
     /**
      * @param ComponentEvent $componentEvent
      */
-    protected function updateComponentEvent(ComponentEvent $componentEvent)
+    private function updateComponentEvent(ComponentEvent $componentEvent)
     {
         $namespace = $componentEvent->getNamespace();
         $className = $componentEvent->getEventClassName();
@@ -202,7 +202,7 @@ class Project implements LoggerAwareInterface
     /**
      * @param PHPClass $phpClass
      */
-    protected function analyzePHPClass(PHPClass $phpClass)
+    private function analyzePHPClass(PHPClass $phpClass)
     {
         $projectClass = new ProjectClass($this, $phpClass);
 
@@ -221,7 +221,7 @@ class Project implements LoggerAwareInterface
     /**
      * @param ProjectClass $projectClass
      */
-    protected function handleFactoryAnnotation(ProjectClass $projectClass)
+    private function handleFactoryAnnotation(ProjectClass $projectClass)
     {
         $factoryAnnotation = $projectClass->getComponentFactoryAnnotation();
         if ($factoryAnnotation === null) {
@@ -234,7 +234,7 @@ class Project implements LoggerAwareInterface
     /**
      * @param ProjectClass $projectClass
      */
-    protected function handleFacadeAnnotation(ProjectClass $projectClass)
+    private function handleFacadeAnnotation(ProjectClass $projectClass)
     {
         $facadeAnnotation = $projectClass->getComponentFacadeAnnotation();
         if ($facadeAnnotation === null) {
@@ -256,7 +256,7 @@ class Project implements LoggerAwareInterface
     /**
      * @param ProjectClass $projectClass
      */
-    protected function handleComponentConfiguration(ProjectClass $projectClass)
+    private function handleComponentConfiguration(ProjectClass $projectClass)
     {
         $configurationAnnotation = $projectClass->getComponentConfigurationAnnotation();
         if ($configurationAnnotation === null) {
@@ -273,7 +273,7 @@ class Project implements LoggerAwareInterface
     /**
      * @param ProjectClass $projectClass
      */
-    protected function handleEventAnnotation(ProjectClass $projectClass)
+    private function handleEventAnnotation(ProjectClass $projectClass)
     {
         $eventAnnotation = $projectClass->getEventAnnotation();
 
@@ -289,7 +289,7 @@ class Project implements LoggerAwareInterface
      *
      * @return ComponentFactory
      */
-    protected function getOrCreateResponsibleComponentFactory(Factory $factory): ComponentFactory
+    private function getOrCreateResponsibleComponentFactory(Factory $factory): ComponentFactory
     {
         $componentFactory = $this->getResponsibleComponentFactory($factory->getNamespace());
         if ($componentFactory !== null) {
@@ -305,7 +305,7 @@ class Project implements LoggerAwareInterface
      *
      * @return ComponentFactory|null
      */
-    protected function getResponsibleComponentFactory(string $namespace)
+    private function getResponsibleComponentFactory(string $namespace)
     {
         foreach ($this->componentFactoryList as $componentFactory) {
             if ($componentFactory->isResponsible($namespace)) {
@@ -336,7 +336,7 @@ class Project implements LoggerAwareInterface
      *
      * @return ComponentFacade
      */
-    protected function getOrCreateResponsibleComponentFacade(FacadeExposition $facadeExposition, ComponentFactory $componentFactory): ComponentFacade
+    private function getOrCreateResponsibleComponentFacade(FacadeExposition $facadeExposition, ComponentFactory $componentFactory): ComponentFacade
     {
         $componentFacade = $this->getResponsibleComponentFacade($facadeExposition->getNamespace());
         if ($componentFacade !== null) {
@@ -354,7 +354,7 @@ class Project implements LoggerAwareInterface
      *
      * @return ComponentFacade|null
      */
-    protected function getResponsibleComponentFacade(string $namespace)
+    private function getResponsibleComponentFacade(string $namespace)
     {
         foreach ($this->componentFacadeList as $componentFacade) {
             if ($componentFacade->isResponsible($namespace)) {

@@ -28,47 +28,47 @@ class Component1Factory
     /**
      * @var Backbone
      */
-    protected $backbone;
+    private $backbone;
 
     /**
      * @var Component1Facade
      */
-    protected $component1Facade;
+    private $component1Facade;
 
     /**
      * @var Component1Configuration
      */
-    protected $component1Configuration;
+    private $component1Configuration;
 
     /**
      * @var SingletonEntity
      */
-    protected $singletonEntity;
+    private $singletonEntity;
 
     /**
      * @var EventTriggerService
      */
-    protected $eventTriggerService;
+    private $eventTriggerService;
 
     /**
      * @var ExceptionClass
      */
-    protected $exceptionClass;
+    private $exceptionClass;
 
     /**
      * @var FacadeInjection
      */
-    protected $facadeInjection;
+    private $facadeInjection;
 
     /**
      * @var NoInjection
      */
-    protected $noInjection;
+    private $noInjection;
 
     /**
      * @var ServiceClass
      */
-    protected $serviceClass;
+    private $serviceClass;
 
     /**
      * @param Backbone $backbone

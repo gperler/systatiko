@@ -7,17 +7,17 @@ class ComponentConfigurationModel
     /**
      * @var string
      */
-    protected $namespace;
+    private $namespace;
 
     /**
      * @var ProjectClass
      */
-    protected $projectClass;
+    private $projectClass;
 
     /**
      * @return string
      */
-    public function getNamespace() : string
+    public function getNamespace(): string
     {
         return $this->namespace;
     }
@@ -33,7 +33,7 @@ class ComponentConfigurationModel
     /**
      * @return ProjectClass
      */
-    public function getProjectClass() : ProjectClass
+    public function getProjectClass(): ProjectClass
     {
         return $this->projectClass;
     }
@@ -49,7 +49,7 @@ class ComponentConfigurationModel
     /**
      * @return string
      */
-    public function getClassName() : string
+    public function getClassName(): string
     {
         return $this->projectClass->getClassName();
     }

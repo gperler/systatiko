@@ -13,22 +13,22 @@ class PHPClassName
     /**
      * @var string
      */
-    protected $className;
+    private $className;
 
     /**
      * @var string
      */
-    protected $classShortName;
+    private $classShortName;
 
     /**
      * @var string
      */
-    protected $as;
+    private $as;
 
     /**
      * @var string
      */
-    protected $namespaceName;
+    private $namespaceName;
 
     /**
      * PHPClassName constructor.

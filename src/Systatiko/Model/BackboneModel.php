@@ -1,26 +1,26 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Systatiko\Model;
 
+use Systatiko\Annotation\ExposeInAllFactories;
 use Systatiko\Reader\PHPClass;
 use Systatiko\Reader\PHPMethod;
 
 class BackboneModel
 {
 
-    const EXPOSE_IN_ALL_ANNOTATION_NAME = 'Systatiko\Annotation\ExposeInAllFactories';
 
     /**
      * @var PHPClass
      */
-    protected $phpClass;
+    private $phpClass;
 
     /**
      * @var PHPMethod[]
      */
-    protected $exposeList;
+    private $exposeList;
 
     /**
      * BackboneModel constructor.
@@ -37,7 +37,7 @@ class BackboneModel
     /**
      *
      */
-    protected function findExposeAll()
+    private function findExposeAll()
     {
         foreach ($this->phpClass->getPHPMethodList() as $phpMethod) {
             $this->analyzeMethod($phpMethod);
@@ -47,9 +47,9 @@ class BackboneModel
     /**
      * @param PHPMethod $method
      */
-    protected function analyzeMethod(PHPMethod $method)
+    private function analyzeMethod(PHPMethod $method)
     {
-        $annotation = $method->getMethodAnnotation(self::EXPOSE_IN_ALL_ANNOTATION_NAME);
+        $annotation = $method->getMethodAnnotation(ExposeInAllFactories::class);
         if ($annotation === null) {
             return;
         }

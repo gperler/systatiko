@@ -2,7 +2,6 @@
 
 namespace Systatiko\Reader;
 
-use Civis\Common\ArrayUtil;
 use Civis\Common\StringUtil;
 use Codeception\Util\Debug;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
@@ -12,27 +11,27 @@ class PHPMethod
     /**
      * @var PHPClass
      */
-    protected $phpClass;
+    private $phpClass;
 
     /**
      * @var \ReflectionMethod
      */
-    protected $reflectionMethod;
+    private $reflectionMethod;
 
     /**
      * @var PHPParameter[]
      */
-    protected $parameterList;
+    private $parameterList;
 
     /**
      * @var PHPMethodReturnType
      */
-    protected $methodReturnType;
+    private $methodReturnType;
 
     /**
      * @var string[]
      */
-    protected $exceptionList;
+    private $exceptionList;
 
     /**
      * PHPMethod constructor.
@@ -51,9 +50,17 @@ class PHPMethod
     }
 
     /**
+     * @return \ReflectionMethod
+     */
+    public function getReflectMethod(): \ReflectionMethod
+    {
+        return $this->reflectionMethod;
+    }
+
+    /**
      *
      */
-    protected function extractParameterList()
+    private function extractParameterList()
     {
         $reflectionParameterList = $this->reflectionMethod->getParameters();
 
@@ -72,9 +79,17 @@ class PHPMethod
     }
 
     /**
+     * @return string
+     */
+    public function getClassName(): string
+    {
+        return $this->phpClass->getClassName();
+    }
+
+    /**
      *
      */
-    protected function extractMethodReturnType()
+    private function extractMethodReturnType()
     {
         $this->methodReturnType = new PHPMethodReturnType($this);
     }
@@ -119,7 +134,7 @@ class PHPMethod
         preg_match_all("/@throws ([\\a-zA-Z0-9_.-]*?)\s/", $docComment, $matches);
 
         foreach ($matches[1] as $exception) {
-            if (StringUtil::startsWith($exception,"\\")) {
+            if (StringUtil::startsWith($exception, "\\")) {
                 Debug::debug("starts with \\");
                 $exceptionClassName = new PHPClassName($exception);
             } else {
@@ -131,23 +146,6 @@ class PHPMethod
         return $this->exceptionList;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getMethodDefinition(): string
-    {
-        $modifier = $this->reflectionMethod->isPublic() ? "public" : "";
-        $modifier = $this->reflectionMethod->isProtected() ? "protected" : $modifier;
-        $modifier = $this->reflectionMethod->isPrivate() ? "private" : $modifier;
-
-        $content = $this->phpClass->getClassContent();
-        $pattern = "/($modifier function " . $this->getMethodName() . '\(.*?\).*?)\{/s';
-        preg_match($pattern, $content, $matches);
-        $methodDefinition = ArrayUtil::getFromArray($matches, 1);
-
-        return trim($methodDefinition);
-    }
 
     /**
      * @return string

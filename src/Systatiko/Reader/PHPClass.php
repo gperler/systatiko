@@ -15,27 +15,27 @@ class PHPClass
     /**
      * @var File
      */
-    protected $file;
+    private $file;
 
     /**
      * @var ExtendedReflectionClass
      */
-    protected $reflectClass;
+    private $reflectClass;
 
     /**
      * @var PHPClassName
      */
-    protected $className;
+    private $className;
 
     /**
      * @var PHPClassName[]
      */
-    protected $usedClassNameList;
+    private $usedClassNameList;
 
     /**
      * @var string
      */
-    protected $errorMessage;
+    private $errorMessage;
 
     /**
      * PHPClass constructor.
@@ -57,7 +57,7 @@ class PHPClass
      * @param string $className
      * @throws \ReflectionException
      */
-    protected function reflect(string $className)
+    private function reflect(string $className)
     {
         include_once($this->file->getAbsoluteFileName());
 
@@ -144,7 +144,7 @@ class PHPClass
     /**
      * @param $annotationName
      *
-     * @return null|object
+     * @return null|mixed
      */
     public function getClassAnnotation($annotationName)
     {

@@ -10,17 +10,17 @@ class ComponentEventHandler
     /**
      * @var string
      */
-    protected $eventClassName;
+    private $eventClassName;
 
     /**
      * @var ComponentFacade
      */
-    protected $facade;
+    private $facade;
 
     /**
      * @var ComponentFacadeMethod
      */
-    protected $facadeMethod;
+    private $facadeMethod;
 
     /**
      * ComponentEventHandler constructor.

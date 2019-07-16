@@ -13,23 +13,21 @@ use Systatiko\Reader\PHPParameter;
 class ProjectClass
 {
 
-    const FACTORY_ANNOTATION_NAME = 'Systatiko\Annotation\Factory';
-
-    const FACADE_ANNOTATION_NAME = 'Systatiko\Annotation\FacadeExposition';
-
-    const CONFIGURATION_ANNOTATION_NAME = 'Systatiko\Annotation\Configuration';
-
-    const EVENT_ANNOTATION_NAME = 'Systatiko\Annotation\Event';
-
     /**
      * @var Project
      */
-    protected $project;
+    private $project;
+
     /**
      * @var PHPClass
      */
-    protected $phpClass;
+    private $phpClass;
 
+    /**
+     * ProjectClass constructor.
+     * @param Project $project
+     * @param PHPClass $phpClass
+     */
     public function __construct(Project $project, PHPClass $phpClass)
     {
         $this->project = $project;
@@ -45,7 +43,7 @@ class ProjectClass
         if ($constructor === null) {
             return null;
         }
-        return $constructor->getMethodAnnotation(self::FACTORY_ANNOTATION_NAME);
+        return $constructor->getMethodAnnotation(Factory::class);
     }
 
     /**
@@ -53,9 +51,13 @@ class ProjectClass
      */
     public function getEventAnnotation()
     {
-        return $this->phpClass->getClassAnnotation(self::EVENT_ANNOTATION_NAME);
+        return $this->phpClass->getClassAnnotation(Event::class);
     }
 
+    /**
+     * @param string $className
+     * @return null|object
+     */
     public function getAnnotation(string $className)
     {
         return $this->phpClass->getClassAnnotation($className);
@@ -64,7 +66,7 @@ class ProjectClass
     /**
      * @return PHPMethod[]
      */
-    public function getPHPMethodList() : array
+    public function getPHPMethodList(): array
     {
         return $this->phpClass->getPHPMethodList();
     }
@@ -75,7 +77,7 @@ class ProjectClass
     public function getComponentFacadeAnnotation()
     {
         new FacadeExposition();
-        return $this->phpClass->getClassAnnotation(self::FACADE_ANNOTATION_NAME);
+        return $this->phpClass->getClassAnnotation(FacadeExposition::class);
     }
 
     /**
@@ -83,13 +85,13 @@ class ProjectClass
      */
     public function getComponentConfigurationAnnotation()
     {
-        return $this->phpClass->getClassAnnotation(self::CONFIGURATION_ANNOTATION_NAME);
+        return $this->phpClass->getClassAnnotation(Configuration::class);
     }
 
     /**
      * @return string
      */
-    public function getClassName() : string
+    public function getClassName(): string
     {
         return $this->phpClass->getClassName();
     }
@@ -97,7 +99,7 @@ class ProjectClass
     /**
      * @return string
      */
-    public function getClassShortName() : string
+    public function getClassShortName(): string
     {
         return $this->phpClass->getClassShortName();
     }
@@ -105,7 +107,7 @@ class ProjectClass
     /**
      * @return string
      */
-    public function getNamespaceName() : string
+    public function getNamespaceName(): string
     {
         return $this->phpClass->getNamespaceName();
     }
@@ -113,7 +115,7 @@ class ProjectClass
     /**
      * @return string
      */
-    public function getMemberName() : string
+    public function getMemberName(): string
     {
         return lcfirst($this->getClassShortName());
     }
@@ -134,7 +136,7 @@ class ProjectClass
     /**
      * @return string
      */
-    public function getConstructorInvocationSignature() : string
+    public function getConstructorInvocationSignature(): string
     {
         $constructor = $this->phpClass->getConstructorMethod();
         if ($constructor === null) {
@@ -148,7 +150,7 @@ class ProjectClass
      *
      * @return bool
      */
-    public function implementsInterface(string $interfaceName) : bool
+    public function implementsInterface(string $interfaceName): bool
     {
         return $this->phpClass->implementsInterface($interfaceName);
     }
@@ -158,7 +160,7 @@ class ProjectClass
      *
      * @return bool
      */
-    public function isSubclassOf(string $className) : bool
+    public function isSubclassOf(string $className): bool
     {
         return $this->phpClass->isSubclassOf($className);
     }

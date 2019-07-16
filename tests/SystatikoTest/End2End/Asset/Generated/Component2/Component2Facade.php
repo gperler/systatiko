@@ -14,12 +14,12 @@ class Component2Facade
     /**
      * @var Backbone
      */
-    protected $backbone;
+    private $backbone;
 
     /**
      * @var Component2Factory
      */
-    protected $factory;
+    private $factory;
 
     /**
      * @param Backbone $backbone

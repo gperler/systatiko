@@ -4,7 +4,6 @@ namespace Systatiko\Reader;
 
 use Civis\Common\ArrayUtil;
 use Civis\Common\StringUtil;
-use Codeception\Util\Debug;
 
 class PHPParameter
 {
@@ -50,6 +49,12 @@ class PHPParameter
      */
     private $hasDefault;
 
+
+    /**
+     * @var string
+     */
+    private $constantDefaultParameter;
+
     /**
      * PHPParameter constructor.
      * @param PHPMethod $method
@@ -82,6 +87,7 @@ class PHPParameter
         if ($type === null) {
             return;
         }
+
         if ($type->isBuiltin()) {
             $this->type = $type->getName();
         } else {
@@ -101,8 +107,12 @@ class PHPParameter
         if ($reflectionParameter->isDefaultValueAvailable()) {
             $this->default = $reflectionParameter->getDefaultValue();
             $this->hasDefault = true;
-        }
 
+            $constant = $reflectionParameter->getDefaultValueConstantName();
+            if ($constant !== null) {
+                $this->constantDefaultParameter = str_replace("self", $this->phpMethod->getClassName(), $constant);
+            }
+        }
     }
 
     /**
@@ -161,10 +171,10 @@ class PHPParameter
         if (!$this->hasDefault) {
             return null;
         }
-        if ($this->default === null) {
+        if ($this->default === null || $this->constantDefaultParameter !== null) {
             return "null";
         }
-        if ($this->type === "string") {
+        if ($this->type === PHPType::STRING) {
             return '"' . $this->default . '"';
         }
         if ($this->default === true) {
@@ -173,7 +183,7 @@ class PHPParameter
         if ($this->default === false) {
             return "false";
         }
-        if ($this->type === 'array') {
+        if ($this->type === PHPType::ARRAY) {
             return json_encode($this->default);
         }
 
@@ -220,7 +230,6 @@ class PHPParameter
     {
         return $this->default;
     }
-
 
 
     /**

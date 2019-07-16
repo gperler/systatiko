@@ -2,6 +2,7 @@
 
 namespace Systatiko\Model;
 
+use Systatiko\Annotation\EventHandler;
 use Systatiko\Reader\PHPClassName;
 use Systatiko\Reader\PHPMethod;
 use Systatiko\Reader\PHPMethodReturnType;
@@ -10,22 +11,20 @@ use Systatiko\Reader\PHPParameter;
 class ComponentFacadeMethod
 {
 
-    const EVENT_HANDLER_ANNOTATION_NAME = 'Systatiko\Annotation\EventHandler';
-
     /**
      * @var ProjectClass
      */
-    protected $projectClass;
+    private $projectClass;
 
     /**
      * @var ComponentFactoryMethod
      */
-    protected $factoryMethod;
+    private $factoryMethod;
 
     /**
      * @var PHPMethod
      */
-    protected $phpMethod;
+    private $phpMethod;
 
     /**
      * ComponentFacadeMethod constructor.
@@ -47,14 +46,6 @@ class ComponentFacadeMethod
     public function update(Project $project)
     {
 
-    }
-
-    /**
-     * @return string
-     */
-    public function getMethodLine(): string
-    {
-        return $this->phpMethod->getMethodDefinition();
     }
 
     /**
@@ -116,7 +107,7 @@ class ComponentFacadeMethod
      */
     public function getHandledEvent()
     {
-        $eventHandlerAnnotation = $this->phpMethod->getMethodAnnotation(self::EVENT_HANDLER_ANNOTATION_NAME);
+        $eventHandlerAnnotation = $this->phpMethod->getMethodAnnotation(EventHandler::class);
 
         if ($eventHandlerAnnotation === null) {
             return null;

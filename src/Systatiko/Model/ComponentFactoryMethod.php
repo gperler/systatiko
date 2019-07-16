@@ -21,37 +21,37 @@ class ComponentFactoryMethod
     /**
      * @var ComponentFactory
      */
-    protected $componentFactory;
+    private $componentFactory;
 
     /**
      * @var Factory
      */
-    protected $factoryAnnotation;
+    private $factoryAnnotation;
 
     /**
      * @var ProjectClass
      */
-    protected $factoryForProjectClass;
+    private $factoryForProjectClass;
 
     /**
      * @var ComponentFactoryMethod
      */
-    protected $overwrittenComponentFactoryClass;
+    private $overwrittenComponentFactoryClass;
 
     /**
      * @var ComponentFactoryMethod[]
      */
-    protected $overwritingComponentFactoryClassList;
+    private $overwritingComponentFactoryClassList;
 
     /**
      * @var string[]
      */
-    protected $constructorInvocationSignatureList;
+    private $constructorInvocationSignatureList;
 
     /**
      * @var PHPParameter[]
      */
-    protected $accessorParameterList;
+    private $accessorParameterList;
 
     /**
      * ComponentFactoryMethod constructor.
@@ -84,7 +84,7 @@ class ComponentFactoryMethod
     /**
      * @param Project $project
      */
-    protected function updateOverwrite(Project $project)
+    private function updateOverwrite(Project $project)
     {
         $overwrite = $this->getOverwrite();
         if ($overwrite === null) {
@@ -117,7 +117,7 @@ class ComponentFactoryMethod
     /**
      * @param Project $project
      */
-    protected function updateConstructorSignature(Project $project)
+    private function updateConstructorSignature(Project $project)
     {
         $constructorParameterList = $this->factoryForProjectClass->getConstructorParameter();
 
@@ -134,7 +134,7 @@ class ComponentFactoryMethod
     /**
      * @param Project $project
      */
-    protected function updateParameterClassName(Project $project)
+    private function updateParameterClassName(Project $project)
     {
         foreach ($this->accessorParameterList as $parameter) {
             if ($parameter->getClassName() !== null || $parameter->getType() === null) {
@@ -153,7 +153,7 @@ class ComponentFactoryMethod
      * @param Project $project
      * @param PHPParameter $parameter
      */
-    protected function getParameterAccessor(Project $project, PHPParameter $parameter)
+    private function getParameterAccessor(Project $project, PHPParameter $parameter)
     {
 
         if (!$this->factoryAnnotation->injectionAllowed($parameter->getName())) {
@@ -203,7 +203,7 @@ class ComponentFactoryMethod
     /**
      * @param ComponentFactoryMethod $overwriting
      */
-    protected function addOverwritingComponentFactoryClass(ComponentFactoryMethod $overwriting)
+    private function addOverwritingComponentFactoryClass(ComponentFactoryMethod $overwriting)
     {
         $this->overwritingComponentFactoryClassList[] = $overwriting;
     }

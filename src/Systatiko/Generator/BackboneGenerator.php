@@ -5,6 +5,7 @@ namespace Systatiko\Generator;
 use Nitria\ClassGenerator;
 use Nitria\Method;
 use Systatiko\Configuration\GeneratorConfiguration;
+use Systatiko\Contract\AsynchronousEvent;
 use Systatiko\Exception\EventNotDefinedException;
 use Systatiko\Model\ComponentEvent;
 use Systatiko\Model\ComponentFacade;
@@ -15,22 +16,22 @@ class BackboneGenerator
     /**
      * @var ComponentFacade[]
      */
-    protected $componentFacadeList;
+    private $componentFacadeList;
 
     /**
      * @var ComponentEvent[]
      */
-    protected $componentEventList;
+    private $componentEventList;
 
     /**
      * @var ClassGenerator
      */
-    protected $classGenerator;
+    private $classGenerator;
 
     /**
      * @var GeneratorConfiguration
      */
-    protected $configuration;
+    private $configuration;
 
     /**
      * BackboneGenerator constructor.
@@ -76,13 +77,13 @@ class BackboneGenerator
         }
     }
 
-    protected function addSingleton()
+    private function addSingleton()
     {
         $backboneClassName = $this->configuration->getBackboneClassName();
         $backboneClassShortName = $this->configuration->getBackboneClassShortName();
 
         $this->classGenerator->addUsedClassName('Civis\Common\File');
-        $this->classGenerator->addProtectedStaticProperty('instance', $backboneClassName);
+        $this->classGenerator->addprivateStaticProperty('instance', $backboneClassName);
 
         $method = $this->classGenerator->addPublicStaticMethod("getInstance");
         $method->addParameter("string", "configFileName", "null");
@@ -102,17 +103,17 @@ class BackboneGenerator
     /**
      *
      */
-    protected function addMember()
+    private function addMember()
     {
 
         foreach ($this->componentFacadeList as $componentFacade) {
             $memberName = $componentFacade->getFactoryMemberName();
             $memberType = $componentFacade->getFactoryClassName();
-            $this->classGenerator->addProtectedProperty($memberName, $memberType);
+            $this->classGenerator->addprivateProperty($memberName, $memberType);
         }
     }
 
-    protected function addResetSingleton()
+    private function addResetSingleton()
     {
         $resetMethod = $this->classGenerator->addMethod("resetSingleton");
 
@@ -125,7 +126,7 @@ class BackboneGenerator
     /**
      *
      */
-    protected function addAccessMethodList()
+    private function addAccessMethodList()
     {
         foreach ($this->componentFacadeList as $componentFacade) {
             $this->addFacadeAccess($componentFacade);
@@ -136,7 +137,7 @@ class BackboneGenerator
     /**
      * @param ComponentFacade $componentFacade
      */
-    protected function addFacadeAccess(ComponentFacade $componentFacade)
+    private function addFacadeAccess(ComponentFacade $componentFacade)
     {
 
         $methodName = $componentFacade->getFactoryMethodName();
@@ -152,7 +153,7 @@ class BackboneGenerator
     /**
      * @param ComponentFacade $componentFacade
      */
-    protected function addFactoryAccess(ComponentFacade $componentFacade)
+    private function addFactoryAccess(ComponentFacade $componentFacade)
     {
         $factoryClassShortName = $componentFacade->getFactoryClassShortName();
 
@@ -169,7 +170,7 @@ class BackboneGenerator
         $method->addCodeLine('return ' . $memberName . ';');
     }
 
-    protected function addNewAsynchronousEvent()
+    private function addNewAsynchronousEvent()
     {
         $this->classGenerator->addUsedClassName(EventNotDefinedException::class);
 
@@ -177,7 +178,7 @@ class BackboneGenerator
         $method->addException(EventNotDefinedException::class);
         $method->addParameter('string', 'eventName');
         $method->addParameter('array', 'payload');
-        $method->setReturnType(ComponentEvent::ASYNCHRONOUS_EVENT, false);
+        $method->setReturnType(AsynchronousEvent::class, false);
 
         $method->addSwitch('$eventName');
         foreach ($this->componentEventList as $componentEvent) {
@@ -203,10 +204,10 @@ class BackboneGenerator
     /**
      *
      */
-    protected function addDispatchInboundAsynchronousEvent()
+    private function addDispatchInboundAsynchronousEvent()
     {
         $method = $this->classGenerator->addPublicMethod("dispatchInboundAsynchronousEvent");
-        $method->addParameter(ComponentEvent::ASYNCHRONOUS_EVENT, "event");
+        $method->addParameter(AsynchronousEvent::class, "event");
 
         foreach ($this->componentEventList as $componentEvent) {
             $this->addComponentEventDispatcher($componentEvent, $method);
@@ -217,7 +218,7 @@ class BackboneGenerator
      * @param ComponentEvent $componentEvent
      * @param Method $method
      */
-    protected function addComponentEventDispatcher(ComponentEvent $componentEvent, Method $method)
+    private function addComponentEventDispatcher(ComponentEvent $componentEvent, Method $method)
     {
         if (!$componentEvent->isAsynchronousEvent()) {
             return;

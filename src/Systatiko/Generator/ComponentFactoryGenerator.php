@@ -20,32 +20,32 @@ class ComponentFactoryGenerator
     /**
      * @var Project
      */
-    protected $project;
+    private $project;
 
     /**
      * @var ComponentFactory
      */
-    protected $componentFactory;
+    private $componentFactory;
 
     /**
      * @var ProjectClass
      */
-    protected $componentConfigurationClass;
+    private $componentConfigurationClass;
 
     /**
      * @var ComponentFacade
      */
-    protected $componentFacade;
+    private $componentFacade;
 
     /**
      * @var
      */
-    protected $backboneClassName;
+    private $backboneClassName;
 
     /**
      * @var ClassGenerator
      */
-    protected $classGenerator;
+    private $classGenerator;
 
     /**
      * ComponentFactoryGenerator constructor.
@@ -99,30 +99,30 @@ class ComponentFactoryGenerator
     /**
      *
      */
-    protected function addMember()
+    private function addMember()
     {
-        $this->classGenerator->addProtectedProperty("backbone", $this->backboneClassName);
+        $this->classGenerator->addprivateProperty("backbone", $this->backboneClassName);
 
         if ($this->componentFacade !== null) {
-            $this->classGenerator->addProtectedProperty($this->componentFacade->getMemberName(), $this->componentFacade->getClassName());
+            $this->classGenerator->addprivateProperty($this->componentFacade->getMemberName(), $this->componentFacade->getClassName());
         }
 
         if ($this->componentConfigurationClass !== null) {
-            $this->classGenerator->addProtectedProperty($this->componentConfigurationClass->getMemberName(), $this->componentConfigurationClass->getClassName());
+            $this->classGenerator->addprivateProperty($this->componentConfigurationClass->getMemberName(), $this->componentConfigurationClass->getClassName());
         }
 
         foreach ($this->componentFactory->getComponentFactoryMethodList() as $componentClass) {
             if (!$componentClass->isSingleton()) {
                 continue;
             }
-            $this->classGenerator->addProtectedProperty($componentClass->getMemberName(), $componentClass->getClassName());
+            $this->classGenerator->addprivateProperty($componentClass->getMemberName(), $componentClass->getClassName());
         }
     }
 
     /**
      *
      */
-    protected function addConstructor()
+    private function addConstructor()
     {
         $constructor = $this->classGenerator->addMethod("__construct");
         $constructor->addParameter($this->backboneClassName, "backbone");
@@ -130,7 +130,7 @@ class ComponentFactoryGenerator
         $constructor->addCodeLine('$this->backbone = $backbone;');
     }
 
-    protected function addResetSingletonMethod()
+    private function addResetSingletonMethod()
     {
         $resetMethod = $this->classGenerator->addMethod("resetSingleton");
         if ($this->componentFacade !== null) {
@@ -147,7 +147,7 @@ class ComponentFactoryGenerator
     /**
      *
      */
-    protected function addConfigurationAccess()
+    private function addConfigurationAccess()
     {
         if ($this->componentConfigurationClass === null) {
             return;
@@ -172,7 +172,7 @@ class ComponentFactoryGenerator
     /**
      *
      */
-    protected function addFacadeAccess()
+    private function addFacadeAccess()
     {
         if ($this->componentFacade === null) {
             return;
@@ -195,7 +195,7 @@ class ComponentFactoryGenerator
     /**
      *
      */
-    protected function addTriggerMethodList()
+    private function addTriggerMethodList()
     {
         $eventCount = sizeof($this->componentFactory->getComponentEventList());
         foreach ($this->componentFactory->getComponentEventList() as $componentEvent) {
@@ -206,7 +206,7 @@ class ComponentFactoryGenerator
     /**
      * @param ComponentEvent $componentEvent
      */
-    protected function addTriggerMethod(ComponentEvent $componentEvent)
+    private function addTriggerMethod(ComponentEvent $componentEvent)
     {
         $method = $this->classGenerator->addMethod($componentEvent->getTriggerMethodName());
         $method->addParameter($componentEvent->getEventClassName(), "event");
@@ -226,7 +226,7 @@ class ComponentFactoryGenerator
      * @param ComponentEvent $componentEvent
      * @param Method $method
      */
-    protected function addInternalDispatching(ComponentEvent $componentEvent, Method $method)
+    private function addInternalDispatching(ComponentEvent $componentEvent, Method $method)
     {
         foreach ($componentEvent->getEventHandlerList() as $eventHandler) {
 
@@ -241,19 +241,19 @@ class ComponentFactoryGenerator
      * @param ComponentEvent $componentEvent
      * @param Method $method
      */
-    protected function addSynchronousEventHandling(ComponentEvent $componentEvent, Method $method)
+    private function addSynchronousEventHandling(ComponentEvent $componentEvent, Method $method)
     {
         $method->addCodeLine('$this->backbone->dispatchSynchronousEvent($event);');
     }
 
-    protected function addBackboneExposeList()
+    private function addBackboneExposeList()
     {
         foreach ($this->project->getGlobalExposeMethodList() as $phpMethod) {
             $this->addBackboneExpose($phpMethod);
         }
     }
 
-    protected function addBackboneExpose(PHPMethod $exposedMethod)
+    private function addBackboneExpose(PHPMethod $exposedMethod)
     {
         $method = $this->classGenerator->addMethod($exposedMethod->getMethodName());
 
@@ -279,7 +279,7 @@ class ComponentFactoryGenerator
     /**
      *
      */
-    protected function addAccessMethodList()
+    private function addAccessMethodList()
     {
         foreach ($this->componentFactory->getComponentFactoryMethodList() as $componentClass) {
             $this->addAccessMethod($componentClass);
@@ -289,7 +289,7 @@ class ComponentFactoryGenerator
     /**
      * @param ComponentFactoryMethod $componentFactoryMethod
      */
-    protected function addAccessMethod(ComponentFactoryMethod $componentFactoryMethod)
+    private function addAccessMethod(ComponentFactoryMethod $componentFactoryMethod)
     {
         $this->classGenerator->addUsedClassName($componentFactoryMethod->getClassName());
 
@@ -319,7 +319,7 @@ class ComponentFactoryGenerator
      * @param ComponentFactoryMethod $componentFactoryClass
      * @param Method $method
      */
-    protected function addContextAwareAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method)
+    private function addContextAwareAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method)
     {
         $method->addSwitch('$this->backbone->getContext()');
 
@@ -339,7 +339,7 @@ class ComponentFactoryGenerator
      * @param ComponentFactoryMethod $componentFactoryClass
      * @param Method $method
      */
-    protected function addAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method)
+    private function addAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method)
     {
 
         $memberFullName = '$this->' . $componentFactoryClass->getMemberName();
@@ -360,7 +360,7 @@ class ComponentFactoryGenerator
      *
      * @return string
      */
-    protected function generateNewInstance(ComponentFactoryMethod $componentFactoryClass)
+    private function generateNewInstance(ComponentFactoryMethod $componentFactoryClass)
     {
         $signature = $componentFactoryClass->getConstructorInvocationSignature();
 
@@ -372,7 +372,7 @@ class ComponentFactoryGenerator
      *
      * @return string
      */
-    protected function getConstructorParameterValue(PHPParameter $parameter)
+    private function getConstructorParameterValue(PHPParameter $parameter)
     {
         if ($parameter->getClassName() === $this->componentFactory->getClassName()) {
             return '$this';

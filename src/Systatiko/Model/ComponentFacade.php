@@ -2,9 +2,9 @@
 
 namespace Systatiko\Model;
 
+use Civis\Common\StringUtil;
 use Systatiko\Annotation\FacadeExposition;
 use Systatiko\Reader\PHPMethod;
-use Civis\Common\StringUtil;
 
 class ComponentFacade
 {
@@ -14,33 +14,39 @@ class ComponentFacade
     /**
      * @var Project
      */
-    protected $project;
+    private $project;
 
     /**
      * @var ProjectClass
      */
-    protected $projectClass;
+    private $projectClass;
 
     /**
      * @var ComponentFactory
      */
-    protected $componentFactory;
+    private $componentFactory;
 
     /**
      * @var string
      */
-    protected $componentFacadeNamespace;
+    private $componentFacadeNamespace;
 
     /**
      * @var ComponentFacadeMethod[]
      */
-    protected $componentFacadeMethodList;
+    private $componentFacadeMethodList;
 
     /**
      * @var ComponentEventHandler[]
      */
-    protected $eventHandlerList;
+    private $eventHandlerList;
 
+    /**
+     * ComponentFacade constructor.
+     * @param Project $project
+     * @param FacadeExposition $facadeExposition
+     * @param ComponentFactory $componentFactory
+     */
     public function __construct(Project $project, FacadeExposition $facadeExposition, ComponentFactory $componentFactory)
     {
         $this->project = $project;
@@ -49,8 +55,6 @@ class ComponentFacade
         $this->componentFacadeMethodList = [];
         $this->eventHandlerList = [];
     }
-
-
 
 
     /**
@@ -71,7 +75,7 @@ class ComponentFacade
      *
      * @return bool
      */
-    public function isResponsible($namespace) : bool
+    public function isResponsible($namespace): bool
     {
         return $this->componentFacadeNamespace === $namespace;
     }
@@ -92,9 +96,9 @@ class ComponentFacade
      * @param ProjectClass $projectClass
      * @param PHPMethod $phpMethod
      */
-    protected function addFacadeMethod(ProjectClass $projectClass, PHPMethod $phpMethod)
+    private function addFacadeMethod(ProjectClass $projectClass, PHPMethod $phpMethod)
     {
-        $facadeExposition = $phpMethod->getMethodAnnotation(ProjectClass::FACADE_ANNOTATION_NAME);
+        $facadeExposition = $phpMethod->getMethodAnnotation(FacadeExposition::class);
 
         if ($facadeExposition === null) {
             return;
@@ -102,7 +106,8 @@ class ComponentFacade
 
         $factoryMethod = $this->componentFactory->getFactoryMethodByClassName($projectClass->getClassName());
         if ($factoryMethod === null) {
-            // TODO : ERROR
+            // todo give warning/error
+            return;
         }
 
         $componentFacadeMethod = new ComponentFacadeMethod($projectClass, $factoryMethod, $phpMethod);
@@ -114,7 +119,7 @@ class ComponentFacade
     /**
      * @param ComponentFacadeMethod $method
      */
-    protected function handleEventHandler(ComponentFacadeMethod $method)
+    private function handleEventHandler(ComponentFacadeMethod $method)
     {
         $handledEvent = $method->getHandledEvent();
         if ($handledEvent === null) {
@@ -134,7 +139,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getClassShortName() : string
+    public function getClassShortName(): string
     {
         if (strrpos($this->componentFacadeNamespace, "\\") === false) {
             return ucfirst($this->componentFacadeNamespace) . self::FACADE_SUFFIX;
@@ -146,7 +151,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getMemberName() : string
+    public function getMemberName(): string
     {
         return lcfirst($this->getClassShortName());
     }
@@ -154,7 +159,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getFactoryMethodName() : string
+    public function getFactoryMethodName(): string
     {
         return "get" . $this->getClassShortName();
     }
@@ -162,7 +167,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getFactoryClassName() : string
+    public function getFactoryClassName(): string
     {
         return $this->componentFactory->getClassName();
     }
@@ -170,7 +175,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getFactoryMemberName() : string
+    public function getFactoryMemberName(): string
     {
         return $this->componentFactory->getMemberName();
     }
@@ -178,7 +183,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getFactoryClassShortName() : string
+    public function getFactoryClassShortName(): string
     {
         return $this->componentFactory->getClassShortName();
     }
@@ -186,7 +191,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getClassName() : string
+    public function getClassName(): string
     {
         return $this->componentFacadeNamespace . "\\" . $this->getClassShortName();
     }
@@ -208,7 +213,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getFileName() : string
+    public function getFileName(): string
     {
         return $this->getClassShortName() . ".php";
     }
@@ -216,7 +221,7 @@ class ComponentFacade
     /**
      * @return string
      */
-    public function getNamespaceName() : string
+    public function getNamespaceName(): string
     {
         return $this->componentFacadeNamespace;
     }

@@ -18,22 +18,22 @@ class Generator implements LoggerAwareInterface
     /**
      * @var GeneratorConfiguration
      */
-    protected $generatorConfiguration;
+    private $generatorConfiguration;
 
     /**
      * @var PHPClassScanner
      */
-    protected $scanner;
+    private $scanner;
 
     /**
      * @var LoggerInterface
      */
-    protected $logger;
+    private $logger;
 
     /**
      * @var Project
      */
-    protected $project;
+    private $project;
 
     /**
      * Generator constructor.
@@ -68,7 +68,7 @@ class Generator implements LoggerAwareInterface
 
     }
 
-    protected function scanPHPFiles()
+    private function scanPHPFiles()
     {
         $includeDirectoryList = $this->generatorConfiguration->getIncludeDirectories();
         foreach ($includeDirectoryList as $includeDirectory) {
@@ -83,7 +83,7 @@ class Generator implements LoggerAwareInterface
     /**
      *
      */
-    protected function analyze()
+    private function analyze()
     {
         $phpFileList = $this->scanner->getPHPClassList();
         $this->project->addPHPClassList($phpFileList);
@@ -93,7 +93,7 @@ class Generator implements LoggerAwareInterface
     /**
      *
      */
-    protected function generate()
+    private function generate()
     {
         $errorCount = $this->project->getErrorCount();
         if ($this->project->getErrorCount() !== 0) {
@@ -109,7 +109,7 @@ class Generator implements LoggerAwareInterface
     /**
      *
      */
-    protected function generateComponentFactory()
+    private function generateComponentFactory()
     {
         foreach ($this->project->getComponentFactoryList() as $factory) {
             $fg = new ComponentFactoryGenerator($this->project, $factory);
@@ -120,7 +120,7 @@ class Generator implements LoggerAwareInterface
     /**
      *
      */
-    protected function generateComponentFacade()
+    private function generateComponentFacade()
     {
         foreach ($this->project->getComponentFacadeList() as $facade) {
             $cfg = new ComponentFacadeGenerator($this->project, $facade);
@@ -131,14 +131,14 @@ class Generator implements LoggerAwareInterface
     /**
      *
      */
-    protected function generateBackbone()
+    private function generateBackbone()
     {
         $flg = new BackboneGenerator($this->project->getComponentFacadeList(), $this->project->getComponentEventList());
         $flg->generate($this->generatorConfiguration);
 
     }
 
-    protected function writeDependencyFile()
+    private function writeDependencyFile()
     {
         $dependencyFile = $this->generatorConfiguration->getDependencyFile();
         if ($dependencyFile === null) {
@@ -150,7 +150,7 @@ class Generator implements LoggerAwareInterface
         $file->putContents($jsonString);
     }
 
-    protected function logSummary()
+    private function logSummary()
     {
         $componentFactoryCount = sizeof($this->project->getComponentFactoryList());
         $componentFacadeCount = sizeof($this->project->getComponentFacadeList());

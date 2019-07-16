@@ -14,32 +14,32 @@ class ComponentFactory
     /**
      * @var Project
      */
-    protected $project;
+    private $project;
 
     /**
      * @var string
      */
-    protected $componentFactoryNamespace;
+    private $componentFactoryNamespace;
 
     /**
      * @var ComponentFactoryMethod[]
      */
-    protected $componentFactoryMethodList;
+    private $componentFactoryMethodList;
 
     /**
      * @var ComponentEvent[]
      */
-    protected $componentEventList;
+    private $componentEventList;
 
     /**
      * @var ComponentFacade
      */
-    protected $componentFacade;
+    private $componentFacade;
 
     /**
      * @var ComponentConfigurationModel
      */
-    protected $componentConfigurationModel;
+    private $componentConfigurationModel;
 
     /**
      * ComponentFactory constructor.
