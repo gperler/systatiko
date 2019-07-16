@@ -101,21 +101,21 @@ class ComponentFactoryGenerator
      */
     private function addMember()
     {
-        $this->classGenerator->addprivateProperty("backbone", $this->backboneClassName);
+        $this->classGenerator->addProtectedProperty("backbone", $this->backboneClassName);
 
         if ($this->componentFacade !== null) {
-            $this->classGenerator->addprivateProperty($this->componentFacade->getMemberName(), $this->componentFacade->getClassName());
+            $this->classGenerator->addProtectedProperty($this->componentFacade->getMemberName(), $this->componentFacade->getClassName());
         }
 
         if ($this->componentConfigurationClass !== null) {
-            $this->classGenerator->addprivateProperty($this->componentConfigurationClass->getMemberName(), $this->componentConfigurationClass->getClassName());
+            $this->classGenerator->addProtectedProperty($this->componentConfigurationClass->getMemberName(), $this->componentConfigurationClass->getClassName());
         }
 
         foreach ($this->componentFactory->getComponentFactoryMethodList() as $componentClass) {
             if (!$componentClass->isSingleton()) {
                 continue;
             }
-            $this->classGenerator->addprivateProperty($componentClass->getMemberName(), $componentClass->getClassName());
+            $this->classGenerator->addProtectedProperty($componentClass->getMemberName(), $componentClass->getClassName());
         }
     }
 

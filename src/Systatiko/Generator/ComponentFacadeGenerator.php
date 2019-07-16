@@ -72,8 +72,8 @@ class ComponentFacadeGenerator
      */
     private function addMember()
     {
-        $this->classGenerator->addprivateProperty("backbone", $this->configuration->getBackboneClassName());
-        $this->classGenerator->addprivateProperty("factory", $this->componentFacade->getFactoryClassName());
+        $this->classGenerator->addProtectedProperty("backbone", $this->configuration->getBackboneClassName());
+        $this->classGenerator->addProtectedProperty("factory", $this->componentFacade->getFactoryClassName());
     }
 
     /**

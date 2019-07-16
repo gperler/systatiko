@@ -20,7 +20,7 @@ class Backbone extends BackboneProject
     /**
      * @var Backbone
      */
-    private static $instance;
+    protected static $instance;
 
     /**
      * @param string|null $configFileName
@@ -41,12 +41,12 @@ class Backbone extends BackboneProject
     /**
      * @var Component1Factory
      */
-    private $component1Factory;
+    protected $component1Factory;
 
     /**
      * @var Component2Factory
      */
-    private $component2Factory;
+    protected $component2Factory;
 
     /**
      * 

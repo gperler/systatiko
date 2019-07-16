@@ -17,27 +17,27 @@ class Component2Factory
     /**
      * @var Backbone
      */
-    private $backbone;
+    protected $backbone;
 
     /**
      * @var Component2Facade
      */
-    private $component2Facade;
+    protected $component2Facade;
 
     /**
      * @var EventHandler
      */
-    private $eventHandler;
+    protected $eventHandler;
 
     /**
      * @var OtherService
      */
-    private $otherService;
+    protected $otherService;
 
     /**
      * @var SecurityService
      */
-    private $securityService;
+    protected $securityService;
 
     /**
      * @param Backbone $backbone

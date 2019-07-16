@@ -56,6 +56,7 @@ class PHPMethodReturnType
         $returnType = $reflectMethod->getReturnType();
 
         if ($returnType === null) {
+            $this->canBeNull = true;
             return;
         }
 

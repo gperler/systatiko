@@ -16,12 +16,12 @@ class Component1Facade
     /**
      * @var Backbone
      */
-    private $backbone;
+    protected $backbone;
 
     /**
      * @var Component1Factory
      */
-    private $factory;
+    protected $factory;
 
     /**
      * @param Backbone $backbone
@@ -266,9 +266,9 @@ class Component1Facade
     /**
      * @param SampleEntity $entity
      * 
-     * @return SampleEntity
+     * @return SampleEntity|null
      */
-    public function hasOptionalReturnType(SampleEntity $entity) : SampleEntity
+    public function hasOptionalReturnType(SampleEntity $entity) : ?SampleEntity
     {
         return $this->factory->getServiceClass()->hasOptionalReturnType($entity);
     }
@@ -286,9 +286,9 @@ class Component1Facade
     /**
      * @param SampleEntity $entity
      * 
-     * @return SampleEntity[]
+     * @return SampleEntity[]|null
      */
-    public function hasOptionalArrayReturnType(SampleEntity $entity) : array
+    public function hasOptionalArrayReturnType(SampleEntity $entity) : ?array
     {
         return $this->factory->getServiceClass()->hasOptionalArrayReturnType($entity);
     }
