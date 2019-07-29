@@ -23,8 +23,10 @@ class ProjectClass
      */
     private $phpClass;
 
+
     /**
      * ProjectClass constructor.
+     *
      * @param Project $project
      * @param PHPClass $phpClass
      */
@@ -33,6 +35,7 @@ class ProjectClass
         $this->project = $project;
         $this->phpClass = $phpClass;
     }
+
 
     /**
      * @return null|Factory
@@ -46,6 +49,7 @@ class ProjectClass
         return $constructor->getMethodAnnotation(Factory::class);
     }
 
+
     /**
      * @return null|Event
      */
@@ -54,14 +58,17 @@ class ProjectClass
         return $this->phpClass->getClassAnnotation(Event::class);
     }
 
+
     /**
      * @param string $className
+     *
      * @return null|object
      */
     public function getAnnotation(string $className)
     {
         return $this->phpClass->getClassAnnotation($className);
     }
+
 
     /**
      * @return PHPMethod[]
@@ -70,6 +77,7 @@ class ProjectClass
     {
         return $this->phpClass->getPHPMethodList();
     }
+
 
     /**
      * @return null|FacadeExposition
@@ -80,6 +88,7 @@ class ProjectClass
         return $this->phpClass->getClassAnnotation(FacadeExposition::class);
     }
 
+
     /**
      * @return null|Configuration
      */
@@ -87,6 +96,7 @@ class ProjectClass
     {
         return $this->phpClass->getClassAnnotation(Configuration::class);
     }
+
 
     /**
      * @return string
@@ -96,6 +106,7 @@ class ProjectClass
         return $this->phpClass->getClassName();
     }
 
+
     /**
      * @return string
      */
@@ -103,6 +114,7 @@ class ProjectClass
     {
         return $this->phpClass->getClassShortName();
     }
+
 
     /**
      * @return string
@@ -112,6 +124,7 @@ class ProjectClass
         return $this->phpClass->getNamespaceName();
     }
 
+
     /**
      * @return string
      */
@@ -119,6 +132,7 @@ class ProjectClass
     {
         return lcfirst($this->getClassShortName());
     }
+
 
     /**
      * @return PHPParameter[]
@@ -130,8 +144,8 @@ class ProjectClass
             return [];
         }
         return $constructor->getMethodParameterList();
-
     }
+
 
     /**
      * @return string
@@ -145,6 +159,7 @@ class ProjectClass
         return $constructor->getInvocationSignature();
     }
 
+
     /**
      * @param string $interfaceName
      *
@@ -155,6 +170,7 @@ class ProjectClass
         return $this->phpClass->implementsInterface($interfaceName);
     }
 
+
     /**
      * @param string $className
      *
@@ -163,5 +179,16 @@ class ProjectClass
     public function isSubclassOf(string $className): bool
     {
         return $this->phpClass->isSubclassOf($className);
+    }
+
+
+    /**
+     * @param string $absoluteFileName
+     *
+     * @return bool
+     */
+    public function isFile(string $absoluteFileName)
+    {
+        return $this->phpClass->isFile($absoluteFileName);
     }
 }

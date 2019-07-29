@@ -118,6 +118,12 @@ class Project implements LoggerAwareInterface
         $this->update();
     }
 
+    public function fileChanged(string $fileName) {
+        foreach ($this->componentFacadeList as $componentFacade) {
+            $componentFacade->update($this);
+        }
+    }
+
     /**
      * @return PHPMethod[]
      */
