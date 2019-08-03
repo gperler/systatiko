@@ -33,15 +33,6 @@ class Component2Facade
     }
 
     /**
-     * 
-     * @return void
-     */
-    public function useConstructorOfSubClass()
-    {
-        $this->factory->getSubClass()->useConstructorOfSubClass();
-    }
-
-    /**
      * @param C1Event $event
      * 
      * @return void

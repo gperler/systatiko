@@ -9,7 +9,7 @@ use Systatiko\Annotation\FacadeExposition;
 /**
  * @FacadeExposition(
  *         namespace="SystatikoTest\End2End\Asset\Generated\Component2",
- *          factoryClassName="SystatikoTest\End2End\Asset\Component2\Model\SubClass"
+ *
  * )
  *
  */
@@ -17,10 +17,10 @@ class BaseClass
 {
 
     /**
-     * @FacadeExposition()
+     * @FacadeExposition(factoryClassName="SystatikoTest\End2End\Asset\Component2\Model\SubClass")
      */
-    public function useConstructorOfSubClass() {
-
+    public function useConstructorOfSubClass()
+    {
     }
 
 }
