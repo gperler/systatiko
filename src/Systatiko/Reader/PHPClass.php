@@ -37,10 +37,13 @@ class PHPClass
      */
     private $errorMessage;
 
+
     /**
      * PHPClass constructor.
+     *
      * @param File $file
      * @param string $className
+     *
      * @throws \ReflectionException
      */
     public function __construct(File $file, string $className)
@@ -50,11 +53,12 @@ class PHPClass
         $this->usedClassNameList = [];
         $this->errorMessage = null;
         $this->reflect($className);
-
     }
+
 
     /**
      * @param string $className
+     *
      * @throws \ReflectionException
      */
     private function reflect(string $className)
@@ -64,7 +68,6 @@ class PHPClass
         $this->reflectClass = new ExtendedReflectionClass($className);
 
         foreach ($this->reflectClass->getUseStatements() as $statement) {
-
             $className = ArrayUtil::getFromArray($statement, "class");
             $as = ArrayUtil::getFromArray($statement, "as");
 
@@ -72,6 +75,7 @@ class PHPClass
             $this->usedClassNameList[] = new PHPClassName($className, $as);
         }
     }
+
 
     /**
      * @return bool
@@ -81,6 +85,7 @@ class PHPClass
         return $this->errorMessage !== null;
     }
 
+
     /**
      * @return null|string
      */
@@ -88,6 +93,7 @@ class PHPClass
     {
         return $this->errorMessage;
     }
+
 
     /**
      * @return string
@@ -97,6 +103,7 @@ class PHPClass
         return $this->className->getClassShortName();
     }
 
+
     /**
      * @return string
      */
@@ -104,6 +111,7 @@ class PHPClass
     {
         return $this->className->getClassName();
     }
+
 
     /**
      * @return string
@@ -113,6 +121,7 @@ class PHPClass
         return $this->className->getNamespaceName();
     }
 
+
     /**
      * @return PHPClassName[]
      */
@@ -120,6 +129,7 @@ class PHPClass
     {
         return $this->usedClassNameList;
     }
+
 
     /**
      * @param string $interfaceName
@@ -131,6 +141,7 @@ class PHPClass
         return $this->reflectClass->implementsInterface($interfaceName);
     }
 
+
     /**
      * @param string $className
      *
@@ -140,6 +151,7 @@ class PHPClass
     {
         return $this->reflectClass->isSubclassOf($className);
     }
+
 
     /**
      * @param $annotationName
@@ -155,6 +167,7 @@ class PHPClass
         return $reader->getClassAnnotation($this->reflectClass, $annotationName);
     }
 
+
     /**
      * @return PHPMethod[]
      */
@@ -169,6 +182,7 @@ class PHPClass
         return $methodList;
     }
 
+
     /**
      * @return PHPMethod
      */
@@ -180,6 +194,7 @@ class PHPClass
         }
         return new PHPMethod($this, $reflectMethod);
     }
+
 
     /**
      * @param string|null $shortName
@@ -205,8 +220,10 @@ class PHPClass
         return $this->getSameNamespaceClass($shortName);
     }
 
+
     /**
      * @param string|null $className
+     *
      * @return string
      */
     public function getShortNameForClassName(string $className = null): ?string
@@ -242,12 +259,22 @@ class PHPClass
         return new PHPClassName($this->getNamespaceName() . "\\" . $classShortName);
     }
 
+
     /**
      * @return string
      */
     public function getClassContent()
     {
         return $this->file->getContents();
+    }
+
+
+    /**
+     * @return File
+     */
+    public function getFile(): File
+    {
+        return $this->file;
     }
 
 }

@@ -9,6 +9,7 @@ use SystatikoTest\End2End\Asset\Component2\Entity\OverWriteEntity;
 use SystatikoTest\End2End\Asset\Component2\Model\EventHandler;
 use SystatikoTest\End2End\Asset\Component2\Model\OtherService;
 use SystatikoTest\End2End\Asset\Component2\Model\SecurityService;
+use SystatikoTest\End2End\Asset\Component2\Model\SubClass;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class Component2Factory
@@ -38,6 +39,11 @@ class Component2Factory
      * @var SecurityService
      */
     protected $securityService;
+
+    /**
+     * @var SubClass
+     */
+    protected $subClass;
 
     /**
      * @param Backbone $backbone
@@ -121,6 +127,18 @@ class Component2Factory
 
     /**
      * 
+     * @return SubClass
+     */
+    public function getSubClass() : SubClass
+    {
+        if ($this->subClass === null) {
+            $this->subClass = new SubClass();
+        }
+        return $this->subClass;
+    }
+
+    /**
+     * 
      * @return string
      */
     public function exposeToAllFactories() : string
@@ -138,5 +156,6 @@ class Component2Factory
         $this->eventHandler = null;
         $this->otherService = null;
         $this->securityService = null;
+        $this->subClass = null;
     }
 }

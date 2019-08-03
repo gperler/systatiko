@@ -4,6 +4,7 @@ namespace Systatiko\Model;
 
 use Civis\Common\StringUtil;
 use Systatiko\Annotation\FacadeExposition;
+use Systatiko\Reader\PHPClassName;
 use Systatiko\Reader\PHPMethod;
 
 class ComponentFacade
@@ -32,6 +33,11 @@ class ComponentFacade
     private $componentFacadeNamespace;
 
     /**
+     * @var string
+     */
+    private $factoryClassName;
+
+    /**
      * @var ComponentFacadeMethod[]
      */
     private $componentFacadeMethodList;
@@ -41,8 +47,10 @@ class ComponentFacade
      */
     private $eventHandlerList;
 
+
     /**
      * ComponentFacade constructor.
+     *
      * @param Project $project
      * @param FacadeExposition $facadeExposition
      * @param ComponentFactory $componentFactory
@@ -52,6 +60,7 @@ class ComponentFacade
         $this->project = $project;
         $this->componentFactory = $componentFactory;
         $this->componentFacadeNamespace = $facadeExposition->getNamespace();
+        $this->factoryClassName = $facadeExposition->getFactoryClassName();
         $this->componentFacadeMethodList = [];
         $this->eventHandlerList = [];
     }
@@ -70,6 +79,7 @@ class ComponentFacade
         }
     }
 
+
     /**
      * @param $namespace
      *
@@ -80,6 +90,7 @@ class ComponentFacade
         return $this->componentFacadeNamespace === $namespace;
     }
 
+
     /**
      * @param FacadeExposition $exposition
      * @param ProjectClass $projectClass
@@ -89,8 +100,8 @@ class ComponentFacade
         foreach ($projectClass->getPHPMethodList() as $phpMethod) {
             $this->addFacadeMethod($projectClass, $phpMethod);
         }
-
     }
+
 
     /**
      * @param ProjectClass $projectClass
@@ -105,8 +116,15 @@ class ComponentFacade
         }
 
         $factoryMethod = $this->componentFactory->getFactoryMethodByClassName($projectClass->getClassName());
+
+        // if a class does not have its own @Factory annotation
+        // the @FacadeExposition can determine a Factory Method to use
+        if ($factoryMethod === null && $this->factoryClassName !== null) {
+            $className = new PHPClassName($this->factoryClassName);
+            $factoryMethod = $this->componentFactory->getComponentFactoryMethodByClassName($className);
+        }
+
         if ($factoryMethod === null) {
-            // todo give warning/error
             return;
         }
 
@@ -115,6 +133,7 @@ class ComponentFacade
 
         $this->handleEventHandler($componentFacadeMethod);
     }
+
 
     /**
      * @param ComponentFacadeMethod $method
@@ -128,6 +147,7 @@ class ComponentFacade
         $this->eventHandlerList[] = new ComponentEventHandler($this, $method, $handledEvent);
     }
 
+
     /**
      * @return ComponentFacadeMethod[]
      */
@@ -135,6 +155,7 @@ class ComponentFacade
     {
         return $this->componentFacadeMethodList;
     }
+
 
     /**
      * @return string
@@ -148,6 +169,7 @@ class ComponentFacade
         return ucfirst($className) . self::FACADE_SUFFIX;
     }
 
+
     /**
      * @return string
      */
@@ -155,6 +177,7 @@ class ComponentFacade
     {
         return lcfirst($this->getClassShortName());
     }
+
 
     /**
      * @return string
@@ -164,6 +187,7 @@ class ComponentFacade
         return "get" . $this->getClassShortName();
     }
 
+
     /**
      * @return string
      */
@@ -171,6 +195,7 @@ class ComponentFacade
     {
         return $this->componentFactory->getClassName();
     }
+
 
     /**
      * @return string
@@ -180,6 +205,7 @@ class ComponentFacade
         return $this->componentFactory->getMemberName();
     }
 
+
     /**
      * @return string
      */
@@ -188,6 +214,7 @@ class ComponentFacade
         return $this->componentFactory->getClassShortName();
     }
 
+
     /**
      * @return string
      */
@@ -195,6 +222,7 @@ class ComponentFacade
     {
         return $this->componentFacadeNamespace . "\\" . $this->getClassShortName();
     }
+
 
     /**
      * @param string $facadeClassName
@@ -207,8 +235,8 @@ class ComponentFacade
             return $this->getFactoryMethodName();
         }
         return null;
-
     }
+
 
     /**
      * @return string
@@ -217,6 +245,7 @@ class ComponentFacade
     {
         return $this->getClassShortName() . ".php";
     }
+
 
     /**
      * @return string

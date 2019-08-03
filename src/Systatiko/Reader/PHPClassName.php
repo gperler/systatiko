@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Systatiko\Reader;
 
-use Codeception\Util\Debug;
 use Civis\Common\StringUtil;
 
 class PHPClassName

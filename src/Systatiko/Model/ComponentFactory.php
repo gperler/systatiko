@@ -2,6 +2,7 @@
 
 namespace Systatiko\Model;
 
+use SebastianBergmann\CodeCoverage\Report\PHP;
 use Systatiko\Annotation\Factory;
 use Systatiko\Reader\PHPClassName;
 use Civis\Common\StringUtil;

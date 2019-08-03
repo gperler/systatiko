@@ -111,11 +111,34 @@ class Project implements LoggerAwareInterface
         $backboneExtendsBaseClass = $this->getPHPClassByName($backboneExtendsName);
         $this->backboneModel = new BackboneModel($backboneExtendsBaseClass);
 
+        // read factories first
+        foreach ($this->phpClassList as $phpClass) {
+            $projectClass = new ProjectClass($this, $phpClass);
+            $this->handleFactoryAnnotation($projectClass);
+        }
+
         foreach ($this->phpClassList as $phpClass) {
             $this->analyzePHPClass($phpClass);
         }
 
         $this->update();
+    }
+
+    /**
+     * @param PHPClass $phpClass
+     */
+    private function analyzePHPClass(PHPClass $phpClass)
+    {
+        $projectClass = new ProjectClass($this, $phpClass);
+
+        $this->logDebug("Analyzing " . $phpClass->getClassName());
+
+        $this->handleFacadeAnnotation($projectClass);
+
+        $this->handleComponentConfiguration($projectClass);
+
+        $this->handleEventAnnotation($projectClass);
+
     }
 
     /**
@@ -199,24 +222,7 @@ class Project implements LoggerAwareInterface
         $factory->addComponentEvent($componentEvent);
     }
 
-    /**
-     * @param PHPClass $phpClass
-     */
-    private function analyzePHPClass(PHPClass $phpClass)
-    {
-        $projectClass = new ProjectClass($this, $phpClass);
 
-        $this->logDebug("Analyzing " . $phpClass->getClassName());
-
-        $this->handleFactoryAnnotation($projectClass);
-
-        $this->handleFacadeAnnotation($projectClass);
-
-        $this->handleComponentConfiguration($projectClass);
-
-        $this->handleEventAnnotation($projectClass);
-
-    }
 
     /**
      * @param ProjectClass $projectClass
@@ -240,6 +246,7 @@ class Project implements LoggerAwareInterface
         if ($facadeAnnotation === null) {
             return;
         }
+
         $componentFactory = $this->getResponsibleComponentFactory($facadeAnnotation->getNamespace());
         if ($componentFactory === null) {
             $error = sprintf(self::ERROR_NO_FACTORY_FOR_FACADE, $facadeAnnotation->getNamespace());

@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Systatiko\Reader;
 
 use Civis\Common\StringUtil;
-use Codeception\Util\Debug;
 
 class PHPDocCommentType
 {

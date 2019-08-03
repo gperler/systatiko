@@ -10,12 +10,24 @@ class FacadeExposition
 
     public $namespace;
 
+    public $factoryClassName;
+
+
     /**
-     * @return string
+     * @return string|null
      */
-    public function getNamespace()
+    public function getNamespace(): ?string
     {
         return trim($this->namespace, "\\");
+    }
+
+
+    /**
+     * @return string|null
+     */
+    public function getFactoryClassName(): ?string
+    {
+        return $this->factoryClassName;
     }
 
 }
