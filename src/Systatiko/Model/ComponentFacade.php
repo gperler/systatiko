@@ -92,7 +92,7 @@ class ComponentFacade
     public function addFacadeMethodList(FacadeExposition $exposition, ProjectClass $projectClass)
     {
         foreach ($projectClass->getPHPMethodList() as $phpMethod) {
-            $this->addFacadeMethod($projectClass, $phpMethod, $exposition);
+            $this->addFacadeMethod($projectClass, $phpMethod);
         }
     }
 
@@ -100,9 +100,8 @@ class ComponentFacade
     /**
      * @param ProjectClass $projectClass
      * @param PHPMethod $phpMethod
-     * @param FacadeExposition $exposition
      */
-    private function addFacadeMethod(ProjectClass $projectClass, PHPMethod $phpMethod, FacadeExposition $exposition)
+    private function addFacadeMethod(ProjectClass $projectClass, PHPMethod $phpMethod)
     {
         $facadeExposition = $phpMethod->getMethodAnnotation(FacadeExposition::class);
 
@@ -112,15 +111,10 @@ class ComponentFacade
 
         $factoryMethod = $this->componentFactory->getFactoryMethodByClassName($projectClass->getClassName());
 
-        if ($factoryMethod === null) {
-            echo $exposition->factoryClassName . PHP_EOL;
-        }
-
-
         // if a class does not have its own @Factory annotation
         // the @FacadeExposition can determine a Factory Method to use
-        if ($factoryMethod === null && $exposition->factoryClassName !== null) {
-            $className = new PHPClassName($exposition->factoryClassName);
+        if ($factoryMethod === null && $facadeExposition->factoryClassName !== null) {
+            $className = new PHPClassName($facadeExposition->factoryClassName);
             $factoryMethod = $this->componentFactory->getComponentFactoryMethodByClassName($className);
         }
 
