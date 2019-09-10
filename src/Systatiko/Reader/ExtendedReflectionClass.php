@@ -4,6 +4,9 @@ declare(strict_types = 1);
 
 namespace Systatiko\Reader;
 
+use ReflectionClass;
+use RuntimeException;
+
 /**
  * The MIT License (MIT)
  * Copyright (c) Ozgur (Ozzy) Giritli <ozgur@zeronights.com>
@@ -23,7 +26,7 @@ namespace Systatiko\Reader;
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-class ExtendedReflectionClass extends \ReflectionClass
+class ExtendedReflectionClass extends ReflectionClass
 {
 
     /**
@@ -50,7 +53,7 @@ class ExtendedReflectionClass extends \ReflectionClass
         }
 
         if (!$this->isUserDefined()) {
-            throw new \RuntimeException('Must parse use statements from user defined classes.');
+            throw new RuntimeException('Must parse use statements from user defined classes.');
         }
 
         $source = $this->readFileSource();

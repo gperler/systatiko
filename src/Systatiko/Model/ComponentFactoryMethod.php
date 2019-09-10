@@ -144,7 +144,7 @@ class ComponentFactoryMethod
             // classname might not be set because class is in same namespace and therefore not imported
             $possibleName = $this->factoryForProjectClass->getNamespaceName() . "\\" . $parameter->getType();
             if ($project->getPHPClassByName($possibleName) !== null) {
-                $parameter->setClassName($possibleName);
+                $parameter->setClassName(new PHPClassName($possibleName));
             }
         }
     }

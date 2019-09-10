@@ -7,6 +7,7 @@ namespace Systatiko\Reader;
 use Civis\Common\File;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use ReflectionException;
 
 class PHPClassScanner implements LoggerAwareInterface
 {
@@ -63,7 +64,7 @@ class PHPClassScanner implements LoggerAwareInterface
 
     /**
      * @param File $phpFile
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function extractPHPClassList(File $phpFile)
     {

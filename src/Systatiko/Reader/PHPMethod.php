@@ -5,6 +5,7 @@ namespace Systatiko\Reader;
 use Civis\Common\StringUtil;
 use Codeception\Util\Debug;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
+use ReflectionMethod;
 
 class PHPMethod
 {
@@ -14,7 +15,7 @@ class PHPMethod
     private $phpClass;
 
     /**
-     * @var \ReflectionMethod
+     * @var ReflectionMethod
      */
     private $reflectionMethod;
 
@@ -37,9 +38,9 @@ class PHPMethod
      * PHPMethod constructor.
      *
      * @param PHPClass $phpClass
-     * @param \ReflectionMethod $reflectionMethod
+     * @param ReflectionMethod $reflectionMethod
      */
-    public function __construct(PHPClass $phpClass, \ReflectionMethod $reflectionMethod)
+    public function __construct(PHPClass $phpClass, ReflectionMethod $reflectionMethod)
     {
         $this->phpClass = $phpClass;
         $this->reflectionMethod = $reflectionMethod;
@@ -50,9 +51,9 @@ class PHPMethod
     }
 
     /**
-     * @return \ReflectionMethod
+     * @return ReflectionMethod
      */
-    public function getReflectMethod(): \ReflectionMethod
+    public function getReflectMethod(): ReflectionMethod
     {
         return $this->reflectionMethod;
     }

@@ -366,9 +366,8 @@ class Project implements LoggerAwareInterface
 
     /**
      * @param string $className
-     * @paran string $usingComponent
-     *
-     * @return null|string
+     * @param string $usingComponent
+     * @return string|null
      */
     public function getBackboneAccessor(string $className, string $usingComponent)
     {

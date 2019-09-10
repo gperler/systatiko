@@ -9,6 +9,7 @@
     }
   ],
   "require": {
+    "ext-json" : "*",
     "php": ">=7.1.0",
     "symfony/console": "*",
     "psr/log": "*",

@@ -6,6 +6,7 @@ namespace Systatiko\Generator;
 use Civis\Common\File;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use ReflectionException;
 use Systatiko\Configuration\ConfigurationException;
 use Systatiko\Configuration\GeneratorConfiguration;
 use Systatiko\Logger\EchoLogger;
@@ -47,7 +48,7 @@ class Generator implements LoggerAwareInterface
 
     /**
      * @param string $configFile
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function start(string $configFile)
     {

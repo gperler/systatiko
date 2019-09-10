@@ -12,7 +12,6 @@ use Systatiko\Model\ComponentFactoryMethod;
 use Systatiko\Model\Project;
 use Systatiko\Model\ProjectClass;
 use Systatiko\Reader\PHPMethod;
-use Systatiko\Reader\PHPParameter;
 
 class ComponentFactoryGenerator
 {
@@ -197,7 +196,6 @@ class ComponentFactoryGenerator
      */
     private function addTriggerMethodList()
     {
-        $eventCount = sizeof($this->componentFactory->getComponentEventList());
         foreach ($this->componentFactory->getComponentEventList() as $componentEvent) {
             $this->addTriggerMethod($componentEvent);
         }
@@ -367,17 +365,5 @@ class ComponentFactoryGenerator
         return "new " . $componentFactoryClass->getClassShortName() . "($signature);";
     }
 
-    /**
-     * @param PHPParameter $parameter
-     *
-     * @return string
-     */
-    private function getConstructorParameterValue(PHPParameter $parameter)
-    {
-        if ($parameter->getClassName() === $this->componentFactory->getClassName()) {
-            return '$this';
-        }
-        return '""';
-    }
 
 }

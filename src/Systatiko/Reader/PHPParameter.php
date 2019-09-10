@@ -4,6 +4,7 @@ namespace Systatiko\Reader;
 
 use Civis\Common\ArrayUtil;
 use Civis\Common\StringUtil;
+use ReflectionParameter;
 
 class PHPParameter
 {
@@ -58,18 +59,18 @@ class PHPParameter
     /**
      * PHPParameter constructor.
      * @param PHPMethod $method
-     * @param \ReflectionParameter $reflectionParameter
+     * @param ReflectionParameter $reflectionParameter
      */
-    public function __construct(PHPMethod $method, \ReflectionParameter $reflectionParameter)
+    public function __construct(PHPMethod $method, ReflectionParameter $reflectionParameter)
     {
         $this->phpMethod = $method;
         $this->readSignaturePart($reflectionParameter);
     }
 
     /**
-     * @param \ReflectionParameter $reflectionParameter
+     * @param ReflectionParameter $reflectionParameter
      */
-    private function readSignaturePart(\ReflectionParameter $reflectionParameter)
+    private function readSignaturePart(ReflectionParameter $reflectionParameter)
     {
         $this->name = $reflectionParameter->getName();
 
@@ -79,9 +80,9 @@ class PHPParameter
     }
 
     /**
-     * @param \ReflectionParameter $reflectionParameter
+     * @param ReflectionParameter $reflectionParameter
      */
-    private function extractType(\ReflectionParameter $reflectionParameter)
+    private function extractType(ReflectionParameter $reflectionParameter)
     {
         $type = $reflectionParameter->getType();
         if ($type === null) {
@@ -98,9 +99,9 @@ class PHPParameter
 
 
     /**
-     * @param \ReflectionParameter $reflectionParameter
+     * @param ReflectionParameter $reflectionParameter
      */
-    private function extractDefaultValue(\ReflectionParameter $reflectionParameter)
+    private function extractDefaultValue(ReflectionParameter $reflectionParameter)
     {
         $this->allowsNull = $reflectionParameter->allowsNull();
 
