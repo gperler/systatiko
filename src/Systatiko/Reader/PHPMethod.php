@@ -3,7 +3,6 @@
 namespace Systatiko\Reader;
 
 use Civis\Common\StringUtil;
-use Codeception\Util\Debug;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use ReflectionMethod;
 
@@ -34,6 +33,7 @@ class PHPMethod
      */
     private $exceptionList;
 
+
     /**
      * PHPMethod constructor.
      *
@@ -50,6 +50,7 @@ class PHPMethod
         $this->extractMethodReturnType();
     }
 
+
     /**
      * @return ReflectionMethod
      */
@@ -57,6 +58,7 @@ class PHPMethod
     {
         return $this->reflectionMethod;
     }
+
 
     /**
      *
@@ -70,14 +72,17 @@ class PHPMethod
         }
     }
 
+
     /**
      * @param string|null $className
+     *
      * @return null|string
      */
     public function getShortNameForClassName(string $className = null): ?string
     {
         return $this->phpClass->getShortNameForClassName($className);
     }
+
 
     /**
      * @return string
@@ -87,6 +92,7 @@ class PHPMethod
         return $this->phpClass->getClassName();
     }
 
+
     /**
      *
      */
@@ -94,6 +100,7 @@ class PHPMethod
     {
         $this->methodReturnType = new PHPMethodReturnType($this);
     }
+
 
     /**
      * @return string
@@ -103,6 +110,7 @@ class PHPMethod
         return $this->reflectionMethod->getName();
     }
 
+
     /**
      * @return string
      */
@@ -110,6 +118,7 @@ class PHPMethod
     {
         return $this->reflectionMethod->getDocComment();
     }
+
 
     /**
      * @param string $annotationName
@@ -125,6 +134,7 @@ class PHPMethod
         return $reader->getMethodAnnotation($this->reflectionMethod, $annotationName);
     }
 
+
     /**
      * @return PHPClassName[]
      */
@@ -136,7 +146,6 @@ class PHPMethod
 
         foreach ($matches[1] as $exception) {
             if (StringUtil::startsWith($exception, "\\")) {
-                Debug::debug("starts with \\");
                 $exceptionClassName = new PHPClassName($exception);
             } else {
                 $exceptionClassName = $this->getClassNameForShortName($exception);
@@ -160,6 +169,7 @@ class PHPMethod
         return implode(", ", $parameterList);
     }
 
+
     /**
      * @return PHPMethodReturnType
      */
@@ -168,6 +178,7 @@ class PHPMethod
         return $this->methodReturnType;
     }
 
+
     /**
      * @return PHPParameter[]
      */
@@ -175,6 +186,7 @@ class PHPMethod
     {
         return $this->parameterList;
     }
+
 
     /**
      * @param string|null $classShortName
@@ -185,6 +197,7 @@ class PHPMethod
     {
         return $this->phpClass->getClassNameForShortName($classShortName);
     }
+
 
     /**
      * @return bool

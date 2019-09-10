@@ -76,7 +76,7 @@ abstract class BackboneBase implements BackboneContract
     /**
      * @param $componentName
      *
-     * @return null|string
+     * @return null|array
      */
     public function getComponentConfiguration(string $componentName)
     {

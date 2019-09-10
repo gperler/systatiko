@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\End2End\Asset\Component2\Model;
 
+use Systatiko\Annotation\FacadeExposition;
+use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Component1\Event\AsyncEvent;
 use SystatikoTest\End2End\Asset\Component1\Event\C1Event;
 
