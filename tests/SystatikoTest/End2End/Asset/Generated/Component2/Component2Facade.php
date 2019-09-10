@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace SystatikoTest\End2End\Asset\Generated\Component2;
 
@@ -21,11 +21,10 @@ class Component2Facade
      */
     protected $factory;
 
-
     /**
      * @param Backbone $backbone
      * @param Component2Factory $factory
-     *
+     * 
      */
     public function __construct(Backbone $backbone, Component2Factory $factory)
     {
@@ -33,9 +32,8 @@ class Component2Facade
         $this->factory = $factory;
     }
 
-
     /**
-     *
+     * 
      * @return void
      */
     public function useConstructorOfSubClass()
@@ -43,10 +41,9 @@ class Component2Facade
         $this->factory->getSubClass()->useConstructorOfSubClass();
     }
 
-
     /**
      * @param C1Event $event
-     *
+     * 
      * @return void
      */
     public function eventHandler(C1Event $event)
@@ -54,10 +51,9 @@ class Component2Facade
         $this->factory->getEventHandler()->eventHandler($event);
     }
 
-
     /**
      * @param AsyncEvent $event
-     *
+     * 
      * @return void
      */
     public function handleAsyncEvent(AsyncEvent $event)
@@ -65,10 +61,9 @@ class Component2Facade
         $this->factory->getEventHandler()->handleAsyncEvent($event);
     }
 
-
     /**
      * @param string $roleName
-     *
+     * 
      * @return void
      */
     public function isInRole(string $roleName)
