@@ -5,7 +5,10 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Gregor Müller"
+      "name": "synatos GmbH",
+      "email": "info@synatos.io",
+      "homepage": "https://synatos.io",
+      "role": "Developer"
     }
   ],
   "require": {
