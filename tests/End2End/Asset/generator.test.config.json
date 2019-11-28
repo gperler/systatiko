@@ -11,5 +11,10 @@
   ],
   "logger": "EchoLogger",
   "targetDir": "./tests/",
-  "dependencyFile" : "./tests/dependency.json"
+  "dependencyFile": "./tests/dependency.json",
+  "injectionList": {
+    "className": {
+      "code": ""
+    }
+  }
 }
