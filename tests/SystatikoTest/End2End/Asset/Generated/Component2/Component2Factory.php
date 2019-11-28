@@ -7,6 +7,7 @@ namespace SystatikoTest\End2End\Asset\Generated\Component2;
 use SystatikoTest\End2End\Asset\Component2\Entity\BaseEntity;
 use SystatikoTest\End2End\Asset\Component2\Entity\OverWriteEntity;
 use SystatikoTest\End2End\Asset\Component2\Model\EventHandler;
+use SystatikoTest\End2End\Asset\Component2\Model\InjectContextService;
 use SystatikoTest\End2End\Asset\Component2\Model\OtherService;
 use SystatikoTest\End2End\Asset\Component2\Model\SecurityService;
 use SystatikoTest\End2End\Asset\Component2\Model\SubClass;
@@ -29,6 +30,11 @@ class Component2Factory
      * @var EventHandler
      */
     protected $eventHandler;
+
+    /**
+     * @var InjectContextService
+     */
+    protected $injectContextService;
 
     /**
      * @var OtherService
@@ -103,6 +109,18 @@ class Component2Factory
 
     /**
      * 
+     * @return InjectContextService
+     */
+    public function getInjectContextService() : InjectContextService
+    {
+        if ($this->injectContextService === null) {
+            $this->injectContextService = new InjectContextService($this->backbone->getComponent1Facade()->getInjectContext());
+        }
+        return $this->injectContextService;
+    }
+
+    /**
+     * 
      * @return OtherService
      */
     public function getOtherService() : OtherService
@@ -154,6 +172,7 @@ class Component2Factory
     {
         $this->component2Facade = null;
         $this->eventHandler = null;
+        $this->injectContextService = null;
         $this->otherService = null;
         $this->securityService = null;
         $this->subClass = null;

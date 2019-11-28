@@ -56,6 +56,8 @@ class GeneratorConfiguration
 
     const PSR4_PREFIX = 'psr4Prefix';
 
+    const INJECTION_CONFIGURATION = 'injectionList';
+
 
     /**
      * @var File
@@ -81,6 +83,12 @@ class GeneratorConfiguration
      * @var FacadeGeneratorExtension[]
      */
     private $facadeGeneratorExtension;
+
+
+    /**
+     * @var InjectionConfiguration
+     */
+    private $injectionConfiguration;
 
     /**
      * GeneratorConfiguration constructor.
@@ -116,10 +124,20 @@ class GeneratorConfiguration
      */
     private function parseConfigFile()
     {
+        $this->parseInjectionConfiguration();
         $this->parseBackboneConfig();
         $this->parseIncludeDirectoryConfig();
         $this->parsePSR4Prefix();
         $this->parseFacadeGeneratorExtensionConfig();
+    }
+
+    /**
+     *
+     */
+    private function parseInjectionConfiguration()
+    {
+        $injectionConfiguration = $this->getConfigValue(self::INJECTION_CONFIGURATION);
+        $this->injectionConfiguration = new InjectionConfiguration($injectionConfiguration);
     }
 
     /**
@@ -309,6 +327,14 @@ class GeneratorConfiguration
     public function getFacadeGeneratorExtension(): array
     {
         return $this->facadeGeneratorExtension;
+    }
+
+    /**
+     * @return InjectionConfiguration
+     */
+    public function getInjectionConfiguration(): InjectionConfiguration
+    {
+        return $this->injectionConfiguration;
     }
 
 }

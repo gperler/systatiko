@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace SystatikoTest\End2End\Asset\Generated\Component1;
 
 use Civis\Common\File as Test;
+use SystatikoTest\End2End\Asset\Component1\Entity\InjectContext;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 use SystatikoTest\End2End\Asset\Component1\Model\MethodParameterTest;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
@@ -311,5 +312,14 @@ class Component1Facade
     public function mixedReturnType($x)
     {
         return $this->factory->getServiceClass()->mixedReturnType($x);
+    }
+
+    /**
+     * 
+     * @return InjectContext
+     */
+    public function getInjectContext() : InjectContext
+    {
+        return $this->factory->getServiceClass()->getInjectContext();
     }
 }

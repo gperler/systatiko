@@ -62,6 +62,15 @@ class Component2Facade
     }
 
     /**
+     * 
+     * @return string
+     */
+    public function injectedSayHello() : string
+    {
+        return $this->factory->getInjectContextService()->injectedSayHello();
+    }
+
+    /**
      * @param string $roleName
      * 
      * @return void

@@ -2,10 +2,11 @@
 
 namespace Systatiko\Model;
 
+use Civis\Common\StringUtil;
 use Systatiko\Annotation\Factory;
+use Systatiko\Configuration\InjectionConfiguration;
 use Systatiko\Reader\PHPClassName;
 use Systatiko\Reader\PHPParameter;
-use Civis\Common\StringUtil;
 
 class ComponentFactoryMethod
 {
@@ -54,6 +55,11 @@ class ComponentFactoryMethod
     private $accessorParameterList;
 
     /**
+     * @var InjectionConfiguration
+     */
+    private $injectionConfiguration;
+
+    /**
      * ComponentFactoryMethod constructor.
      *
      * @param ComponentFactory $componentFactory
@@ -68,6 +74,7 @@ class ComponentFactoryMethod
         $this->overwritingComponentFactoryClassList = [];
         $this->constructorInvocationSignatureList = [];
         $this->accessorParameterList = [];
+        $this->injectionConfiguration = $componentFactory->getInjectionConfiguration();
     }
 
     /**
@@ -156,6 +163,7 @@ class ComponentFactoryMethod
     private function getParameterAccessor(Project $project, PHPParameter $parameter)
     {
 
+        // not allowed injection
         if (!$this->factoryAnnotation->injectionAllowed($parameter->getName())) {
             $this->constructorInvocationSignatureList[] = '$' . $parameter->getName();
             $this->accessorParameterList[] = $parameter;
@@ -164,23 +172,27 @@ class ComponentFactoryMethod
 
         $parameterClass = $parameter->getClassName();
 
+        // no class > primitive
         if ($parameterClass === null) {
             $this->constructorInvocationSignatureList[] = '$' . $parameter->getName();
             $this->accessorParameterList[] = $parameter;
             return;
         }
 
+        // injection of factory
         if ($parameterClass->getClassName() === $this->componentFactory->getClassName()) {
             $this->constructorInvocationSignatureList[] = '$this';
             return;
         }
 
+        // injection of configuration
         $componentConfiguration = $this->componentFactory->getComponentConfigurationModel();
         if ($componentConfiguration !== null && $componentConfiguration->getClassName() === $parameterClass->getClassName()) {
             $this->constructorInvocationSignatureList[] = '$this->getConfiguration()';
             return;
         }
 
+        // injection of component class
         $factoryMethod = $this->componentFactory->getComponentFactoryMethodByClassName($parameterClass);
         if ($factoryMethod !== null) {
             $this->constructorInvocationSignatureList[] = '$this->' . $factoryMethod->getFactoryMethodName() . '()';
@@ -189,11 +201,18 @@ class ComponentFactoryMethod
 
         $nameSpace = $this->factoryAnnotation->namespace;
 
+        // injection of facade
         $accesor = $project->getBackboneAccessor($parameterClass->getClassName(), $nameSpace);
         if ($accesor !== null) {
             $this->constructorInvocationSignatureList[] = '$this->backbone->' . $accesor . '()';
             return;
+        }
 
+        // injection defined in configuration
+        if ($this->injectionConfiguration->isDefined($parameterClass->getClassName())) {
+            $code = $this->injectionConfiguration->getCodeForClassName($parameterClass->getClassName());
+            $this->constructorInvocationSignatureList[] = $code;
+            return;
         }
 
         $this->constructorInvocationSignatureList[] = '$' . $parameter->getName();
@@ -219,7 +238,7 @@ class ComponentFactoryMethod
     /**
      * @return bool
      */
-    public function hasOverwritingComponentFactoryClassList() : bool
+    public function hasOverwritingComponentFactoryClassList(): bool
     {
         return sizeof($this->overwritingComponentFactoryClassList) !== 0;
     }
@@ -235,7 +254,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getContext() : string
+    public function getContext(): string
     {
         return $this->factoryAnnotation->getContext();
     }
@@ -243,7 +262,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getClassName() : string
+    public function getClassName(): string
     {
         return $this->factoryForProjectClass->getClassName();
     }
@@ -251,7 +270,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getClassShortName() : string
+    public function getClassShortName(): string
     {
         return $this->factoryForProjectClass->getClassShortName();
     }
@@ -259,7 +278,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getFactoryMethodReturnType() : string
+    public function getFactoryMethodReturnType(): string
     {
         $factoryReturnType = $this->factoryAnnotation->returnType;
         if ($factoryReturnType !== null) {
@@ -271,7 +290,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getFactoryMethodName() : string
+    public function getFactoryMethodName(): string
     {
         $prefix = $this->isSingleton() ? "get" : "new";
         return $prefix . $this->getClassShortName();
@@ -280,7 +299,7 @@ class ComponentFactoryMethod
     /**
      * @return bool
      */
-    public function isSingleton() : bool
+    public function isSingleton(): bool
     {
         return $this->factoryAnnotation->isSingleton();
     }
@@ -288,7 +307,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getMemberName() : string
+    public function getMemberName(): string
     {
         return lcfirst($this->factoryForProjectClass->getClassShortName());
     }
@@ -296,7 +315,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getMemberType() : string
+    public function getMemberType(): string
     {
         return $this->factoryForProjectClass->getClassShortName();
     }
@@ -304,7 +323,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getConstructorInvocationSignature() : string
+    public function getConstructorInvocationSignature(): string
     {
         return implode(", ", $this->constructorInvocationSignatureList);
     }
@@ -312,7 +331,7 @@ class ComponentFactoryMethod
     /**
      * @return string
      */
-    public function getAccessorSignature() : string
+    public function getAccessorSignature(): string
     {
         $parameterList = [];
         foreach ($this->accessorParameterList as $parameter) {
@@ -324,7 +343,7 @@ class ComponentFactoryMethod
     /**
      * @return PHPParameter[]
      */
-    public function getAccessorParameterList() : array
+    public function getAccessorParameterList(): array
     {
         return $this->accessorParameterList;
     }
@@ -332,7 +351,7 @@ class ComponentFactoryMethod
     /**
      * @return string[]
      */
-    public function getUsedClassList() : array
+    public function getUsedClassList(): array
     {
         $useStatementList = [$this->factoryForProjectClass->getClassName()];
 

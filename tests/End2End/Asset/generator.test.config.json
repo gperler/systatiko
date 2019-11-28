@@ -13,8 +13,8 @@
   "targetDir": "./tests/",
   "dependencyFile": "./tests/dependency.json",
   "injectionList": {
-    "className": {
-      "code": ""
+    "SystatikoTest\\End2End\\Asset\\Component1\\Entity\\InjectContext": {
+      "code": "$this->backbone->getComponent1Facade()->getInjectContext()"
     }
   }
 }

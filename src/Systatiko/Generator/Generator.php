@@ -54,6 +54,7 @@ class Generator implements LoggerAwareInterface
     {
         try {
             $this->generatorConfiguration = new GeneratorConfiguration($configFile);
+            $this->project->setGeneratorConfiguration($this->generatorConfiguration);
         } catch (ConfigurationException $e) {
             $this->logger->error($e->getMessage());
             return;

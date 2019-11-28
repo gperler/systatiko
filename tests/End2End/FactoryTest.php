@@ -1,9 +1,10 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End;
 
+use SystatikoTest\End2End\Asset\Component1\Entity\InjectContext;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class FactoryTest extends End2EndTest
@@ -94,5 +95,15 @@ class FactoryTest extends End2EndTest
         $this->assertInstanceOf('SystatikoTest\End2End\Asset\Component1\Component1Configuration', $config);
 
         $this->assertSame("Jamie Woon", $config->getTestValue());
+    }
+
+    public function testInjectConfiguration()
+    {
+        $backbone = Backbone::getInstance(__DIR__ . DIRECTORY_SEPARATOR . "Asset" . DIRECTORY_SEPARATOR . "backbone.config.json");
+
+        $facade2 = $backbone->getComponent2Facade();
+
+        $this->assertSame(InjectContext::HELLO_MESSAGE, $facade2->injectedSayHello());;
+
     }
 }

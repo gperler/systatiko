@@ -6,6 +6,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Systatiko\Annotation\FacadeExposition;
 use Systatiko\Annotation\Factory;
+use Systatiko\Configuration\GeneratorConfiguration;
+use Systatiko\Configuration\InjectionConfiguration;
 use Systatiko\Reader\PHPClass;
 use Systatiko\Reader\PHPMethod;
 
@@ -79,6 +81,12 @@ class Project implements LoggerAwareInterface
      * @var int
      */
     private $warningCount;
+
+
+    /**
+     * @var GeneratorConfiguration
+     */
+    private $generatorConfiguration;
 
     /**
      * Project constructor.
@@ -221,7 +229,6 @@ class Project implements LoggerAwareInterface
         }
         $factory->addComponentEvent($componentEvent);
     }
-
 
 
     /**
@@ -540,4 +547,28 @@ class Project implements LoggerAwareInterface
         return $this->warningCount;
     }
 
+    /**
+     * @return GeneratorConfiguration
+     */
+    public function getGeneratorConfiguration(): GeneratorConfiguration
+    {
+        return $this->generatorConfiguration;
+    }
+
+    /**
+     * @param GeneratorConfiguration $generatorConfiguration
+     */
+    public function setGeneratorConfiguration(GeneratorConfiguration $generatorConfiguration): void
+    {
+        $this->generatorConfiguration = $generatorConfiguration;
+    }
+
+
+    /**
+     * @return InjectionConfiguration
+     */
+    public function getInjectionConfiguration(): InjectionConfiguration
+    {
+        return $this->generatorConfiguration->getInjectionConfiguration();
+    }
 }

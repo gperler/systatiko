@@ -46,6 +46,7 @@ class ComponentFactoryGenerator
      */
     private $classGenerator;
 
+
     /**
      * ComponentFactoryGenerator constructor.
      *
@@ -58,7 +59,6 @@ class ComponentFactoryGenerator
         $this->componentFactory = $componentFactory;
         $this->componentConfigurationClass = $componentFactory->getComponentConfigurationClass();
         $this->componentFacade = $componentFactory->getComponentFacade();
-
     }
 
     /**
@@ -129,6 +129,9 @@ class ComponentFactoryGenerator
         $constructor->addCodeLine('$this->backbone = $backbone;');
     }
 
+    /**
+     *
+     */
     private function addResetSingletonMethod()
     {
         $resetMethod = $this->classGenerator->addMethod("resetSingleton");
@@ -244,6 +247,9 @@ class ComponentFactoryGenerator
         $method->addCodeLine('$this->backbone->dispatchSynchronousEvent($event);');
     }
 
+    /**
+     *
+     */
     private function addBackboneExposeList()
     {
         foreach ($this->project->getGlobalExposeMethodList() as $phpMethod) {
@@ -251,6 +257,9 @@ class ComponentFactoryGenerator
         }
     }
 
+    /**
+     * @param PHPMethod $exposedMethod
+     */
     private function addBackboneExpose(PHPMethod $exposedMethod)
     {
         $method = $this->classGenerator->addMethod($exposedMethod->getMethodName());
