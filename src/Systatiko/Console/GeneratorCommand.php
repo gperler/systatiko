@@ -60,7 +60,7 @@ class GeneratorCommand extends Command
 
         if ($configurationFileName === null) {
             $output->writeln(self::NO_CONFIG_FILE);
-            return;
+            return -1;
         }
 
         $output->writeln("I'm using configfile " . $configurationFileName);
@@ -71,6 +71,7 @@ class GeneratorCommand extends Command
 
         $this->endTimer();
 
+        return 0;
     }
 
     /**

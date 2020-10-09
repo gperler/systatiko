@@ -14,7 +14,7 @@ class End2EndTest extends \PHPUnit_Framework_TestCase
     const GEN_DIR = "./tests/SystatikoTest";
     const GENERATOR_CONFIG = "./tests/End2End/Asset/generator.test.config.json";
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $genDir = new File(self::GEN_DIR);

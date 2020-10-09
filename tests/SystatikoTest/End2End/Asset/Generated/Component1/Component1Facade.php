@@ -312,4 +312,44 @@ class Component1Facade
     {
         return $this->factory->getServiceClass()->mixedReturnType($x);
     }
+
+    /**
+     * @param SampleEntity $entity
+     * 
+     * @return void
+     */
+    public function hasVoidReturn(SampleEntity $entity) : void
+    {
+        $this->factory->getVoidClass()->hasVoidReturn($entity);
+    }
+
+    /**
+     * @param SampleEntity $entity
+     * 
+     * @return void
+     */
+    public function hasVoidReturn1(SampleEntity $entity)
+    {
+        $this->factory->getVoidClass()->hasVoidReturn1($entity);
+    }
+
+    /**
+     * @param SampleEntity $entity
+     * 
+     * @return void
+     */
+    public function hasVoidReturn2(SampleEntity $entity) : void
+    {
+        $this->factory->getVoidClass()->hasVoidReturn2($entity);
+    }
+
+    /**
+     * @param SampleEntity $entity
+     * 
+     * @return void
+     */
+    public function hasVoidReturn3(SampleEntity $entity)
+    {
+        $this->factory->getVoidClass()->hasVoidReturn3($entity);
+    }
 }

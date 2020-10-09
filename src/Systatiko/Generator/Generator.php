@@ -35,6 +35,7 @@ class Generator implements LoggerAwareInterface
      */
     private $project;
 
+
     /**
      * Generator constructor.
      */
@@ -45,8 +46,10 @@ class Generator implements LoggerAwareInterface
         $this->setLogger(new EchoLogger());
     }
 
+
     /**
      * @param string $configFile
+     *
      * @throws \ReflectionException
      */
     public function start(string $configFile)
@@ -57,16 +60,12 @@ class Generator implements LoggerAwareInterface
             $this->logger->error($e->getMessage());
             return;
         }
-
         $this->scanPHPFiles();
-
         $this->analyze();
-
         $this->generate();
-
         $this->logSummary();
-
     }
+
 
     private function scanPHPFiles()
     {
@@ -80,6 +79,7 @@ class Generator implements LoggerAwareInterface
         }
     }
 
+
     /**
      *
      */
@@ -87,8 +87,10 @@ class Generator implements LoggerAwareInterface
     {
         $phpFileList = $this->scanner->getPHPClassList();
         $this->project->addPHPClassList($phpFileList);
+
         $this->project->analyze($this->generatorConfiguration->getBackboneExtendsClassName());
     }
+
 
     /**
      *
@@ -106,6 +108,7 @@ class Generator implements LoggerAwareInterface
         $this->writeDependencyFile();
     }
 
+
     /**
      *
      */
@@ -116,6 +119,7 @@ class Generator implements LoggerAwareInterface
             $fg->generate($this->generatorConfiguration);
         }
     }
+
 
     /**
      *
@@ -128,6 +132,7 @@ class Generator implements LoggerAwareInterface
         }
     }
 
+
     /**
      *
      */
@@ -135,8 +140,8 @@ class Generator implements LoggerAwareInterface
     {
         $flg = new BackboneGenerator($this->project->getComponentFacadeList(), $this->project->getComponentEventList());
         $flg->generate($this->generatorConfiguration);
-
     }
+
 
     private function writeDependencyFile()
     {
@@ -150,6 +155,7 @@ class Generator implements LoggerAwareInterface
         $file->putContents($jsonString);
     }
 
+
     private function logSummary()
     {
         $componentFactoryCount = sizeof($this->project->getComponentFactoryList());
@@ -158,6 +164,7 @@ class Generator implements LoggerAwareInterface
         $this->logger->info("Generated $componentFactoryCount ComponentFactory|ies");
         $this->logger->info("Generated $componentFacadeCount ComponentFacade(s)");
     }
+
 
     /**
      * @param LoggerInterface $logger

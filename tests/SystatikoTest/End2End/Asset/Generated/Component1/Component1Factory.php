@@ -20,6 +20,7 @@ use SystatikoTest\End2End\Asset\Component1\Model\FacadeInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\MethodParameterTest;
 use SystatikoTest\End2End\Asset\Component1\Model\NoInjection;
 use SystatikoTest\End2End\Asset\Component1\Model\ServiceClass;
+use SystatikoTest\End2End\Asset\Component1\Model\VoidClass;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
 
 class Component1Factory
@@ -69,6 +70,11 @@ class Component1Factory
      * @var ServiceClass
      */
     protected $serviceClass;
+
+    /**
+     * @var VoidClass
+     */
+    protected $voidClass;
 
     /**
      * @param Backbone $backbone
@@ -243,6 +249,18 @@ class Component1Factory
     }
 
     /**
+     * 
+     * @return VoidClass
+     */
+    public function getVoidClass() : VoidClass
+    {
+        if ($this->voidClass === null) {
+            $this->voidClass = new VoidClass();
+        }
+        return $this->voidClass;
+    }
+
+    /**
      * @param AsyncEvent $event
      * 
      * @return void
@@ -286,5 +304,6 @@ class Component1Factory
         $this->facadeInjection = null;
         $this->noInjection = null;
         $this->serviceClass = null;
+        $this->voidClass = null;
     }
 }
