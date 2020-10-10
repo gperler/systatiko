@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace SystatikoTest\End2End\Asset\Generated\Component1;
 
 use Civis\Common\File as Test;
+use SystatikoTest\End2End\Asset\Component1\Entity\InjectContext;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 use SystatikoTest\End2End\Asset\Component1\Model\MethodParameterTest;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
@@ -314,42 +315,11 @@ class Component1Facade
     }
 
     /**
-     * @param SampleEntity $entity
      * 
-     * @return void
+     * @return InjectContext
      */
-    public function hasVoidReturn(SampleEntity $entity) : void
+    public function getInjectContext() : InjectContext
     {
-        $this->factory->getVoidClass()->hasVoidReturn($entity);
-    }
-
-    /**
-     * @param SampleEntity $entity
-     * 
-     * @return void
-     */
-    public function hasVoidReturn1(SampleEntity $entity)
-    {
-        $this->factory->getVoidClass()->hasVoidReturn1($entity);
-    }
-
-    /**
-     * @param SampleEntity $entity
-     * 
-     * @return void
-     */
-    public function hasVoidReturn2(SampleEntity $entity) : void
-    {
-        $this->factory->getVoidClass()->hasVoidReturn2($entity);
-    }
-
-    /**
-     * @param SampleEntity $entity
-     * 
-     * @return void
-     */
-    public function hasVoidReturn3(SampleEntity $entity)
-    {
-        $this->factory->getVoidClass()->hasVoidReturn3($entity);
+        return $this->factory->getServiceClass()->getInjectContext();
     }
 }

@@ -2,7 +2,9 @@
 
 namespace Systatiko\Configuration;
 
-class ConfigurationException extends \Exception
+use Exception;
+
+class ConfigurationException extends Exception
 {
 
 }

@@ -4,6 +4,9 @@ namespace Systatiko\Configuration;
 
 use Civis\Common\ArrayUtil;
 use Civis\Common\File;
+use Exception;
+use ReflectionClass;
+use ReflectionException;
 use Systatiko\Contract\FacadeGeneratorExtension;
 use Systatiko\Reader\PHPClassName;
 
@@ -53,6 +56,8 @@ class GeneratorConfiguration
 
     const PSR4_PREFIX = 'psr4Prefix';
 
+    const INJECTION_CONFIGURATION = 'injectionList';
+
 
     /**
      * @var File
@@ -79,11 +84,17 @@ class GeneratorConfiguration
      */
     private $facadeGeneratorExtension;
 
+
+    /**
+     * @var InjectionConfiguration
+     */
+    private $injectionConfiguration;
+
     /**
      * GeneratorConfiguration constructor.
      * @param string $fileName
      * @throws ConfigurationException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct(string $fileName)
     {
@@ -95,7 +106,7 @@ class GeneratorConfiguration
 
     /**
      * @throws ConfigurationException
-     * @throws \Exception
+     * @throws Exception
      */
     private function loadConfigValues()
     {
@@ -109,14 +120,24 @@ class GeneratorConfiguration
 
     /**
      * @throws ConfigurationException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function parseConfigFile()
     {
+        $this->parseInjectionConfiguration();
         $this->parseBackboneConfig();
         $this->parseIncludeDirectoryConfig();
         $this->parsePSR4Prefix();
         $this->parseFacadeGeneratorExtensionConfig();
+    }
+
+    /**
+     *
+     */
+    private function parseInjectionConfiguration()
+    {
+        $injectionConfiguration = $this->getConfigValue(self::INJECTION_CONFIGURATION);
+        $this->injectionConfiguration = new InjectionConfiguration($injectionConfiguration);
     }
 
     /**
@@ -159,7 +180,7 @@ class GeneratorConfiguration
 
     /**
      * @throws ConfigurationException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function parseFacadeGeneratorExtensionConfig()
     {
@@ -173,7 +194,7 @@ class GeneratorConfiguration
         }
 
         foreach ($generatorExtensionClassList as $generatorExtensionClassName) {
-            $reflect = new \ReflectionClass($generatorExtensionClassName);
+            $reflect = new ReflectionClass($generatorExtensionClassName);
 
             if (!$reflect->implementsInterface(self::FACADE_GENERATOR_EXTENSION_INTERFACE)) {
                 $message = sprintf(self::EXCEPTION_FACADE_GENERATOR_EXTENSION_DOES_NOT_IMPLEMENT, $generatorExtensionClassName, self::FACADE_GENERATOR_EXTENSION_INTERFACE);
@@ -189,7 +210,7 @@ class GeneratorConfiguration
      * @param string $key
      * @param string|null $default
      *
-     * @return null|string
+     * @return null|string|array
      */
     private function getConfigValue(string $key, string $default = null)
     {
@@ -306,6 +327,14 @@ class GeneratorConfiguration
     public function getFacadeGeneratorExtension(): array
     {
         return $this->facadeGeneratorExtension;
+    }
+
+    /**
+     * @return InjectionConfiguration
+     */
+    public function getInjectionConfiguration(): InjectionConfiguration
+    {
+        return $this->injectionConfiguration;
     }
 
 }

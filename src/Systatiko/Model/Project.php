@@ -6,6 +6,8 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use Systatiko\Annotation\FacadeExposition;
 use Systatiko\Annotation\Factory;
+use Systatiko\Configuration\GeneratorConfiguration;
+use Systatiko\Configuration\InjectionConfiguration;
 use Systatiko\Reader\PHPClass;
 use Systatiko\Reader\PHPMethod;
 
@@ -82,6 +84,11 @@ class Project implements LoggerAwareInterface
 
 
     /**
+     * @var GeneratorConfiguration
+     */
+    private $generatorConfiguration;
+
+    /**
      * Project constructor.
      */
     public function __construct()
@@ -96,7 +103,6 @@ class Project implements LoggerAwareInterface
         $this->dependencyList = [];
     }
 
-
     /**
      * @param array $phpClassList
      */
@@ -104,7 +110,6 @@ class Project implements LoggerAwareInterface
     {
         $this->phpClassList = array_merge($this->phpClassList, $phpClassList);
     }
-
 
     /**
      * @param string $backboneExtendsName
@@ -127,7 +132,6 @@ class Project implements LoggerAwareInterface
         $this->update();
     }
 
-
     /**
      * @param PHPClass $phpClass
      */
@@ -142,8 +146,8 @@ class Project implements LoggerAwareInterface
         $this->handleComponentConfiguration($projectClass);
 
         $this->handleEventAnnotation($projectClass);
-    }
 
+    }
 
     /**
      * @return PHPMethod[]
@@ -152,7 +156,6 @@ class Project implements LoggerAwareInterface
     {
         return $this->backboneModel->getExposeList();
     }
-
 
     private function update()
     {
@@ -173,8 +176,8 @@ class Project implements LoggerAwareInterface
         foreach ($this->componentFacadeList as $componentFacade) {
             $componentFacade->update($this);
         }
-    }
 
+    }
 
     /**
      * @param ComponentConfigurationModel $componentConfiguration
@@ -186,6 +189,7 @@ class Project implements LoggerAwareInterface
 
         $factory = $this->getResponsibleComponentFactory($namespace);
         if ($factory === null) {
+
             $error = sprintf(self::ERROR_NO_FACTORY_FOR_CONFIGURATION, $className, $namespace);
             $this->logError($error);
             return;
@@ -206,8 +210,8 @@ class Project implements LoggerAwareInterface
         }
 
         $factory->setComponentConfigurationModel($componentConfiguration);
-    }
 
+    }
 
     /**
      * @param ComponentEvent $componentEvent
@@ -227,6 +231,7 @@ class Project implements LoggerAwareInterface
     }
 
 
+
     /**
      * @param ProjectClass $projectClass
      */
@@ -239,7 +244,6 @@ class Project implements LoggerAwareInterface
         $componentFactory = $this->getOrCreateResponsibleComponentFactory($factoryAnnotation);
         $componentFactory->addFactoryMethod($factoryAnnotation, $projectClass);
     }
-
 
     /**
      * @param ProjectClass $projectClass
@@ -264,7 +268,6 @@ class Project implements LoggerAwareInterface
         $componentFacade->addFacadeMethodList($facadeAnnotation, $projectClass);
     }
 
-
     /**
      * @param ProjectClass $projectClass
      */
@@ -282,7 +285,6 @@ class Project implements LoggerAwareInterface
         $this->componentConfigurationList[] = $componentConfiguration;
     }
 
-
     /**
      * @param ProjectClass $projectClass
      */
@@ -296,7 +298,6 @@ class Project implements LoggerAwareInterface
 
         $this->componentEventList[] = new ComponentEvent($projectClass, $eventAnnotation);
     }
-
 
     /**
      * @param Factory $factory
@@ -329,7 +330,6 @@ class Project implements LoggerAwareInterface
         return null;
     }
 
-
     /**
      * @param string $eventClassName
      *
@@ -344,7 +344,6 @@ class Project implements LoggerAwareInterface
         }
         return null;
     }
-
 
     /**
      * @param FacadeExposition $facadeExposition
@@ -363,8 +362,8 @@ class Project implements LoggerAwareInterface
         $namespaceName = $componentFacade->getNamespaceName();
         $this->componentFacadeList[$namespaceName] = $componentFacade;
         return $componentFacade;
-    }
 
+    }
 
     /**
      * @param $namespace
@@ -534,7 +533,6 @@ class Project implements LoggerAwareInterface
         $this->loggerInterface->debug($message);
     }
 
-
     /**
      * @param LoggerInterface $logger
      *
@@ -546,7 +544,6 @@ class Project implements LoggerAwareInterface
         return null;
     }
 
-
     /**
      * @return int
      */
@@ -554,7 +551,6 @@ class Project implements LoggerAwareInterface
     {
         return $this->errorCount;
     }
-
 
     /**
      * @return int
@@ -564,4 +560,28 @@ class Project implements LoggerAwareInterface
         return $this->warningCount;
     }
 
+    /**
+     * @return GeneratorConfiguration
+     */
+    public function getGeneratorConfiguration(): GeneratorConfiguration
+    {
+        return $this->generatorConfiguration;
+    }
+
+    /**
+     * @param GeneratorConfiguration $generatorConfiguration
+     */
+    public function setGeneratorConfiguration(GeneratorConfiguration $generatorConfiguration): void
+    {
+        $this->generatorConfiguration = $generatorConfiguration;
+    }
+
+
+    /**
+     * @return InjectionConfiguration
+     */
+    public function getInjectionConfiguration(): InjectionConfiguration
+    {
+        return $this->generatorConfiguration->getInjectionConfiguration();
+    }
 }

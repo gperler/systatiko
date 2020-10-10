@@ -2,10 +2,10 @@
 
 namespace Systatiko\Model;
 
-use SebastianBergmann\CodeCoverage\Report\PHP;
-use Systatiko\Annotation\Factory;
-use Systatiko\Reader\PHPClassName;
 use Civis\Common\StringUtil;
+use Systatiko\Annotation\Factory;
+use Systatiko\Configuration\InjectionConfiguration;
+use Systatiko\Reader\PHPClassName;
 
 class ComponentFactory
 {
@@ -43,6 +43,11 @@ class ComponentFactory
     private $componentConfigurationModel;
 
     /**
+     * @var InjectionConfiguration
+     */
+    private $injectionConfiguration;
+
+    /**
      * ComponentFactory constructor.
      *
      * @param Project $project
@@ -55,6 +60,7 @@ class ComponentFactory
         $this->componentFactoryMethodList = [];
         $this->componentEventList = [];
         $this->componentFacade = null;
+        $this->injectionConfiguration = $project->getInjectionConfiguration();
     }
 
     /**
@@ -62,7 +68,7 @@ class ComponentFactory
      *
      * @return bool
      */
-    public function isResponsible(string $namespace) : bool
+    public function isResponsible(string $namespace): bool
     {
         return $this->componentFactoryNamespace === $namespace;
     }
@@ -129,7 +135,7 @@ class ComponentFactory
     /**
      * @return ComponentFactoryMethod[]
      */
-    public function getComponentFactoryMethodList() : array
+    public function getComponentFactoryMethodList(): array
     {
         return $this->componentFactoryMethodList;
     }
@@ -137,7 +143,7 @@ class ComponentFactory
     /**
      * @return string
      */
-    public function getComponentName() : string
+    public function getComponentName(): string
     {
         if (strrpos($this->componentFactoryNamespace, "\\") === false) {
             return ucfirst($this->componentFactoryNamespace);
@@ -149,7 +155,7 @@ class ComponentFactory
     /**
      * @return string
      */
-    public function getClassShortName() : string
+    public function getClassShortName(): string
     {
         return $this->getComponentName() . self::FACTORY_SUFFIX;
     }
@@ -157,7 +163,7 @@ class ComponentFactory
     /**
      * @return string
      */
-    public function getMemberName() : string
+    public function getMemberName(): string
     {
         return lcfirst($this->getClassShortName());
     }
@@ -165,7 +171,7 @@ class ComponentFactory
     /**
      * @return string
      */
-    public function getClassName() : string
+    public function getClassName(): string
     {
         return $this->componentFactoryNamespace . "\\" . $this->getClassShortName();
     }
@@ -188,7 +194,7 @@ class ComponentFactory
     /**
      * @return string
      */
-    public function getFileName() : string
+    public function getFileName(): string
     {
         return $this->getClassShortName() . ".php";
     }
@@ -196,7 +202,7 @@ class ComponentFactory
     /**
      * @return string
      */
-    public function getFilePath() : string
+    public function getFilePath(): string
     {
         return str_replace("\\", DIRECTORY_SEPARATOR, $this->componentFactoryNamespace);
     }
@@ -204,7 +210,7 @@ class ComponentFactory
     /**
      * @return string
      */
-    public function getFileNamePath() : string
+    public function getFileNamePath(): string
     {
         return $this->getFilePath() . "/" . $this->getFileName();
     }
@@ -212,7 +218,7 @@ class ComponentFactory
     /**
      * @return string
      */
-    public function getNamespaceName() : string
+    public function getNamespaceName(): string
     {
         return $this->componentFactoryNamespace;
     }
@@ -220,7 +226,7 @@ class ComponentFactory
     /**
      * @return string[]
      */
-    public function getUsedClassList() : array
+    public function getUsedClassList(): array
     {
         $usedClassList = [];
         foreach ($this->componentFactoryMethodList as $class) {
@@ -270,4 +276,13 @@ class ComponentFactory
     {
         return $this->componentEventList;
     }
+
+    /**
+     * @return InjectionConfiguration
+     */
+    public function getInjectionConfiguration(): InjectionConfiguration
+    {
+        return $this->injectionConfiguration;
+    }
+
 }

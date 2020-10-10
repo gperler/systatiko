@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Systatiko\Reader;
 
@@ -130,7 +130,7 @@ class PHPDocCommentType
     /**
      * @return bool
      */
-    public function isVoid() : bool
+    public function isVoid(): bool
     {
         return $this->isVoid;
     }
@@ -160,7 +160,7 @@ class PHPDocCommentType
     /**
      * @return bool
      */
-    public function isAsClassName() : bool
+    public function isAsClassName(): bool
     {
         return $this->className !== null && $this->className->getAs() !== null;
     }

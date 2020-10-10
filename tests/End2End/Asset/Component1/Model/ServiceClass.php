@@ -6,6 +6,7 @@ namespace SystatikoTest\End2End\Asset\Component1\Model;
 
 use Systatiko\Annotation\FacadeExposition;
 use Systatiko\Annotation\Factory;
+use SystatikoTest\End2End\Asset\Component1\Entity\InjectContext;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 
 /**
@@ -92,5 +93,15 @@ class ServiceClass
     public function mixedReturnType($x)
     {
         return 7;
+    }
+
+    /**
+     * @FacadeExposition()
+     *
+     * @return InjectContext
+     */
+    public function getInjectContext(): InjectContext
+    {
+        return new InjectContext();
     }
 }

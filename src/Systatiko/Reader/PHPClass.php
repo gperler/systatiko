@@ -5,6 +5,7 @@ namespace Systatiko\Reader;
 use Civis\Common\ArrayUtil;
 use Civis\Common\File;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
+use ReflectionException;
 
 /**
  * @author Gregor Müller
@@ -44,7 +45,7 @@ class PHPClass
      * @param File $file
      * @param string $className
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct(File $file, string $className)
     {
@@ -59,7 +60,7 @@ class PHPClass
     /**
      * @param string $className
      *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function reflect(string $className)
     {

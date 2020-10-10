@@ -12,7 +12,6 @@ use Systatiko\Model\ComponentFactoryMethod;
 use Systatiko\Model\Project;
 use Systatiko\Model\ProjectClass;
 use Systatiko\Reader\PHPMethod;
-use Systatiko\Reader\PHPParameter;
 
 class ComponentFactoryGenerator
 {
@@ -47,6 +46,7 @@ class ComponentFactoryGenerator
      */
     private $classGenerator;
 
+
     /**
      * ComponentFactoryGenerator constructor.
      *
@@ -59,7 +59,6 @@ class ComponentFactoryGenerator
         $this->componentFactory = $componentFactory;
         $this->componentConfigurationClass = $componentFactory->getComponentConfigurationClass();
         $this->componentFacade = $componentFactory->getComponentFacade();
-
     }
 
     /**
@@ -130,6 +129,9 @@ class ComponentFactoryGenerator
         $constructor->addCodeLine('$this->backbone = $backbone;');
     }
 
+    /**
+     *
+     */
     private function addResetSingletonMethod()
     {
         $resetMethod = $this->classGenerator->addMethod("resetSingleton");
@@ -197,7 +199,6 @@ class ComponentFactoryGenerator
      */
     private function addTriggerMethodList()
     {
-        $eventCount = sizeof($this->componentFactory->getComponentEventList());
         foreach ($this->componentFactory->getComponentEventList() as $componentEvent) {
             $this->addTriggerMethod($componentEvent);
         }
@@ -246,6 +247,9 @@ class ComponentFactoryGenerator
         $method->addCodeLine('$this->backbone->dispatchSynchronousEvent($event);');
     }
 
+    /**
+     *
+     */
     private function addBackboneExposeList()
     {
         foreach ($this->project->getGlobalExposeMethodList() as $phpMethod) {
@@ -253,6 +257,9 @@ class ComponentFactoryGenerator
         }
     }
 
+    /**
+     * @param PHPMethod $exposedMethod
+     */
     private function addBackboneExpose(PHPMethod $exposedMethod)
     {
         $method = $this->classGenerator->addMethod($exposedMethod->getMethodName());
@@ -367,17 +374,5 @@ class ComponentFactoryGenerator
         return "new " . $componentFactoryClass->getClassShortName() . "($signature);";
     }
 
-    /**
-     * @param PHPParameter $parameter
-     *
-     * @return string
-     */
-    private function getConstructorParameterValue(PHPParameter $parameter)
-    {
-        if ($parameter->getClassName() === $this->componentFactory->getClassName()) {
-            return '$this';
-        }
-        return '""';
-    }
 
 }
