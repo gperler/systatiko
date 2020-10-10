@@ -63,7 +63,7 @@ class GeneratorCommand extends Command
             return -1;
         }
 
-        $output->writeln("I'm using configfile " . $configurationFileName);
+        $output->writeln("I'm using config file " . $configurationFileName);
 
         $generator = new Generator();
         $generator->setLogger(new SymphonyConsoleLogger($output));
