@@ -7,6 +7,7 @@ namespace SystatikoTest\End2End;
 use Civis\Common\ArrayUtil;
 use SystatikoTest\End2End\Asset\Generated\Backbone;
 use SystatikoTest\End2End\Asset\TestAsyncEventHandler;
+use SystatikoTest\End2End\Asset\Component1\Constant\Role;
 
 class BackboneTest extends End2EndTest
 {

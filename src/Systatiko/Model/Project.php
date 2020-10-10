@@ -231,6 +231,7 @@ class Project implements LoggerAwareInterface
     }
 
 
+
     /**
      * @param ProjectClass $projectClass
      */
@@ -310,9 +311,11 @@ class Project implements LoggerAwareInterface
             return $componentFactory;
         }
         $componentFactory = new ComponentFactory($this, $factory);
-        $this->componentFactoryList[] = $componentFactory;
+        $nameSpaceName = $componentFactory->getNamespaceName();
+        $this->componentFactoryList[$nameSpaceName] = $componentFactory;
         return $componentFactory;
     }
+
 
     /**
      * @param string $namespace
@@ -321,10 +324,8 @@ class Project implements LoggerAwareInterface
      */
     private function getResponsibleComponentFactory(string $namespace)
     {
-        foreach ($this->componentFactoryList as $componentFactory) {
-            if ($componentFactory->isResponsible($namespace)) {
-                return $componentFactory;
-            }
+        if (isset($this->componentFactoryList[$namespace])) {
+            return $this->componentFactoryList[$namespace];
         }
         return null;
     }
@@ -358,7 +359,8 @@ class Project implements LoggerAwareInterface
         }
 
         $componentFacade = new ComponentFacade($this, $facadeExposition, $componentFactory);
-        $this->componentFacadeList[] = $componentFacade;
+        $namespaceName = $componentFacade->getNamespaceName();
+        $this->componentFacadeList[$namespaceName] = $componentFacade;
         return $componentFacade;
 
     }
@@ -370,18 +372,19 @@ class Project implements LoggerAwareInterface
      */
     private function getResponsibleComponentFacade(string $namespace)
     {
-        foreach ($this->componentFacadeList as $componentFacade) {
-            if ($componentFacade->isResponsible($namespace)) {
-                return $componentFacade;
-            }
+        if (isset($this->componentFacadeList[$namespace])) {
+            return $this->componentFacadeList[$namespace];
         }
         return null;
     }
 
+
     /**
      * @param string $className
      * @param string $usingComponent
-     * @return string|null
+     *
+     * @return null|string
+     *
      */
     public function getBackboneAccessor(string $className, string $usingComponent)
     {
@@ -395,6 +398,7 @@ class Project implements LoggerAwareInterface
         }
         return null;
     }
+
 
     /**
      * @param string $usingComponent
@@ -410,6 +414,7 @@ class Project implements LoggerAwareInterface
         }
         $this->dependencyList[$usedComponent][] = $usingComponent;
     }
+
 
     /**
      * @return string[][]
@@ -435,6 +440,7 @@ class Project implements LoggerAwareInterface
         return null;
     }
 
+
     /**
      * @param string $className
      *
@@ -450,21 +456,24 @@ class Project implements LoggerAwareInterface
         return null;
     }
 
+
     /**
      * @return ComponentFactory[]
      */
     public function getComponentFactoryList()
     {
-        return $this->componentFactoryList;
+        return array_values($this->componentFactoryList);
     }
+
 
     /**
      * @return ComponentFacade[]
      */
     public function getComponentFacadeList()
     {
-        return $this->componentFacadeList;
+        return array_values($this->componentFacadeList);
     }
+
 
     /**
      * @return ComponentEvent[]
@@ -473,6 +482,7 @@ class Project implements LoggerAwareInterface
     {
         return $this->componentEventList;
     }
+
 
     /**
      * @param string $message
@@ -486,6 +496,7 @@ class Project implements LoggerAwareInterface
         $this->loggerInterface->warning($message);
     }
 
+
     /**
      * @param string $message
      */
@@ -498,6 +509,7 @@ class Project implements LoggerAwareInterface
         $this->loggerInterface->error($message);
     }
 
+
     /**
      * @param string $message
      */
@@ -508,6 +520,7 @@ class Project implements LoggerAwareInterface
         }
         $this->loggerInterface->info($message);
     }
+
 
     /**
      * @param string $message

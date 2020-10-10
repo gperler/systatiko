@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Systatiko\Reader;
 
@@ -32,6 +32,7 @@ class PHPMethodReturnType
      */
     private $canBeNull;
 
+
     /**
      * PHPMethodReturnType constructor.
      *
@@ -45,12 +46,12 @@ class PHPMethodReturnType
         $this->extractDocBlockReturnType();
     }
 
+
     /**
      *
      */
     private function extractSignatureReturnType()
     {
-
         $reflectMethod = $this->phpMethod->getReflectMethod();
 
         $returnType = $reflectMethod->getReturnType();
@@ -60,11 +61,13 @@ class PHPMethodReturnType
             return;
         }
 
+
         $this->canBeNull = $returnType->allowsNull();
 
-        $this->signatureType =  $returnType->getName();
+        $this->signatureType = $returnType->getName();
         $this->signatureTypeClassName = $this->phpMethod->getClassNameForShortName($this->signatureType);
     }
+
 
     /**
      *
@@ -85,6 +88,7 @@ class PHPMethodReturnType
         $this->docBlockType = new PHPDocCommentType($docBlockType, $this->phpMethod);
     }
 
+
     /**
      * @return string
      */
@@ -92,6 +96,7 @@ class PHPMethodReturnType
     {
         return $this->signatureType;
     }
+
 
     /**
      * @return PHPClassName
@@ -101,6 +106,7 @@ class PHPMethodReturnType
         return $this->signatureTypeClassName;
     }
 
+
     /**
      * @return PHPDocCommentType
      */
@@ -109,6 +115,7 @@ class PHPMethodReturnType
         return $this->docBlockType;
     }
 
+
     /**
      * @return boolean
      */
@@ -116,6 +123,7 @@ class PHPMethodReturnType
     {
         return $this->canBeNull;
     }
+
 
     /**
      * @return null|string
@@ -141,10 +149,11 @@ class PHPMethodReturnType
         return $this->signatureTypeClassName->getClassName();
     }
 
+
     /**
      * @return bool
      */
-    public function isAsClassName() : bool
+    public function isAsClassName(): bool
     {
         if ($this->docBlockType !== null) {
             return $this->docBlockType->isAsClassName();
@@ -154,6 +163,7 @@ class PHPMethodReturnType
         }
         return false;
     }
+
 
     /**
      * @return null|PHPClassName

@@ -8,6 +8,7 @@ use Systatiko\Configuration\GeneratorConfiguration;
 use Systatiko\Model\ComponentFacade;
 use Systatiko\Model\ComponentFacadeMethod;
 use Systatiko\Model\Project;
+use Systatiko\Reader\PHPMethodReturnType;
 
 class ComponentFacadeGenerator
 {
@@ -32,6 +33,7 @@ class ComponentFacadeGenerator
      */
     private $configuration;
 
+
     /**
      * ComponentFacadeGenerator constructor.
      *
@@ -43,6 +45,7 @@ class ComponentFacadeGenerator
         $this->project = $project;
         $this->componentFacade = $componentFacade;
     }
+
 
     /**
      * @param GeneratorConfiguration $configuration
@@ -67,6 +70,7 @@ class ComponentFacadeGenerator
         }
     }
 
+
     /**
      *
      */
@@ -75,6 +79,7 @@ class ComponentFacadeGenerator
         $this->classGenerator->addProtectedProperty("backbone", $this->configuration->getBackboneClassName());
         $this->classGenerator->addProtectedProperty("factory", $this->componentFacade->getFactoryClassName());
     }
+
 
     /**
      *
@@ -88,6 +93,7 @@ class ComponentFacadeGenerator
         $constructor->addCodeLine('$this->factory = $factory;');
     }
 
+
     /**
      *
      */
@@ -97,6 +103,7 @@ class ComponentFacadeGenerator
             $this->addFacadeMethod($method);
         }
     }
+
 
     /**
      * @param ComponentFacadeMethod $facadeMethod
@@ -117,7 +124,7 @@ class ComponentFacadeGenerator
             $method->addParameter($fqn, $parameter->getName(), $parameter->getNitriaDefault(), null, $parameter->isAllowsNull());
         }
 
-        foreach($facadeMethod->getThrownExceptionList() as $exception) {
+        foreach ($facadeMethod->getThrownExceptionList() as $exception) {
             $method->addException($exception->getClassName());
         }
 
@@ -135,14 +142,39 @@ class ComponentFacadeGenerator
             $method->setReturnType(null, false);
         }
 
+        if ($methodReturnType->getSignatureType() === 'void') {
+            $method->setReturnType('void', false);
+        }
+
+
         $this->addBeforeDelegation($facadeMethod, $method, $methodName);
 
-        $return = $method->hasReturnType() || $docBlockReturnType === 'mixed' ? 'return ' : '';
+        $return = $this->getReturn($method, $methodReturnType);
         $method->addCodeLine($return . '$this->factory->' . $facadeMethod->getFactoryMethodName() . "()->$methodName($invocationSignature);");
 
         $this->addAfterDelegation($facadeMethod, $method, $methodName);
-
     }
+
+
+    /**
+     * @param Method $method
+     * @param PHPMethodReturnType $methodReturnType
+     *
+     * @return string
+     */
+    private function getReturn(Method $method, PHPMethodReturnType $methodReturnType)
+    {
+        if ($methodReturnType->getSignatureType() === 'void') {
+            return '';
+        }
+        $docBlockReturnType = $methodReturnType->getFullyQualifiedName();
+
+        if (($method->hasReturnType() || $docBlockReturnType === 'mixed')) {
+            return 'return ';
+        }
+        return '';
+    }
+
 
     /**
      * @param ComponentFacadeMethod $facadeMethod
@@ -159,6 +191,7 @@ class ComponentFacadeGenerator
             $extension->beforeDelegation($method, $annotation, $this->componentFacade->getClassName(), $facadeMethod->getDelegatedClassName(), $methodName, $facadeMethod->getMethodParameterList());
         }
     }
+
 
     /**
      * @param ComponentFacadeMethod $facadeMethod
