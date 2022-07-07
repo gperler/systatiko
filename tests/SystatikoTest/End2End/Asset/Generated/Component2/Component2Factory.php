@@ -17,39 +17,39 @@ class Component2Factory
 {
 
     /**
-     * @var Backbone
+     * @var Backbone|null
      */
-    protected $backbone;
+    protected ?Backbone $backbone;
 
     /**
-     * @var Component2Facade
+     * @var Component2Facade|null
      */
-    protected $component2Facade;
+    protected ?Component2Facade $component2Facade = null;
 
     /**
-     * @var EventHandler
+     * @var EventHandler|null
      */
-    protected $eventHandler;
+    protected ?EventHandler $eventHandler = null;
 
     /**
-     * @var InjectContextService
+     * @var InjectContextService|null
      */
-    protected $injectContextService;
+    protected ?InjectContextService $injectContextService = null;
 
     /**
-     * @var OtherService
+     * @var OtherService|null
      */
-    protected $otherService;
+    protected ?OtherService $otherService = null;
 
     /**
-     * @var SecurityService
+     * @var SecurityService|null
      */
-    protected $securityService;
+    protected ?SecurityService $securityService = null;
 
     /**
-     * @var SubClass
+     * @var SubClass|null
      */
-    protected $subClass;
+    protected ?SubClass $subClass = null;
 
     /**
      * @param Backbone $backbone
@@ -64,7 +64,7 @@ class Component2Factory
      * 
      * @return Component2Facade
      */
-    public function getComponent2Facade() : Component2Facade
+    public function getComponent2Facade(): Component2Facade
     {
         if ($this->component2Facade === null) {
             $this->component2Facade = new Component2Facade($this->backbone, $this);
@@ -72,11 +72,12 @@ class Component2Factory
         return $this->component2Facade;
     }
 
+
     /**
      * 
      * @return BaseEntity
      */
-    public function newBaseEntity() : BaseEntity
+    public function newBaseEntity(): BaseEntity
     {
         switch ($this->backbone->getContext()) {
             case "X":
@@ -86,20 +87,22 @@ class Component2Factory
         }
     }
 
+
     /**
      * 
      * @return OverWriteEntity
      */
-    public function newOverWriteEntity() : OverWriteEntity
+    public function newOverWriteEntity(): OverWriteEntity
     {
         return new OverWriteEntity();
     }
+
 
     /**
      * 
      * @return EventHandler
      */
-    public function getEventHandler() : EventHandler
+    public function getEventHandler(): EventHandler
     {
         if ($this->eventHandler === null) {
             $this->eventHandler = new EventHandler();
@@ -107,11 +110,12 @@ class Component2Factory
         return $this->eventHandler;
     }
 
+
     /**
      * 
      * @return InjectContextService
      */
-    public function getInjectContextService() : InjectContextService
+    public function getInjectContextService(): InjectContextService
     {
         if ($this->injectContextService === null) {
             $this->injectContextService = new InjectContextService($this->backbone->getComponent1Facade()->getInjectContext());
@@ -119,11 +123,12 @@ class Component2Factory
         return $this->injectContextService;
     }
 
+
     /**
      * 
      * @return OtherService
      */
-    public function getOtherService() : OtherService
+    public function getOtherService(): OtherService
     {
         if ($this->otherService === null) {
             $this->otherService = new OtherService();
@@ -131,11 +136,12 @@ class Component2Factory
         return $this->otherService;
     }
 
+
     /**
      * 
      * @return SecurityService
      */
-    public function getSecurityService() : SecurityService
+    public function getSecurityService(): SecurityService
     {
         if ($this->securityService === null) {
             $this->securityService = new SecurityService();
@@ -143,11 +149,12 @@ class Component2Factory
         return $this->securityService;
     }
 
+
     /**
      * 
      * @return SubClass
      */
-    public function getSubClass() : SubClass
+    public function getSubClass(): SubClass
     {
         if ($this->subClass === null) {
             $this->subClass = new SubClass();
@@ -155,20 +162,22 @@ class Component2Factory
         return $this->subClass;
     }
 
+
     /**
      * 
      * @return string
      */
-    public function exposeToAllFactories() : string
+    public function exposeToAllFactories(): string
     {
         return $this->backbone->exposeToAllFactories();
     }
+
 
     /**
      * 
      * @return void
      */
-    public function resetSingleton()
+    public function resetSingleton(): void
     {
         $this->component2Facade = null;
         $this->eventHandler = null;
@@ -177,4 +186,5 @@ class Component2Factory
         $this->securityService = null;
         $this->subClass = null;
     }
+
 }

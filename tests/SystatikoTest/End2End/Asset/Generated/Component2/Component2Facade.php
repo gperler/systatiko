@@ -12,14 +12,14 @@ class Component2Facade
 {
 
     /**
-     * @var Backbone
+     * @var Backbone|null
      */
-    protected $backbone;
+    protected ?Backbone $backbone;
 
     /**
-     * @var Component2Factory
+     * @var Component2Factory|null
      */
-    protected $factory;
+    protected ?Component2Factory $factory;
 
     /**
      * @param Backbone $backbone
@@ -36,47 +36,52 @@ class Component2Facade
      * 
      * @return void
      */
-    public function useConstructorOfSubClass()
+    public function useConstructorOfSubClass(): void
     {
         $this->factory->getSubClass()->useConstructorOfSubClass();
     }
+
 
     /**
      * @param C1Event $event
      * 
      * @return void
      */
-    public function eventHandler(C1Event $event)
+    public function eventHandler(C1Event $event): void
     {
         $this->factory->getEventHandler()->eventHandler($event);
     }
+
 
     /**
      * @param AsyncEvent $event
      * 
      * @return void
      */
-    public function handleAsyncEvent(AsyncEvent $event)
+    public function handleAsyncEvent(AsyncEvent $event): void
     {
         $this->factory->getEventHandler()->handleAsyncEvent($event);
     }
+
 
     /**
      * 
      * @return string
      */
-    public function injectedSayHello() : string
+    public function injectedSayHello(): string
     {
         return $this->factory->getInjectContextService()->injectedSayHello();
     }
+
 
     /**
      * @param string $roleName
      * 
      * @return void
      */
-    public function isInRole(string $roleName)
+    public function isInRole(string $roleName): void
     {
         $this->factory->getSecurityService()->isInRole($roleName);
     }
+
 }

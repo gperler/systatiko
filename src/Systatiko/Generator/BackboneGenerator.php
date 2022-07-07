@@ -83,7 +83,7 @@ class BackboneGenerator
         $backboneClassShortName = $this->configuration->getBackboneClassShortName();
 
         $this->classGenerator->addUsedClassName('Civis\Common\File');
-        $this->classGenerator->addProtectedStaticProperty('instance', $backboneClassName);
+        $this->classGenerator->addProtectedStaticProperty('instance', $backboneClassName, 'null');
 
         $method = $this->classGenerator->addPublicStaticMethod("getInstance");
         $method->addParameter("string", "configFileName", "null");
@@ -109,7 +109,7 @@ class BackboneGenerator
         foreach ($this->componentFacadeList as $componentFacade) {
             $memberName = $componentFacade->getFactoryMemberName();
             $memberType = $componentFacade->getFactoryClassName();
-            $this->classGenerator->addProtectedProperty($memberName, $memberType);
+            $this->classGenerator->addProtectedProperty($memberName, $memberType, 'null');
         }
     }
 

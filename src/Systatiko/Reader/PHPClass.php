@@ -62,13 +62,13 @@ class PHPClass
      *
      * @throws ReflectionException
      */
-    private function reflect(string $className)
+    private function reflect(string $className): void
     {
         include_once($this->file->getAbsoluteFileName());
 
         $this->reflectClass = new ExtendedReflectionClass($className);
 
-        foreach ($this->reflectClass->getUseStatements() as $statement) {
+        foreach ($this->reflectClass->getUseStatementList() as $statement) {
             $className = ArrayUtil::getFromArray($statement, "class");
             $as = ArrayUtil::getFromArray($statement, "as");
 
@@ -159,7 +159,7 @@ class PHPClass
      *
      * @return null|mixed
      */
-    public function getClassAnnotation($annotationName)
+    public function getClassAnnotation($annotationName): mixed
     {
         $annotationClass = new PHPClassName($annotationName);
         new $annotationName;

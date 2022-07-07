@@ -5,15 +5,16 @@ declare(strict_types = 1);
 namespace SystatikoTest\Functional;
 
 use Systatiko\Reader\ExtendedReflectionClass;
+use SystatikoTest\Functional\Asset\ExtendedReflectionTestClass;
 
 class ExtendedReflectionTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testUseStatement()
     {
-        $class = new ExtendedReflectionClass('SystatikoTest\Functional\Asset\ExtendedReflectionTestClass');
+        $class = new ExtendedReflectionClass(ExtendedReflectionTestClass::class);
 
-        $useList = $class->getUseStatements();
+        $useList = $class->getUseStatementList();
 
         $this->assertSame(2, sizeof($useList));
 
