@@ -103,18 +103,18 @@ class ComponentFactoryGenerator
         $this->classGenerator->addProtectedProperty("backbone", $this->backboneClassName);
 
         if ($this->componentFacade !== null) {
-            $this->classGenerator->addProtectedProperty($this->componentFacade->getMemberName(), $this->componentFacade->getClassName());
+            $this->classGenerator->addProtectedProperty($this->componentFacade->getMemberName(), $this->componentFacade->getClassName(), 'null');
         }
 
         if ($this->componentConfigurationClass !== null) {
-            $this->classGenerator->addProtectedProperty($this->componentConfigurationClass->getMemberName(), $this->componentConfigurationClass->getClassName());
+            $this->classGenerator->addProtectedProperty($this->componentConfigurationClass->getMemberName(), $this->componentConfigurationClass->getClassName(), 'null');
         }
 
         foreach ($this->componentFactory->getComponentFactoryMethodList() as $componentClass) {
             if (!$componentClass->isSingleton()) {
                 continue;
             }
-            $this->classGenerator->addProtectedProperty($componentClass->getMemberName(), $componentClass->getClassName());
+            $this->classGenerator->addProtectedProperty($componentClass->getMemberName(), $componentClass->getClassName(), 'null');
         }
     }
 

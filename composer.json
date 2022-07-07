@@ -17,7 +17,7 @@
     "symfony/console": "*",
     "psr/log": "*",
     "doctrine/common": "*",
-    "gm314/nitria": "*",
+    "gm314/nitria": "0.2.1",
     "gm314/common": "*",
     "doctrine/annotations": "^1.13"
   },

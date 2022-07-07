@@ -27,54 +27,54 @@ class Component1Factory
 {
 
     /**
-     * @var Backbone
+     * @var Backbone|null
      */
-    protected $backbone;
+    protected ?Backbone $backbone;
 
     /**
-     * @var Component1Facade
+     * @var Component1Facade|null
      */
-    protected $component1Facade;
+    protected ?Component1Facade $component1Facade = null;
 
     /**
-     * @var Component1Configuration
+     * @var Component1Configuration|null
      */
-    protected $component1Configuration;
+    protected ?Component1Configuration $component1Configuration = null;
 
     /**
-     * @var SingletonEntity
+     * @var SingletonEntity|null
      */
-    protected $singletonEntity;
+    protected ?SingletonEntity $singletonEntity = null;
 
     /**
-     * @var EventTriggerService
+     * @var EventTriggerService|null
      */
-    protected $eventTriggerService;
+    protected ?EventTriggerService $eventTriggerService = null;
 
     /**
-     * @var ExceptionClass
+     * @var ExceptionClass|null
      */
-    protected $exceptionClass;
+    protected ?ExceptionClass $exceptionClass = null;
 
     /**
-     * @var FacadeInjection
+     * @var FacadeInjection|null
      */
-    protected $facadeInjection;
+    protected ?FacadeInjection $facadeInjection = null;
 
     /**
-     * @var NoInjection
+     * @var NoInjection|null
      */
-    protected $noInjection;
+    protected ?NoInjection $noInjection = null;
 
     /**
-     * @var ServiceClass
+     * @var ServiceClass|null
      */
-    protected $serviceClass;
+    protected ?ServiceClass $serviceClass = null;
 
     /**
-     * @var VoidClass
+     * @var VoidClass|null
      */
-    protected $voidClass;
+    protected ?VoidClass $voidClass = null;
 
     /**
      * @param Backbone $backbone
@@ -89,7 +89,7 @@ class Component1Factory
      * 
      * @return Component1Configuration|null
      */
-    public function getConfiguration() : ?Component1Configuration
+    public function getConfiguration(): ?Component1Configuration
     {
         if ($this->component1Configuration === null) {
             $this->component1Configuration = new Component1Configuration();
@@ -98,11 +98,12 @@ class Component1Factory
         return $this->component1Configuration;
     }
 
+
     /**
      * 
      * @return Component1Facade
      */
-    public function getComponent1Facade() : Component1Facade
+    public function getComponent1Facade(): Component1Facade
     {
         if ($this->component1Facade === null) {
             $this->component1Facade = new Component1Facade($this->backbone, $this);
@@ -110,31 +111,34 @@ class Component1Factory
         return $this->component1Facade;
     }
 
+
     /**
      * 
      * @return SampleInterface
      */
-    public function newDifferentReturnEntity() : SampleInterface
+    public function newDifferentReturnEntity(): SampleInterface
     {
         return new DifferentReturnEntity();
     }
+
 
     /**
      * @param string $test
      * 
      * @return SampleEntity
      */
-    public function newSampleEntity(string $test) : SampleEntity
+    public function newSampleEntity(string $test): SampleEntity
     {
         return new SampleEntity($test);
     }
+
 
     /**
      * @param string $id
      * 
      * @return SingletonEntity
      */
-    public function getSingletonEntity(string $id) : SingletonEntity
+    public function getSingletonEntity(string $id): SingletonEntity
     {
         if ($this->singletonEntity === null) {
             $this->singletonEntity = new SingletonEntity($id);
@@ -142,47 +146,52 @@ class Component1Factory
         return $this->singletonEntity;
     }
 
+
     /**
      * 
      * @return AsyncEvent
      */
-    public function newAsyncEvent() : AsyncEvent
+    public function newAsyncEvent(): AsyncEvent
     {
         return new AsyncEvent();
     }
+
 
     /**
      * 
      * @return CustomAnnotationClass
      */
-    public function newCustomAnnotationClass() : CustomAnnotationClass
+    public function newCustomAnnotationClass(): CustomAnnotationClass
     {
         return new CustomAnnotationClass();
     }
+
 
     /**
      * 
      * @return CustomAnnotationMethod
      */
-    public function newCustomAnnotationMethod() : CustomAnnotationMethod
+    public function newCustomAnnotationMethod(): CustomAnnotationMethod
     {
         return new CustomAnnotationMethod();
     }
+
 
     /**
      * 
      * @return DependencyInjection
      */
-    public function newDependencyInjection() : DependencyInjection
+    public function newDependencyInjection(): DependencyInjection
     {
         return new DependencyInjection($this, $this->getConfiguration());
     }
+
 
     /**
      * 
      * @return EventTriggerService
      */
-    public function getEventTriggerService() : EventTriggerService
+    public function getEventTriggerService(): EventTriggerService
     {
         if ($this->eventTriggerService === null) {
             $this->eventTriggerService = new EventTriggerService($this);
@@ -190,11 +199,12 @@ class Component1Factory
         return $this->eventTriggerService;
     }
 
+
     /**
      * 
      * @return ExceptionClass
      */
-    public function getExceptionClass() : ExceptionClass
+    public function getExceptionClass(): ExceptionClass
     {
         if ($this->exceptionClass === null) {
             $this->exceptionClass = new ExceptionClass();
@@ -202,11 +212,12 @@ class Component1Factory
         return $this->exceptionClass;
     }
 
+
     /**
      * 
      * @return FacadeInjection
      */
-    public function getFacadeInjection() : FacadeInjection
+    public function getFacadeInjection(): FacadeInjection
     {
         if ($this->facadeInjection === null) {
             $this->facadeInjection = new FacadeInjection($this->backbone->getComponent2Facade());
@@ -214,21 +225,23 @@ class Component1Factory
         return $this->facadeInjection;
     }
 
+
     /**
      * 
      * @return MethodParameterTest
      */
-    public function newMethodParameterTest() : MethodParameterTest
+    public function newMethodParameterTest(): MethodParameterTest
     {
         return new MethodParameterTest();
     }
+
 
     /**
      * @param SampleEntity $entity
      * 
      * @return NoInjection
      */
-    public function getNoInjection(SampleEntity $entity) : NoInjection
+    public function getNoInjection(SampleEntity $entity): NoInjection
     {
         if ($this->noInjection === null) {
             $this->noInjection = new NoInjection($entity);
@@ -236,11 +249,12 @@ class Component1Factory
         return $this->noInjection;
     }
 
+
     /**
      * 
      * @return ServiceClass
      */
-    public function getServiceClass() : ServiceClass
+    public function getServiceClass(): ServiceClass
     {
         if ($this->serviceClass === null) {
             $this->serviceClass = new ServiceClass();
@@ -248,11 +262,12 @@ class Component1Factory
         return $this->serviceClass;
     }
 
+
     /**
      * 
      * @return VoidClass
      */
-    public function getVoidClass() : VoidClass
+    public function getVoidClass(): VoidClass
     {
         if ($this->voidClass === null) {
             $this->voidClass = new VoidClass();
@@ -260,42 +275,46 @@ class Component1Factory
         return $this->voidClass;
     }
 
+
     /**
      * @param AsyncEvent $event
      * 
      * @return void
      */
-    public function triggerAsyncEvent(AsyncEvent $event)
+    public function triggerAsyncEvent(AsyncEvent $event): void
     {
         $this->backbone->dispatchOutboundAsynchronousEvent($event);
         $this->backbone->getComponent2Facade()->handleAsyncEvent($event);
     }
+
 
     /**
      * @param C1Event $event
      * 
      * @return void
      */
-    public function triggerC1Event(C1Event $event)
+    public function triggerC1Event(C1Event $event): void
     {
         $this->backbone->dispatchSynchronousEvent($event);
         $this->backbone->getComponent2Facade()->eventHandler($event);
     }
 
+
     /**
      * 
      * @return string
      */
-    public function exposeToAllFactories() : string
+    public function exposeToAllFactories(): string
     {
         return $this->backbone->exposeToAllFactories();
     }
+
 
     /**
      * 
      * @return void
      */
-    public function resetSingleton()
+    public function resetSingleton(): void
     {
         $this->component1Facade = null;
         $this->singletonEntity = null;
@@ -306,4 +325,5 @@ class Component1Factory
         $this->serviceClass = null;
         $this->voidClass = null;
     }
+
 }
