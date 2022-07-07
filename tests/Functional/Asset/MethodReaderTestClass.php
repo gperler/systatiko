@@ -15,33 +15,36 @@ class MethodReaderTestClass
 
     /**
      * @FacadeExposition(namespace="\test\namespace")
-     * @param Test|null $file
+     * @param Test $file
      * @param string[] $array
      * @param mixed $mixed
      * @param string $test
      *
      * @return Test[]|null
      */
-    public function testMe(Test $file = null, array $array, $mixed): ?array
+    public function testMe(Test $file, array $array, $mixed = null): ?array
     {
         return [];
     }
 
+
     /**
+     * @param PHPType[] $typeList
      * @param string $test
      * @param Test[]|null $array
-     * @param PHPType[] $typeList
      *
      * @return PHPType[]
      */
-    public function testMeToo(string $test = "null", array $array = null, array $typeList): array
+    public function testMeToo(array $typeList, string $test = "null", array $array = null): array
     {
         return [];
     }
+
 
     public function methodWithOutDocBlock(string $test, int $test2)
     {
     }
+
 
     /**
      * @param ClassReaderTestClass $class
@@ -50,16 +53,16 @@ class MethodReaderTestClass
      */
     public function sameNamespaceTest(ClassReaderTestClass $class): ExtendedReflectionClass
     {
-
     }
+
 
     /**
      * @param MethodReaderTestClass $that
      */
     public function refersToThisClass(MethodReaderTestClass $that)
     {
-
     }
+
 
     /**
      * @return null|string

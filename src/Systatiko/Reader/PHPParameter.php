@@ -56,8 +56,10 @@ class PHPParameter
      */
     private $constantDefaultParameter;
 
+
     /**
      * PHPParameter constructor.
+     *
      * @param PHPMethod $method
      * @param ReflectionParameter $reflectionParameter
      */
@@ -67,10 +69,13 @@ class PHPParameter
         $this->readSignaturePart($reflectionParameter);
     }
 
+
     /**
      * @param ReflectionParameter $reflectionParameter
+     *
+     * @throws \ReflectionException
      */
-    private function readSignaturePart(ReflectionParameter $reflectionParameter)
+    private function readSignaturePart(ReflectionParameter $reflectionParameter): void
     {
         $this->name = $reflectionParameter->getName();
 
@@ -79,10 +84,11 @@ class PHPParameter
         $this->extractDocBlockType();
     }
 
+
     /**
      * @param ReflectionParameter $reflectionParameter
      */
-    private function extractType(ReflectionParameter $reflectionParameter)
+    private function extractType(ReflectionParameter $reflectionParameter): void
     {
         $type = $reflectionParameter->getType();
         if ($type === null) {
@@ -100,8 +106,10 @@ class PHPParameter
 
     /**
      * @param ReflectionParameter $reflectionParameter
+     *
+     * @throws \ReflectionException
      */
-    private function extractDefaultValue(ReflectionParameter $reflectionParameter)
+    private function extractDefaultValue(ReflectionParameter $reflectionParameter): void
     {
         $this->allowsNull = $reflectionParameter->allowsNull();
 
@@ -116,10 +124,11 @@ class PHPParameter
         }
     }
 
+
     /**
      *
      */
-    private function extractDocBlockType()
+    private function extractDocBlockType(): void
     {
         $pattern = '/.*?@param (.*?) \$' . $this->getName() . '.*?/';
         $docComment = $this->phpMethod->getDocComment();
@@ -150,6 +159,7 @@ class PHPParameter
 
         return $signatureType . ' $' . $this->name . $default;
     }
+
 
     /**
      * @return string
@@ -200,6 +210,7 @@ class PHPParameter
         return $this->name;
     }
 
+
     /**
      * @param string $name
      */
@@ -207,6 +218,7 @@ class PHPParameter
     {
         $this->name = $name;
     }
+
 
     /**
      * @return string
@@ -216,6 +228,7 @@ class PHPParameter
         return $this->type;
     }
 
+
     /**
      * @param string|null $type
      */
@@ -223,6 +236,7 @@ class PHPParameter
     {
         $this->type = $type;
     }
+
 
     /**
      * @return string
@@ -241,6 +255,7 @@ class PHPParameter
         $this->default = StringUtil::trimToNull($default);
     }
 
+
     /**
      * @return bool
      */
@@ -258,6 +273,7 @@ class PHPParameter
         return $this->className;
     }
 
+
     /**
      * @param PHPClassName|null $className
      */
@@ -266,6 +282,7 @@ class PHPParameter
         $this->className = $className;
     }
 
+
     /**
      * @return PHPDocCommentType
      */
@@ -273,6 +290,7 @@ class PHPParameter
     {
         return $this->docBlockType;
     }
+
 
     /**
      * @return null|string
@@ -298,6 +316,7 @@ class PHPParameter
         return $this->className->getClassName();
     }
 
+
     /**
      * @return bool
      */
@@ -311,6 +330,7 @@ class PHPParameter
         }
         return false;
     }
+
 
     /**
      * @return null|PHPClassName

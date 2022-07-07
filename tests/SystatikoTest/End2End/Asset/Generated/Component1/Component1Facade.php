@@ -140,7 +140,7 @@ class Component1Facade
      * 
      * @return Test[]|null
      */
-    public function methodReaderTestMe(Test $file = null, array $array, $mixed) : ?array
+    public function methodReaderTestMe(?Test $file, array $array, $mixed) : ?array
     {
         return $this->factory->newMethodParameterTest()->methodReaderTestMe($file, $array, $mixed);
     }
@@ -152,7 +152,7 @@ class Component1Facade
      * 
      * @return array
      */
-    public function methodReaderTestMeToo(string $test = "null", array $array = null, array $typeList) : array
+    public function methodReaderTestMeToo(string $test, ?array $array, array $typeList) : array
     {
         return $this->factory->newMethodParameterTest()->methodReaderTestMeToo($test, $array, $typeList);
     }

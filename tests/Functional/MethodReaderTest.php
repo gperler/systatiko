@@ -8,17 +8,19 @@ use Civis\Common\File;
 use Codeception\Util\Debug;
 use Systatiko\Reader\PHPClass;
 use Systatiko\Reader\PHPMethod;
+use SystatikoTest\Functional\Asset\MethodReaderTestClass;
 
 class MethodReaderTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
-     *
+     * @return void
+     * @throws \ReflectionException
      */
     public function testMethodRead()
     {
         $file = new File(__DIR__ . "/Asset/MethodReaderTestClass.php");
-        $phpClass = new PHPClass($file, 'SystatikoTest\Functional\Asset\MethodReaderTestClass');
+        $phpClass = new PHPClass($file, MethodReaderTestClass::class);
 
         $this->assertNotNull($phpClass);
 
@@ -73,7 +75,9 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Civis\Common\File', $parameterClassName->getClassName());
         $this->assertSame(null, $parameter0->getDefault());
         $this->assertSame('file', $parameter0->getName());
-        $this->assertSame('Test $file = null', $parameter0->getSignatureSnippet());
+        $this->assertSame('Test $file', $parameter0->getSignatureSnippet());
+
+
 
         $docBlockType = $parameter0->getDocBlockType();
         $this->assertNotNull($docBlockType);
@@ -82,10 +86,10 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('Test', $docBlockType->getClassName()->getClassShortName());
         $this->assertSame('Civis\Common\File', $docBlockType->getClassName()->getClassName());
 
-        $this->assertSame('Test|null', $docBlockType->getOriginal());
+        $this->assertSame('Test', $docBlockType->getOriginal());
         $this->assertSame(null, $docBlockType->getTypeName());
         $this->assertSame(false, $docBlockType->isArray());
-        $this->assertSame(true, $docBlockType->canBeNull());
+        $this->assertSame(false, $docBlockType->canBeNull());
 
         //
         // param 1
@@ -111,7 +115,7 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(null, $parameter2->getClassName());
         $this->assertSame(null, $parameter2->getDefault());
         $this->assertSame('mixed', $parameter2->getName());
-        $this->assertSame('$mixed', $parameter2->getSignatureSnippet());
+        $this->assertSame('$mixed = null', $parameter2->getSignatureSnippet());
         $this->assertSame(null, $parameter2->getType());
 
         $docBlockType = $parameter2->getDocBlockType();
@@ -127,7 +131,7 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
     protected function testMethodTwo(PHPMethod $method)
     {
         $this->assertSame("testMeToo", $method->getMethodName());
-        $this->assertSame('$test, $array, $typeList', $method->getInvocationSignature());
+        $this->assertSame('$typeList, $test, $array', $method->getInvocationSignature());
 
         $parameterList = $method->getMethodParameterList();
         $this->assertSame(3, sizeof($parameterList));
@@ -150,8 +154,34 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         //
         // param 0
         //
+        // Signature array $typeList
+
+        $parameter = $parameterList[0];
+        $this->assertSame(null, $parameter->getClassName());
+        $this->assertSame(null, $parameter->getDefault());
+        $this->assertSame('typeList', $parameter->getName());
+        $this->assertSame('array $typeList', $parameter->getSignatureSnippet());
+        $this->assertSame('array', $parameter->getType());
+
+        // @param PHPType[] $typeList
+        $docBlockType = $parameter->getDocBlockType();
+        $this->assertNotNull($docBlockType);
+        $this->assertNotNull($docBlockType->getClassName());
+        $this->assertSame(null, $docBlockType->getClassName()->getAs());
+        $this->assertSame('PHPType', $docBlockType->getClassName()->getClassShortName());
+        $this->assertSame('Systatiko\Reader\PHPType', $docBlockType->getClassName()->getClassName());
+
+        $this->assertSame('PHPType[]', $docBlockType->getOriginal());
+        $this->assertSame(null, $docBlockType->getTypeName());
+        $this->assertSame(true, $docBlockType->isArray());
+        $this->assertSame(false, $docBlockType->canBeNull());
+
+
+        //
+        // param 1
+        //
         // string $test = "null"
-        $parameter0 = $parameterList[0];
+        $parameter0 = $parameterList[1];
         $this->assertSame(null, $parameter0->getClassName());
         $this->assertSame('null', $parameter0->getDefault());
         $this->assertSame('test', $parameter0->getName());
@@ -168,11 +198,11 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(false, $docBlockType->canBeNull());
 
         //
-        // param 1
+        // param 2
         //
         // Signature array $array = null
 
-        $parameter = $parameterList[1];
+        $parameter = $parameterList[2];
         $this->assertSame(null, $parameter->getClassName());
         $this->assertSame(null, $parameter->getDefault());
         $this->assertSame('array', $parameter->getName());
@@ -192,30 +222,7 @@ class MethodReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(true, $docBlockType->isArray());
         $this->assertSame(true, $docBlockType->canBeNull());
 
-        //
-        // param 2
-        //
-        // Signature array $typeList
 
-        $parameter = $parameterList[2];
-        $this->assertSame(null, $parameter->getClassName());
-        $this->assertSame(null, $parameter->getDefault());
-        $this->assertSame('typeList', $parameter->getName());
-        $this->assertSame('array $typeList', $parameter->getSignatureSnippet());
-        $this->assertSame('array', $parameter->getType());
-
-        // @param PHPType[] $typeList
-        $docBlockType = $parameter->getDocBlockType();
-        $this->assertNotNull($docBlockType);
-        $this->assertNotNull($docBlockType->getClassName());
-        $this->assertSame(null, $docBlockType->getClassName()->getAs());
-        $this->assertSame('PHPType', $docBlockType->getClassName()->getClassShortName());
-        $this->assertSame('Systatiko\Reader\PHPType', $docBlockType->getClassName()->getClassName());
-
-        $this->assertSame('PHPType[]', $docBlockType->getOriginal());
-        $this->assertSame(null, $docBlockType->getTypeName());
-        $this->assertSame(true, $docBlockType->isArray());
-        $this->assertSame(false, $docBlockType->canBeNull());
     }
 
     protected function testMethodFour(PHPMethod $method)

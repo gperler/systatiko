@@ -13,15 +13,16 @@
   ],
   "require": {
     "ext-json" : "*",
-    "php": ">=7.1.0",
+    "php": ">=8.1.0",
     "symfony/console": "*",
     "psr/log": "*",
     "doctrine/common": "*",
     "gm314/nitria": "*",
-    "gm314/common": "*"
+    "gm314/common": "*",
+    "doctrine/annotations": "^1.13"
   },
   "require-dev": {
-    "codeception/codeception": "*"
+    "codeception/codeception": "4.2.1"
   },
   "autoload": {
     "psr-0": {
