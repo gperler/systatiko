@@ -33,21 +33,24 @@ abstract class BackboneBase implements BackboneContract
      */
     protected $synchronousEventHandlerList;
 
+
     /**
      * @return string
      */
-    public function getContext()
+    public function getContext(): ?string
     {
         return $this->context;
     }
 
+
     /**
      * @param string $context
      */
-    public function setContext($context)
+    public function setContext($context): void
     {
         $this->context = $context;
     }
+
 
     /**
      * @return array
@@ -57,6 +60,7 @@ abstract class BackboneBase implements BackboneContract
         return $this->configurationValueList;
     }
 
+
     /**
      * @param File $configFile
      */
@@ -64,6 +68,7 @@ abstract class BackboneBase implements BackboneContract
     {
         $this->setConfigurationValueList($configFile->loadAsJSONArray());
     }
+
 
     /**
      * @param array $configurationValueList
@@ -73,15 +78,17 @@ abstract class BackboneBase implements BackboneContract
         $this->configurationValueList = $configurationValueList;
     }
 
+
     /**
      * @param $componentName
      *
      * @return null|array
      */
-    public function getComponentConfiguration(string $componentName)
+    public function getComponentConfiguration(string $componentName):?array
     {
         return ArrayUtil::getFromArray($this->configurationValueList, $componentName);
     }
+
 
     /**
      * @param AsynchronousEvent $event
@@ -93,6 +100,7 @@ abstract class BackboneBase implements BackboneContract
         }
     }
 
+
     /**
      * @param SynchronousEvent $event
      */
@@ -103,18 +111,20 @@ abstract class BackboneBase implements BackboneContract
         }
     }
 
+
     /**
      * @param AsynchronousEventHandler $handler
      */
-    public function addOutboundAsynchronousEventHandler(AsynchronousEventHandler $handler)
+    public function addOutboundAsynchronousEventHandler(AsynchronousEventHandler $handler):void
     {
         $this->asynchronousEventHandlerList[] = $handler;
     }
 
+
     /**
      * @param SynchronousEventHandler $handler
      */
-    public function addSynchronousEventHandler(SynchronousEventHandler $handler) : void
+    public function addSynchronousEventHandler(SynchronousEventHandler $handler): void
     {
         $this->synchronousEventHandlerList[] = $handler;
     }
