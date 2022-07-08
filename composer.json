@@ -16,7 +16,7 @@
     "php": ">=8.1.0",
     "psr/log": "*",
     "doctrine/common": "*",
-    "gm314/nitria": "0.2.2",
+    "gm314/nitria": "*",
     "gm314/common": "*",
     "doctrine/annotations": "^1.13"
   },
