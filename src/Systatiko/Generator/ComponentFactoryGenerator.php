@@ -372,7 +372,7 @@ class ComponentFactoryGenerator
             $this->addGenerateNewInstance(
                 $componentFactoryClass,
                 $method,
-                'return '
+                'return'
             );
             return;
         }
@@ -380,7 +380,7 @@ class ComponentFactoryGenerator
         $this->addGenerateNewInstance(
             $componentFactoryClass,
             $method,
-            "$memberFullName = "
+            "$memberFullName ="
         );
         $method->addIfEnd();
         $method->addCodeLine("return $memberFullName;");
@@ -407,6 +407,13 @@ class ComponentFactoryGenerator
     }
 
 
+    /**
+     * @param ComponentFactoryMethod $componentFactoryClass
+     * @param Method $method
+     * @param string $prefix
+     *
+     * @return void
+     */
     private function addGenerateNewInstance(ComponentFactoryMethod $componentFactoryClass, Method $method, string $prefix): void
     {
         $classShortName = $componentFactoryClass->getClassShortName();
