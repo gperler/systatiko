@@ -8,30 +8,30 @@ interface BackboneContract
 {
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getContext();
+    public function getContext(): ?string;
 
     /**
      * @param string $context
      *
      * @return void
      */
-    public function setContext($context);
+    public function setContext($context): void;
 
     /**
      * @param string $componentName
      *
      * @return array|null
      */
-    public function getComponentConfiguration(string $componentName);
+    public function getComponentConfiguration(string $componentName): ?array;
 
     /**
      * @param AsynchronousEventHandler $handler
      *
      * @return void
      */
-    public function addOutboundAsynchronousEventHandler(AsynchronousEventHandler $handler);
+    public function addOutboundAsynchronousEventHandler(AsynchronousEventHandler $handler): void;
 
     /**
      * @param AsynchronousEvent $event
@@ -48,7 +48,7 @@ interface BackboneContract
      *
      * @return void
      */
-    public function addSynchronousEventHandler(SynchronousEventHandler $handler);
+    public function addSynchronousEventHandler(SynchronousEventHandler $handler): void;
 
 
     /**
@@ -56,7 +56,7 @@ interface BackboneContract
      *
      * @return void
      */
-    public function dispatchInboundAsynchronousEvent(AsynchronousEvent $event);
+    public function dispatchInboundAsynchronousEvent(AsynchronousEvent $event): void;
 
     /**
      * @param string $eventName

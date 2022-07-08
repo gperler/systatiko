@@ -19,7 +19,7 @@ abstract class BackboneProject extends BackboneBase
         return "hello!";
     }
 
-    public function dispatchInboundAsynchronousEvent(AsynchronousEvent $event)
+    public function dispatchInboundAsynchronousEvent(AsynchronousEvent $event) : void
     {
         // TODO: Implement dispatchInboundAsynchronousEvent() method.
     }

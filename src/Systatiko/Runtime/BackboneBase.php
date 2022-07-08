@@ -114,7 +114,7 @@ abstract class BackboneBase implements BackboneContract
     /**
      * @param SynchronousEventHandler $handler
      */
-    public function addSynchronousEventHandler(SynchronousEventHandler $handler)
+    public function addSynchronousEventHandler(SynchronousEventHandler $handler) : void
     {
         $this->synchronousEventHandlerList[] = $handler;
     }
