@@ -59,12 +59,12 @@ class Factory
      *
      * @return bool
      */
-    public function injectionAllowed(string $paramName)
+    public function injectionAllowed(string $paramName): bool
     {
         if ($this->noInjection === null) {
             return true;
         }
-        return strpos($this->noInjection, $paramName) === false;
+        return !str_contains($this->noInjection, $paramName);
     }
 
 }
