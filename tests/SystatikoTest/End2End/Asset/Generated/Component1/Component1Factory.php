@@ -106,7 +106,10 @@ class Component1Factory
     public function getComponent1Facade(): Component1Facade
     {
         if ($this->component1Facade === null) {
-            $this->component1Facade = new Component1Facade($this->backbone, $this);
+            $this->component1Facade = new Component1Facade(
+                $this->backbone,
+                $this,
+            );
         }
         return $this->component1Facade;
     }
@@ -118,7 +121,7 @@ class Component1Factory
      */
     public function newDifferentReturnEntity(): SampleInterface
     {
-        return new DifferentReturnEntity();
+        return  new DifferentReturnEntity();
     }
 
 
@@ -129,7 +132,9 @@ class Component1Factory
      */
     public function newSampleEntity(string $test): SampleEntity
     {
-        return new SampleEntity($test);
+        return  new SampleEntity(
+            $test,
+        );
     }
 
 
@@ -141,7 +146,9 @@ class Component1Factory
     public function getSingletonEntity(string $id): SingletonEntity
     {
         if ($this->singletonEntity === null) {
-            $this->singletonEntity = new SingletonEntity($id);
+            $this->singletonEntity =  new SingletonEntity(
+                $id,
+            );
         }
         return $this->singletonEntity;
     }
@@ -153,7 +160,7 @@ class Component1Factory
      */
     public function newAsyncEvent(): AsyncEvent
     {
-        return new AsyncEvent();
+        return  new AsyncEvent();
     }
 
 
@@ -163,7 +170,7 @@ class Component1Factory
      */
     public function newCustomAnnotationClass(): CustomAnnotationClass
     {
-        return new CustomAnnotationClass();
+        return  new CustomAnnotationClass();
     }
 
 
@@ -173,7 +180,7 @@ class Component1Factory
      */
     public function newCustomAnnotationMethod(): CustomAnnotationMethod
     {
-        return new CustomAnnotationMethod();
+        return  new CustomAnnotationMethod();
     }
 
 
@@ -183,7 +190,10 @@ class Component1Factory
      */
     public function newDependencyInjection(): DependencyInjection
     {
-        return new DependencyInjection($this, $this->getConfiguration());
+        return  new DependencyInjection(
+            $this,
+            $this->getConfiguration(),
+        );
     }
 
 
@@ -194,7 +204,9 @@ class Component1Factory
     public function getEventTriggerService(): EventTriggerService
     {
         if ($this->eventTriggerService === null) {
-            $this->eventTriggerService = new EventTriggerService($this);
+            $this->eventTriggerService =  new EventTriggerService(
+                $this,
+            );
         }
         return $this->eventTriggerService;
     }
@@ -207,7 +219,7 @@ class Component1Factory
     public function getExceptionClass(): ExceptionClass
     {
         if ($this->exceptionClass === null) {
-            $this->exceptionClass = new ExceptionClass();
+            $this->exceptionClass =  new ExceptionClass();
         }
         return $this->exceptionClass;
     }
@@ -220,7 +232,9 @@ class Component1Factory
     public function getFacadeInjection(): FacadeInjection
     {
         if ($this->facadeInjection === null) {
-            $this->facadeInjection = new FacadeInjection($this->backbone->getComponent2Facade());
+            $this->facadeInjection =  new FacadeInjection(
+                $this->backbone->getComponent2Facade(),
+            );
         }
         return $this->facadeInjection;
     }
@@ -232,7 +246,7 @@ class Component1Factory
      */
     public function newMethodParameterTest(): MethodParameterTest
     {
-        return new MethodParameterTest();
+        return  new MethodParameterTest();
     }
 
 
@@ -244,7 +258,9 @@ class Component1Factory
     public function getNoInjection(SampleEntity $entity): NoInjection
     {
         if ($this->noInjection === null) {
-            $this->noInjection = new NoInjection($entity);
+            $this->noInjection =  new NoInjection(
+                $entity,
+            );
         }
         return $this->noInjection;
     }
@@ -257,7 +273,7 @@ class Component1Factory
     public function getServiceClass(): ServiceClass
     {
         if ($this->serviceClass === null) {
-            $this->serviceClass = new ServiceClass();
+            $this->serviceClass =  new ServiceClass();
         }
         return $this->serviceClass;
     }
@@ -270,7 +286,7 @@ class Component1Factory
     public function getVoidClass(): VoidClass
     {
         if ($this->voidClass === null) {
-            $this->voidClass = new VoidClass();
+            $this->voidClass =  new VoidClass();
         }
         return $this->voidClass;
     }

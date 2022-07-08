@@ -4,6 +4,7 @@ namespace Systatiko\Reader;
 
 use Civis\Common\ArrayUtil;
 use Civis\Common\File;
+use Codeception\Util\Debug;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use ReflectionException;
 
@@ -202,17 +203,24 @@ class PHPClass
      *
      * @return PHPClassName|null
      */
-    public function getClassNameForShortName(string $shortName = null)
+    public function getClassNameForShortName(string $shortName = null): ?PHPClassName
     {
         if ($shortName === null) {
             return null;
         }
+
+
 
         if ($shortName === $this->getClassShortName()) {
             return $this->className;
         }
 
         foreach ($this->usedClassNameList as $usedClassName) {
+            Debug::debug('------------------------');
+            Debug::debug($shortName);
+            Debug::debug('as       ' .$usedClassName->getAs());
+            Debug::debug('clas     ' .$usedClassName->getClassName());
+            Debug::debug('short    ' . $usedClassName->getClassShortName());
             if ($usedClassName->getClassShortName() === $shortName) {
                 return $usedClassName;
             }

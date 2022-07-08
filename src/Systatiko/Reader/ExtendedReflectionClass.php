@@ -94,7 +94,7 @@ class ExtendedReflectionClass extends ReflectionClass
                 ];
             }
 
-            if ($startBuilding && $token[0] === T_NAME_QUALIFIED) {
+            if (!$asDefined && $startBuilding && ($token[0] === T_NAME_QUALIFIED || $token[0] === T_STRING)) {
                 $currentUse['class'] = $token[1];
                 $currentUse['as'] = $token[1];
             }

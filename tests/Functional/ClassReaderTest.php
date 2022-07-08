@@ -6,6 +6,7 @@ namespace SystatikoTest\Functional;
 
 use Systatiko\Reader\PHPClass;
 use Civis\Common\File;
+use SystatikoTest\Functional\Asset\ClassReaderTestClass;
 
 class ClassReaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,14 +18,15 @@ class ClassReaderTest extends \PHPUnit_Framework_TestCase
     {
 
         $file = new File(__DIR__ . "/Asset/ClassReaderTestClass.php");
-        $phpClass = new PHPClass($file, 'SystatikoTest\Functional\Asset\ClassReaderTestClass');
+        $phpClass = new PHPClass($file, ClassReaderTestClass::class);
 
         $this->assertTrue($phpClass->implementsInterface('\Serializable'));
         $this->assertTrue($phpClass->isSubclassOf('\DateTime'));
 
-        $this->assertSame('SystatikoTest\Functional\Asset\ClassReaderTestClass', $phpClass->getClassName());
+        $this->assertSame(ClassReaderTestClass::class, $phpClass->getClassName());
         $this->assertSame('ClassReaderTestClass', $phpClass->getClassShortName());
         $this->assertSame('SystatikoTest\Functional\Asset', $phpClass->getNamespaceName());
+
 
         $methodList = $phpClass->getPHPMethodList();
         $this->assertSame(2, sizeof($methodList));

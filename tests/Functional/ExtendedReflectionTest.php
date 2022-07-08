@@ -16,13 +16,16 @@ class ExtendedReflectionTest extends \PHPUnit_Framework_TestCase
 
         $useList = $class->getUseStatementList();
 
-        $this->assertSame(2, sizeof($useList));
+        $this->assertSame(3, sizeof($useList));
 
         $this->assertSame('Nitria\Method', $useList[0]["class"]);
         $this->assertSame('Nitria\Method', $useList[0]["as"]);
 
         $this->assertSame('Nitria\MethodParameter', $useList[1]["class"]);
         $this->assertSame('Test', $useList[1]["as"]);
+
+        $this->assertSame('DOMElement', $useList[2]["class"]);
+        $this->assertSame('DOMElement', $useList[2]["as"]);
 
     }
 

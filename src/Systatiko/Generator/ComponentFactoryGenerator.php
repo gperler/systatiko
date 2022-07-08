@@ -19,32 +19,32 @@ class ComponentFactoryGenerator
     /**
      * @var Project
      */
-    private $project;
+    private Project $project;
 
     /**
      * @var ComponentFactory
      */
-    private $componentFactory;
+    private ComponentFactory $componentFactory;
 
     /**
-     * @var ProjectClass
+     * @var ProjectClass|null
      */
-    private $componentConfigurationClass;
+    private ?ProjectClass $componentConfigurationClass;
 
     /**
-     * @var ComponentFacade
+     * @var ComponentFacade|null
      */
-    private $componentFacade;
+    private ?ComponentFacade $componentFacade;
 
     /**
-     * @var
+     * @var string
      */
-    private $backboneClassName;
+    private string $backboneClassName;
 
     /**
      * @var ClassGenerator
      */
-    private $classGenerator;
+    private ClassGenerator $classGenerator;
 
 
     /**
@@ -61,10 +61,11 @@ class ComponentFactoryGenerator
         $this->componentFacade = $componentFactory->getComponentFacade();
     }
 
+
     /**
      * @param GeneratorConfiguration $configuration
      */
-    public function generate(GeneratorConfiguration $configuration)
+    public function generate(GeneratorConfiguration $configuration): void
     {
         $this->backboneClassName = $configuration->getBackboneClassName();
 
@@ -95,6 +96,7 @@ class ComponentFactoryGenerator
         }
     }
 
+
     /**
      *
      */
@@ -118,6 +120,7 @@ class ComponentFactoryGenerator
         }
     }
 
+
     /**
      *
      */
@@ -128,6 +131,7 @@ class ComponentFactoryGenerator
 
         $constructor->addCodeLine('$this->backbone = $backbone;');
     }
+
 
     /**
      *
@@ -145,6 +149,7 @@ class ComponentFactoryGenerator
             $resetMethod->addCodeLine('$this->' . $componentClass->getMemberName() . ' = null;');
         }
     }
+
 
     /**
      *
@@ -168,13 +173,13 @@ class ComponentFactoryGenerator
         $method->addIfEnd();
 
         $method->addCodeLine("return $member;");
-
     }
+
 
     /**
      *
      */
-    private function addFacadeAccess()
+    private function addFacadeAccess(): void
     {
         if ($this->componentFacade === null) {
             return;
@@ -188,26 +193,32 @@ class ComponentFactoryGenerator
         $method->setReturnType($facadeClassName, false);
 
         $method->addIfStart($memberFullName . " === null");
-        $method->addCodeLine($memberFullName . " = new " . $facadeClassShortName . '($this->backbone, $this);');
+        $method->addCodeLine($memberFullName . " = new " . $facadeClassShortName . '(');
+        $method->incrementIndent();
+        $method->addCodeLine('$this->backbone,');
+        $method->addCodeLine('$this,');
+        $method->decrementIndent();
+        $method->addCodeLine(');');
         $method->addIfEnd();
         $method->addCodeLine("return $memberFullName;");
-
     }
+
 
     /**
      *
      */
-    private function addTriggerMethodList()
+    private function addTriggerMethodList(): void
     {
         foreach ($this->componentFactory->getComponentEventList() as $componentEvent) {
             $this->addTriggerMethod($componentEvent);
         }
     }
 
+
     /**
      * @param ComponentEvent $componentEvent
      */
-    private function addTriggerMethod(ComponentEvent $componentEvent)
+    private function addTriggerMethod(ComponentEvent $componentEvent): void
     {
         $method = $this->classGenerator->addMethod($componentEvent->getTriggerMethodName());
         $method->addParameter($componentEvent->getEventClassName(), "event");
@@ -223,14 +234,14 @@ class ComponentFactoryGenerator
         $this->addInternalDispatching($componentEvent, $method);
     }
 
+
     /**
      * @param ComponentEvent $componentEvent
      * @param Method $method
      */
-    private function addInternalDispatching(ComponentEvent $componentEvent, Method $method)
+    private function addInternalDispatching(ComponentEvent $componentEvent, Method $method): void
     {
         foreach ($componentEvent->getEventHandlerList() as $eventHandler) {
-
             $facadeAccess = $eventHandler->getFacadeAccessMethod();
             $facadeMethodName = $eventHandler->getFacadeMethodName();
 
@@ -238,29 +249,32 @@ class ComponentFactoryGenerator
         }
     }
 
+
     /**
      * @param ComponentEvent $componentEvent
      * @param Method $method
      */
-    private function addSynchronousEventHandling(ComponentEvent $componentEvent, Method $method)
+    private function addSynchronousEventHandling(ComponentEvent $componentEvent, Method $method): void
     {
         $method->addCodeLine('$this->backbone->dispatchSynchronousEvent($event);');
     }
 
+
     /**
      *
      */
-    private function addBackboneExposeList()
+    private function addBackboneExposeList(): void
     {
         foreach ($this->project->getGlobalExposeMethodList() as $phpMethod) {
             $this->addBackboneExpose($phpMethod);
         }
     }
 
+
     /**
      * @param PHPMethod $exposedMethod
      */
-    private function addBackboneExpose(PHPMethod $exposedMethod)
+    private function addBackboneExpose(PHPMethod $exposedMethod): void
     {
         $method = $this->classGenerator->addMethod($exposedMethod->getMethodName());
 
@@ -283,15 +297,17 @@ class ComponentFactoryGenerator
         $method->addCodeLine($return . '$this->backbone->' . $exposedMethod->getMethodName() . "($invocationSignature);");
     }
 
+
     /**
      *
      */
-    private function addAccessMethodList()
+    private function addAccessMethodList(): void
     {
         foreach ($this->componentFactory->getComponentFactoryMethodList() as $componentClass) {
             $this->addAccessMethod($componentClass);
         }
     }
+
 
     /**
      * @param ComponentFactoryMethod $componentFactoryMethod
@@ -322,11 +338,12 @@ class ComponentFactoryGenerator
         }
     }
 
+
     /**
      * @param ComponentFactoryMethod $componentFactoryClass
      * @param Method $method
      */
-    private function addContextAwareAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method)
+    private function addContextAwareAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method): void
     {
         $method->addSwitch('$this->backbone->getContext()');
 
@@ -342,36 +359,71 @@ class ComponentFactoryGenerator
         $method->addSwitchEnd();
     }
 
+
     /**
      * @param ComponentFactoryMethod $componentFactoryClass
      * @param Method $method
      */
-    private function addAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method)
+    private function addAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method): void
     {
-
         $memberFullName = '$this->' . $componentFactoryClass->getMemberName();
-        $newInstance = $this->generateNewInstance($componentFactoryClass);
 
         if (!$componentFactoryClass->isSingleton()) {
-            $method->addCodeLine("return $newInstance");
+            $this->addGenerateNewInstance(
+                $componentFactoryClass,
+                $method,
+                'return '
+            );
             return;
         }
         $method->addIfStart($memberFullName . " === null");
-        $method->addCodeLine($memberFullName . " = " . $newInstance);
+        $this->addGenerateNewInstance(
+            $componentFactoryClass,
+            $method,
+            "$memberFullName = "
+        );
         $method->addIfEnd();
         $method->addCodeLine("return $memberFullName;");
     }
+
 
     /**
      * @param ComponentFactoryMethod $componentFactoryClass
      *
      * @return string
      */
-    private function generateNewInstance(ComponentFactoryMethod $componentFactoryClass)
+    private function generateNewInstance(ComponentFactoryMethod $componentFactoryClass): string
     {
         $signature = $componentFactoryClass->getConstructorInvocationSignature();
 
+        $parameterList = $componentFactoryClass->getConstructorInvocationSignatureList();
+
+        if (count($parameterList) === 0) {
+            return "new " . $componentFactoryClass->getClassShortName() . "();";
+        }
+
+
         return "new " . $componentFactoryClass->getClassShortName() . "($signature);";
+    }
+
+
+    private function addGenerateNewInstance(ComponentFactoryMethod $componentFactoryClass, Method $method, string $prefix): void
+    {
+        $classShortName = $componentFactoryClass->getClassShortName();
+        $parameterList = $componentFactoryClass->getConstructorInvocationSignatureList();
+
+        if (count($parameterList) === 0) {
+            $method->addCodeLine("$prefix new $classShortName();");
+            return;
+        }
+
+        $method->addCodeLine("$prefix new $classShortName(");
+        $method->incrementIndent();
+        foreach ($parameterList as $parameter) {
+            $method->addCodeLine($parameter . ',');
+        }
+        $method->decrementIndent();
+        $method->addCodeLine(');');
     }
 
 

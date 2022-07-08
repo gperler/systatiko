@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace SystatikoTest\Functional\Asset;
 
+use Systatiko\Annotation\Event;
 use Systatiko\Reader\PHPClass;
 use Civis\Common\File as Test;
 

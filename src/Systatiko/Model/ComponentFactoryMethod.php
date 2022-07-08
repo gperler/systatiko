@@ -202,9 +202,9 @@ class ComponentFactoryMethod
         $nameSpace = $this->factoryAnnotation->namespace;
 
         // injection of facade
-        $accesor = $project->getBackboneAccessor($parameterClass->getClassName(), $nameSpace);
-        if ($accesor !== null) {
-            $this->constructorInvocationSignatureList[] = '$this->backbone->' . $accesor . '()';
+        $accessor = $project->getBackboneAccessor($parameterClass->getClassName(), $nameSpace);
+        if ($accessor !== null) {
+            $this->constructorInvocationSignatureList[] = '$this->backbone->' . $accessor . '()';
             return;
         }
 
@@ -327,6 +327,16 @@ class ComponentFactoryMethod
     {
         return implode(", ", $this->constructorInvocationSignatureList);
     }
+
+
+    /**
+     * @return string[]
+     */
+    public function getConstructorInvocationSignatureList(): array
+    {
+        return $this->constructorInvocationSignatureList;
+    }
+
 
     /**
      * @return string

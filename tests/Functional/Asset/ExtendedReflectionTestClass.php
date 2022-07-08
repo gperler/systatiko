@@ -6,6 +6,7 @@ namespace SystatikoTest\Functional\Asset;
 
 use Nitria\Method;
 use Nitria\MethodParameter as Test;
+use DOMElement;
 
 class ExtendedReflectionTestClass
 {
@@ -15,6 +16,9 @@ class ExtendedReflectionTestClass
      */
     protected $test;
 
-
+    /**
+     * @var DOMElement
+     */
+    protected DOMElement $element;
 
 }
