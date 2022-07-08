@@ -84,9 +84,9 @@ class Component2Factory
     {
         switch ($this->backbone->getContext()) {
             case "X":
-                return  new OverWriteEntity();
+                return new OverWriteEntity();
             default:
-                return  new BaseEntity();
+                return new BaseEntity();
         }
     }
 
@@ -97,7 +97,7 @@ class Component2Factory
      */
     public function newOverWriteEntity(): OverWriteEntity
     {
-        return  new OverWriteEntity();
+        return new OverWriteEntity();
     }
 
 
@@ -108,7 +108,7 @@ class Component2Factory
     public function getEventHandler(): EventHandler
     {
         if ($this->eventHandler === null) {
-            $this->eventHandler =  new EventHandler();
+            $this->eventHandler = new EventHandler();
         }
         return $this->eventHandler;
     }
@@ -121,7 +121,7 @@ class Component2Factory
     public function getInjectContextService(): InjectContextService
     {
         if ($this->injectContextService === null) {
-            $this->injectContextService =  new InjectContextService(
+            $this->injectContextService = new InjectContextService(
                 $this->backbone->getComponent1Facade()->getInjectContext(),
             );
         }
@@ -136,7 +136,7 @@ class Component2Factory
     public function getOtherService(): OtherService
     {
         if ($this->otherService === null) {
-            $this->otherService =  new OtherService();
+            $this->otherService = new OtherService();
         }
         return $this->otherService;
     }
@@ -149,7 +149,7 @@ class Component2Factory
     public function getSecurityService(): SecurityService
     {
         if ($this->securityService === null) {
-            $this->securityService =  new SecurityService();
+            $this->securityService = new SecurityService();
         }
         return $this->securityService;
     }
@@ -162,7 +162,7 @@ class Component2Factory
     public function getSubClass(): SubClass
     {
         if ($this->subClass === null) {
-            $this->subClass =  new SubClass();
+            $this->subClass = new SubClass();
         }
         return $this->subClass;
     }

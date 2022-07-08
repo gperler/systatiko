@@ -61,6 +61,9 @@ class Factory
      */
     public function injectionAllowed(string $paramName)
     {
+        if ($this->noInjection === null) {
+            return true;
+        }
         return strpos($this->noInjection, $paramName) === false;
     }
 
