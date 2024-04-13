@@ -20,9 +20,7 @@ class ComponentConfigurationBase implements ComponentConfiguration
     }
 
     /**
-     * @param string $key
      * @param string|null $default
-     *
      * @return null|string
      */
     public function getConfigurationValue(string $key, string $default = null)

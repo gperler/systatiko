@@ -14,16 +14,6 @@ class ComponentFacadeGenerator
 {
 
     /**
-     * @var Project
-     */
-    private $project;
-
-    /**
-     * @var ComponentFacade
-     */
-    private $componentFacade;
-
-    /**
      * @var ClassGenerator
      */
     private $classGenerator;
@@ -36,20 +26,12 @@ class ComponentFacadeGenerator
 
     /**
      * ComponentFacadeGenerator constructor.
-     *
-     * @param Project $project
-     * @param ComponentFacade $componentFacade
      */
-    public function __construct(Project $project, ComponentFacade $componentFacade)
+    public function __construct(private readonly Project $project, private readonly ComponentFacade $componentFacade)
     {
-        $this->project = $project;
-        $this->componentFacade = $componentFacade;
     }
 
 
-    /**
-     * @param GeneratorConfiguration $configuration
-     */
     public function generate(GeneratorConfiguration $configuration)
     {
         $this->configuration = $configuration;
@@ -105,9 +87,6 @@ class ComponentFacadeGenerator
     }
 
 
-    /**
-     * @param ComponentFacadeMethod $facadeMethod
-     */
     private function addFacadeMethod(ComponentFacadeMethod $facadeMethod)
     {
         $methodName = $facadeMethod->getMethodName();
@@ -157,12 +136,10 @@ class ComponentFacadeGenerator
 
 
     /**
-     * @param Method $method
-     * @param PHPMethodReturnType $methodReturnType
      *
      * @return string
      */
-    private function getReturn(Method $method, PHPMethodReturnType $methodReturnType)
+    private function getReturn(Method $method, PHPMethodReturnType $methodReturnType): string
     {
         if ($methodReturnType->getSignatureType() === 'void') {
             return '';
@@ -176,11 +153,6 @@ class ComponentFacadeGenerator
     }
 
 
-    /**
-     * @param ComponentFacadeMethod $facadeMethod
-     * @param Method $method
-     * @param string $methodName
-     */
     private function addBeforeDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
     {
         foreach ($this->configuration->getFacadeGeneratorExtension() as $extension) {
@@ -193,11 +165,6 @@ class ComponentFacadeGenerator
     }
 
 
-    /**
-     * @param ComponentFacadeMethod $facadeMethod
-     * @param Method $method
-     * @param string $methodName
-     */
     private function addAfterDelegation(ComponentFacadeMethod $facadeMethod, Method $method, string $methodName)
     {
         foreach ($this->configuration->getFacadeGeneratorExtension() as $extension) {

@@ -14,11 +14,11 @@ use Systatiko\Logger\SymphonyConsoleLogger;
 class GeneratorCommand extends Command
 {
 
-    const DEFAULT_CONFIG = "generator.config.json";
+    public const DEFAULT_CONFIG = "generator.config.json";
 
-    const OPTION_CONFIG_FILE = "configFile";
+    public const OPTION_CONFIG_FILE = "configFile";
 
-    const NO_CONFIG_FILE = "<error>No config file found. use --configFile option </error>";
+    public const NO_CONFIG_FILE = "<error>No config file found. use --configFile option </error>";
 
     /**
      * @var InputInterface

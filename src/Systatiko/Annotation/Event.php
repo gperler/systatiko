@@ -13,24 +13,8 @@ use Attribute;
 class Event
 {
 
-    /**
-     * @var string
-     */
-    public string $namespace;
-
-    /**
-     * @var string
-     */
-    public string $name;
-
-    /**
-     * @param string $namespace
-     * @param string $name
-     */
-    public function __construct(string $namespace, string $name)
+    public function __construct(public string $namespace, public string $name)
     {
-        $this->namespace = $namespace;
-        $this->name = $name;
     }
 
     /**

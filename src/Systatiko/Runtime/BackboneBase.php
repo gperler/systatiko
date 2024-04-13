@@ -61,18 +61,12 @@ abstract class BackboneBase implements BackboneContract
     }
 
 
-    /**
-     * @param File $configFile
-     */
     public function setConfigurationFile(File $configFile)
     {
         $this->setConfigurationValueList($configFile->loadAsJSONArray());
     }
 
 
-    /**
-     * @param array $configurationValueList
-     */
     public function setConfigurationValueList(array $configurationValueList)
     {
         $this->configurationValueList = $configurationValueList;

@@ -15,9 +15,6 @@ class SymphonyConsoleLogger implements LoggerInterface
      */
     protected $outputInterfase;
 
-    /**
-     * @param OutputInterface $output
-     */
     public function __construct(OutputInterface $output)
     {
         $this->outputInterfase = $output;
@@ -26,11 +23,10 @@ class SymphonyConsoleLogger implements LoggerInterface
     /**
      * @param int $loglevel
      * @param string $message
-     * @param array $context
      *
      * @return string
      */
-    private function compileMessage($loglevel, $message, array $context = [])
+    private function compileMessage($loglevel, $message, array $context = []): string
     {
         $prefix = "";
         switch ($loglevel) {

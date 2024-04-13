@@ -10,16 +10,6 @@ use Systatiko\Annotation\Factory;
 class PHPMethod
 {
     /**
-     * @var PHPClass
-     */
-    private $phpClass;
-
-    /**
-     * @var ReflectionMethod
-     */
-    private $reflectionMethod;
-
-    /**
      * @var PHPParameter[]
      */
     private $parameterList;
@@ -37,14 +27,9 @@ class PHPMethod
 
     /**
      * PHPMethod constructor.
-     *
-     * @param PHPClass $phpClass
-     * @param ReflectionMethod $reflectionMethod
      */
-    public function __construct(PHPClass $phpClass, ReflectionMethod $reflectionMethod)
+    public function __construct(private readonly PHPClass $phpClass, private readonly ReflectionMethod $reflectionMethod)
     {
-        $this->phpClass = $phpClass;
-        $this->reflectionMethod = $reflectionMethod;
         $this->parameterList = [];
         $this->exceptionList = [];
         $this->extractParameterList();
@@ -115,15 +100,13 @@ class PHPMethod
     /**
      * @return string
      */
-    public function getDocComment()
+    public function getDocComment(): string|false
     {
         return $this->reflectionMethod->getDocComment();
     }
 
 
     /**
-     * @param string $annotationName
-     *
      * @return null|mixed
      */
     public function getMethodAnnotation(string $annotationName): mixed
@@ -208,7 +191,7 @@ class PHPMethod
     /**
      * @return bool
      */
-    public function isPublic()
+    public function isPublic(): bool
     {
         return $this->reflectionMethod->isPublic();
     }

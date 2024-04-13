@@ -17,24 +17,14 @@ class ComponentFactoryGenerator
 {
 
     /**
-     * @var Project
-     */
-    private Project $project;
-
-    /**
-     * @var ComponentFactory
-     */
-    private ComponentFactory $componentFactory;
-
-    /**
      * @var ProjectClass|null
      */
-    private ?ProjectClass $componentConfigurationClass;
+    private readonly ?ProjectClass $componentConfigurationClass;
 
     /**
      * @var ComponentFacade|null
      */
-    private ?ComponentFacade $componentFacade;
+    private readonly ?ComponentFacade $componentFacade;
 
     /**
      * @var string
@@ -49,22 +39,14 @@ class ComponentFactoryGenerator
 
     /**
      * ComponentFactoryGenerator constructor.
-     *
-     * @param Project $project
-     * @param ComponentFactory $componentFactory
      */
-    public function __construct(Project $project, ComponentFactory $componentFactory)
+    public function __construct(private readonly Project $project, private readonly ComponentFactory $componentFactory)
     {
-        $this->project = $project;
-        $this->componentFactory = $componentFactory;
-        $this->componentConfigurationClass = $componentFactory->getComponentConfigurationClass();
-        $this->componentFacade = $componentFactory->getComponentFacade();
+        $this->componentConfigurationClass = $this->componentFactory->getComponentConfigurationClass();
+        $this->componentFacade = $this->componentFactory->getComponentFacade();
     }
 
 
-    /**
-     * @param GeneratorConfiguration $configuration
-     */
     public function generate(GeneratorConfiguration $configuration): void
     {
         $this->backboneClassName = $configuration->getBackboneClassName();
@@ -215,9 +197,6 @@ class ComponentFactoryGenerator
     }
 
 
-    /**
-     * @param ComponentEvent $componentEvent
-     */
     private function addTriggerMethod(ComponentEvent $componentEvent): void
     {
         $method = $this->classGenerator->addMethod($componentEvent->getTriggerMethodName());
@@ -235,10 +214,6 @@ class ComponentFactoryGenerator
     }
 
 
-    /**
-     * @param ComponentEvent $componentEvent
-     * @param Method $method
-     */
     private function addInternalDispatching(ComponentEvent $componentEvent, Method $method): void
     {
         foreach ($componentEvent->getEventHandlerList() as $eventHandler) {
@@ -250,10 +225,6 @@ class ComponentFactoryGenerator
     }
 
 
-    /**
-     * @param ComponentEvent $componentEvent
-     * @param Method $method
-     */
     private function addSynchronousEventHandling(ComponentEvent $componentEvent, Method $method): void
     {
         $method->addCodeLine('$this->backbone->dispatchSynchronousEvent($event);');
@@ -271,9 +242,6 @@ class ComponentFactoryGenerator
     }
 
 
-    /**
-     * @param PHPMethod $exposedMethod
-     */
     private function addBackboneExpose(PHPMethod $exposedMethod): void
     {
         $method = $this->classGenerator->addMethod($exposedMethod->getMethodName());
@@ -309,9 +277,6 @@ class ComponentFactoryGenerator
     }
 
 
-    /**
-     * @param ComponentFactoryMethod $componentFactoryMethod
-     */
     private function addAccessMethod(ComponentFactoryMethod $componentFactoryMethod)
     {
         $this->classGenerator->addUsedClassName($componentFactoryMethod->getClassName());
@@ -339,10 +304,6 @@ class ComponentFactoryGenerator
     }
 
 
-    /**
-     * @param ComponentFactoryMethod $componentFactoryClass
-     * @param Method $method
-     */
     private function addContextAwareAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method): void
     {
         $method->addSwitch('$this->backbone->getContext()');
@@ -360,10 +321,6 @@ class ComponentFactoryGenerator
     }
 
 
-    /**
-     * @param ComponentFactoryMethod $componentFactoryClass
-     * @param Method $method
-     */
     private function addAccessBlock(ComponentFactoryMethod $componentFactoryClass, Method $method): void
     {
         $memberFullName = '$this->' . $componentFactoryClass->getMemberName();
@@ -388,8 +345,6 @@ class ComponentFactoryGenerator
 
 
     /**
-     * @param ComponentFactoryMethod $componentFactoryClass
-     *
      * @return string
      */
     private function generateNewInstance(ComponentFactoryMethod $componentFactoryClass): string
@@ -408,9 +363,6 @@ class ComponentFactoryGenerator
 
 
     /**
-     * @param ComponentFactoryMethod $componentFactoryClass
-     * @param Method $method
-     * @param string $prefix
      *
      * @return void
      */

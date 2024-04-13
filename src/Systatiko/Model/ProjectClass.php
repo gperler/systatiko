@@ -14,24 +14,10 @@ class ProjectClass
 {
 
     /**
-     * @var Project
-     */
-    private $project;
-
-    /**
-     * @var PHPClass
-     */
-    private $phpClass;
-
-    /**
      * ProjectClass constructor.
-     * @param Project $project
-     * @param PHPClass $phpClass
      */
-    public function __construct(Project $project, PHPClass $phpClass)
+    public function __construct(private readonly Project $project, private readonly PHPClass $phpClass)
     {
-        $this->project = $project;
-        $this->phpClass = $phpClass;
     }
 
     /**
@@ -55,7 +41,6 @@ class ProjectClass
     }
 
     /**
-     * @param string $className
      * @return null|object
      */
     public function getAnnotation(string $className)
@@ -146,8 +131,6 @@ class ProjectClass
     }
 
     /**
-     * @param string $interfaceName
-     *
      * @return bool
      */
     public function implementsInterface(string $interfaceName): bool
@@ -156,8 +139,6 @@ class ProjectClass
     }
 
     /**
-     * @param string $className
-     *
      * @return bool
      */
     public function isSubclassOf(string $className): bool

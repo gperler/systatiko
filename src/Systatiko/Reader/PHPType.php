@@ -6,20 +6,20 @@ namespace Systatiko\Reader;
 
 class PHPType
 {
-    const BOOL = "bool";
+    public const BOOL = "bool";
 
-    const INT = "int";
+    public const INT = "int";
 
-    const FLOAT = "float";
+    public const FLOAT = "float";
 
-    const STRING = "string";
+    public const STRING = "string";
 
-    const ARRAY = "array";
+    public const ARRAY = "array";
 
-    const CALLABLE = "callable";
+    public const CALLABLE = "callable";
 
 
-    const SCALAR_TYPE_LIST = [
+    public const SCALAR_TYPE_LIST = [
         self::BOOL,
         self::INT,
         self::FLOAT,

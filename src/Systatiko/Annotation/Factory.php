@@ -12,59 +12,8 @@ use Attribute;
 class Factory
 {
 
-    /**
-     * @var string|null
-     */
-    public ?string $namespace;
-
-    /**
-     * @var string|null
-     */
-    public ?string $context;
-
-    /**
-     * @var string|null
-     */
-    public ?string $overwrites;
-
-    /**
-     * @var bool|null
-     */
-    public ?bool $singleton;
-
-    /**
-     * @var string|null
-     */
-    public ?string $returnType;
-
-    /**
-     * @var string|null
-     */
-    public ?string $noInjection;
-
-    /**
-     * @param string|null $namespace
-     * @param string|null $context
-     * @param string|null $overwrites
-     * @param bool|null $singleton
-     * @param string|null $returnType
-     * @param string|null $noInjection
-     */
-    public function __construct(
-        ?string $namespace,
-        string $context = null,
-        string $overwrites = null,
-        bool   $singleton = false,
-        string $returnType = null,
-        string $noInjection = null,
-    )
+    public function __construct(public ?string $namespace, public ?string $context = null, public ?string $overwrites = null, public ?bool   $singleton = false, public ?string $returnType = null, public ?string $noInjection = null)
     {
-        $this->namespace = $namespace;
-        $this->context = $context;
-        $this->overwrites = $overwrites;
-        $this->singleton = $singleton;
-        $this->returnType = $returnType;
-        $this->noInjection = $noInjection;
     }
 
 
@@ -73,7 +22,7 @@ class Factory
      */
     public function getNamespace(): string
     {
-        return trim($this->namespace, "\\ ");
+        return trim((string) $this->namespace, "\\ ");
     }
 
     /**
@@ -81,7 +30,7 @@ class Factory
      */
     public function getOverwrites(): string
     {
-        return trim($this->overwrites, "\\ ");
+        return trim((string) $this->overwrites, "\\ ");
     }
 
     /**
@@ -101,8 +50,6 @@ class Factory
     }
 
     /**
-     * @param string $paramName
-     *
      * @return bool
      */
     public function injectionAllowed(string $paramName): bool

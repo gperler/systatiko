@@ -13,11 +13,6 @@ class PHPClass
 {
 
     /**
-     * @var File
-     */
-    private $file;
-
-    /**
      * @var ExtendedReflectionClass
      */
     private $reflectClass;
@@ -41,14 +36,11 @@ class PHPClass
     /**
      * PHPClass constructor.
      *
-     * @param File $file
-     * @param string $className
      *
      * @throws ReflectionException
      */
-    public function __construct(File $file, string $className)
+    public function __construct(private readonly File $file, string $className)
     {
-        $this->file = $file;
         $this->className = new PHPClassName($className);
         $this->usedClassNameList = [];
         $this->errorMessage = null;
@@ -57,8 +49,6 @@ class PHPClass
 
 
     /**
-     * @param string $className
-     *
      * @throws ReflectionException
      */
     private function reflect(string $className): void
@@ -132,19 +122,15 @@ class PHPClass
 
 
     /**
-     * @param string $interfaceName
-     *
      * @return bool
      */
-    public function implementsInterface(string $interfaceName)
+    public function implementsInterface(string $interfaceName): bool
     {
         return $this->reflectClass->implementsInterface($interfaceName);
     }
 
 
     /**
-     * @param string $className
-     *
      * @return bool
      */
     public function isSubclassOf(string $className): bool
@@ -249,8 +235,6 @@ class PHPClass
 
 
     /**
-     * @param string $classShortName
-     *
      * @return null|PHPClassName
      */
     public function getSameNamespaceClass(string $classShortName)

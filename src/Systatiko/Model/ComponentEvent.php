@@ -18,11 +18,6 @@ class ComponentEvent
     private $eventName;
 
     /**
-     * @var ProjectClass
-     */
-    private $projectClass;
-
-    /**
      * @var string
      */
     private $namespace;
@@ -39,13 +34,9 @@ class ComponentEvent
 
     /**
      * ComponentEvent constructor.
-     *
-     * @param ProjectClass $projectClass
-     * @param Event $event
      */
-    public function __construct(ProjectClass $projectClass, Event $event)
+    public function __construct(private readonly ProjectClass $projectClass, Event $event)
     {
-        $this->projectClass = $projectClass;
         $this->namespace = $event->getNamespace();
         $this->eventName = $event->name;
         $this->eventHandlerList = [];
@@ -91,9 +82,6 @@ class ComponentEvent
         return "trigger" . ucfirst($this->getEventClassShortName());
     }
 
-    /**
-     * @param ComponentEventHandler $componentEventHandler
-     */
     public function addEventHandler(ComponentEventHandler $componentEventHandler)
     {
         $this->eventHandlerList[] = $componentEventHandler;
@@ -139,9 +127,6 @@ class ComponentEvent
         return $this->responsibleFactory;
     }
 
-    /**
-     * @param ComponentFactory $responsibleFactory
-     */
     public function setResponsibleFactory(ComponentFactory $responsibleFactory)
     {
         $this->responsibleFactory = $responsibleFactory;

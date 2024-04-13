@@ -8,22 +8,13 @@ class InjectionConfiguration
 {
 
     /**
-     * @var array
-     */
-    private $configValues;
-
-
-    /**
      * InjectionConfiguration constructor.
-     * @param array|null $config
      */
-    public function __construct(array $config = null)
+    public function __construct(private ?array $configValues = null)
     {
-        $this->configValues = $config;
     }
 
     /**
-     * @param string $className
      * @return bool
      */
     public function isDefined(string $className): bool
@@ -35,7 +26,6 @@ class InjectionConfiguration
     }
 
     /**
-     * @param string $className
      * @return string|null
      */
     public function getCodeForClassName(string $className): ?string

@@ -10,11 +10,6 @@ class PHPDocCommentType
 {
 
     /**
-     * @var PHPMethod
-     */
-    private $method;
-
-    /**
      * @var string
      */
     private $original;
@@ -48,12 +43,10 @@ class PHPDocCommentType
      * PHPDocBlockType constructor.
      *
      * @param string|null $name
-     * @param PHPMethod $method
      */
-    public function __construct(string $name, PHPMethod $method)
+    public function __construct(string $name, private readonly PHPMethod $method)
     {
         $this->original = trim($name);
-        $this->method = $method;
         $this->canBeNull = false;
         $this->isArray = false;
         $this->isVoid = ($this->original === 'void');
@@ -76,9 +69,6 @@ class PHPDocCommentType
         }
     }
 
-    /**
-     * @param string $type
-     */
     private function analyzeType(string $type)
     {
         $this->isArray = StringUtil::endsWith($type, "[]");
@@ -138,7 +128,7 @@ class PHPDocCommentType
     /**
      * @return null|string
      */
-    public function getFullyQualifiedName()
+    public function getFullyQualifiedName(): ?string
     {
         if ($this->isVoid()) {
             return null;

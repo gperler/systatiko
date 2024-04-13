@@ -11,28 +11,13 @@ use Systatiko\Reader\PHPParameter;
 class ComponentFactoryMethod
 {
 
-    const ERROR_UNKNOWN_PARAMETER = "Parameter %s in class %s is not a registered facade. Only ComponentFactory and ComponentFacades can be injected.";
+    public const ERROR_UNKNOWN_PARAMETER = "Parameter %s in class %s is not a registered facade. Only ComponentFactory and ComponentFacades can be injected.";
 
-    const ERROR_OVERWRITE_WITHOUT_CONTEXT = "Overwrite of in class %s needs a context";
+    public const ERROR_OVERWRITE_WITHOUT_CONTEXT = "Overwrite of in class %s needs a context";
 
-    const ERROR_OVERWRITE_DOES_NOT_EXTEND = "Class '%s' overwrites class '%s' but does not extend it. Add extend to declaration of class.";
+    public const ERROR_OVERWRITE_DOES_NOT_EXTEND = "Class '%s' overwrites class '%s' but does not extend it. Add extend to declaration of class.";
 
-    const WARINING_UNKWOWN_OVERWRITTEN_CLASS = "Overwritten class %s not found in %s. Only classes in same ComponentFactory can be overwritten";
-
-    /**
-     * @var ComponentFactory
-     */
-    private $componentFactory;
-
-    /**
-     * @var Factory
-     */
-    private $factoryAnnotation;
-
-    /**
-     * @var ProjectClass
-     */
-    private $factoryForProjectClass;
+    public const WARINING_UNKWOWN_OVERWRITTEN_CLASS = "Overwritten class %s not found in %s. Only classes in same ComponentFactory can be overwritten";
 
     /**
      * @var ComponentFactoryMethod
@@ -61,25 +46,15 @@ class ComponentFactoryMethod
 
     /**
      * ComponentFactoryMethod constructor.
-     *
-     * @param ComponentFactory $componentFactory
-     * @param Factory $factory
-     * @param ProjectClass $projectClass
      */
-    public function __construct(ComponentFactory $componentFactory, Factory $factory, ProjectClass $projectClass)
+    public function __construct(private readonly ComponentFactory $componentFactory, private readonly Factory $factoryAnnotation, private readonly ProjectClass $factoryForProjectClass)
     {
-        $this->componentFactory = $componentFactory;
-        $this->factoryAnnotation = $factory;
-        $this->factoryForProjectClass = $projectClass;
         $this->overwritingComponentFactoryClassList = [];
         $this->constructorInvocationSignatureList = [];
         $this->accessorParameterList = [];
-        $this->injectionConfiguration = $componentFactory->getInjectionConfiguration();
+        $this->injectionConfiguration = $this->componentFactory->getInjectionConfiguration();
     }
 
-    /**
-     * @param Project $project
-     */
     public function update(Project $project)
     {
         $this->updateOverwrite($project);
@@ -88,9 +63,6 @@ class ComponentFactoryMethod
 
     }
 
-    /**
-     * @param Project $project
-     */
     private function updateOverwrite(Project $project)
     {
         $overwrite = $this->getOverwrite();
@@ -121,9 +93,6 @@ class ComponentFactoryMethod
         }
     }
 
-    /**
-     * @param Project $project
-     */
     private function updateConstructorSignature(Project $project)
     {
         $constructorParameterList = $this->factoryForProjectClass->getConstructorParameter();
@@ -138,9 +107,6 @@ class ComponentFactoryMethod
 
     }
 
-    /**
-     * @param Project $project
-     */
     private function updateParameterClassName(Project $project)
     {
         foreach ($this->accessorParameterList as $parameter) {
@@ -156,10 +122,6 @@ class ComponentFactoryMethod
         }
     }
 
-    /**
-     * @param Project $project
-     * @param PHPParameter $parameter
-     */
     private function getParameterAccessor(Project $project, PHPParameter $parameter)
     {
 
@@ -219,9 +181,6 @@ class ComponentFactoryMethod
         $this->accessorParameterList[] = $parameter;
     }
 
-    /**
-     * @param ComponentFactoryMethod $overwriting
-     */
     private function addOverwritingComponentFactoryClass(ComponentFactoryMethod $overwriting)
     {
         $this->overwritingComponentFactoryClassList[] = $overwriting;

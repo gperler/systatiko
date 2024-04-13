@@ -8,11 +8,6 @@ class PHPMethodReturnType
 {
 
     /**
-     * @var PHPMethod
-     */
-    private $phpMethod;
-
-    /**
      * @var string
      */
     private $signatureType;
@@ -35,12 +30,9 @@ class PHPMethodReturnType
 
     /**
      * PHPMethodReturnType constructor.
-     *
-     * @param PHPMethod $method
      */
-    public function __construct(PHPMethod $method)
+    public function __construct(private readonly PHPMethod $phpMethod)
     {
-        $this->phpMethod = $method;
         $this->canBeNull = false;
         $this->extractSignatureReturnType();
         $this->extractDocBlockReturnType();

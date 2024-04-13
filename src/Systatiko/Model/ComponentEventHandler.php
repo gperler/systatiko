@@ -8,37 +8,12 @@ class ComponentEventHandler
 {
 
     /**
-     * @var string
-     */
-    private $eventClassName;
-
-    /**
-     * @var ComponentFacade
-     */
-    private $facade;
-
-    /**
-     * @var ComponentFacadeMethod
-     */
-    private $facadeMethod;
-
-    /**
      * ComponentEventHandler constructor.
-     *
-     * @param ComponentFacade $facade
-     * @param ComponentFacadeMethod $method
-     * @param string $eventClassName
      */
-    public function __construct(ComponentFacade $facade, ComponentFacadeMethod $method, string $eventClassName)
+    public function __construct(private readonly ComponentFacade $facade, private readonly ComponentFacadeMethod $facadeMethod, private readonly string $eventClassName)
     {
-        $this->facade = $facade;
-        $this->facadeMethod = $method;
-        $this->eventClassName = $eventClassName;
     }
 
-    /**
-     * @param Project $project
-     */
     public function update(Project $project)
     {
         $event = $project->getComponentEventByName($this->eventClassName);

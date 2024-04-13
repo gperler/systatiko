@@ -12,7 +12,7 @@ use ReflectionException;
 
 class PHPClassScanner implements LoggerAwareInterface
 {
-    const DEFAULT_PHP_SUFFIX = ".php";
+    public const DEFAULT_PHP_SUFFIX = ".php";
 
     /**
      * @var PHPClass[]
@@ -29,12 +29,10 @@ class PHPClassScanner implements LoggerAwareInterface
      */
     public function __construct()
     {
-        $this->phpClassList = array();
+        $this->phpClassList = [];
     }
 
     /**
-     * @param string $baseDirPath
-     * @param string $suffix
      *
      * @return bool
      */
@@ -64,7 +62,6 @@ class PHPClassScanner implements LoggerAwareInterface
     }
 
     /**
-     * @param File $phpFile
      * @throws ReflectionException
      */
     private function extractPHPClassList(File $phpFile): void
@@ -86,8 +83,6 @@ class PHPClassScanner implements LoggerAwareInterface
     }
 
     /**
-     * @param string $phpcode
-     *
      * @return array
      */
     public function getDefinedPhpClasses2(string $phpcode): array
@@ -126,7 +121,6 @@ class PHPClassScanner implements LoggerAwareInterface
     }
 
     /**
-     * @param string $phpCode
      * @return array
      */
     public function getDefinedPhpClasses(string $phpCode): array
@@ -143,7 +137,6 @@ class PHPClassScanner implements LoggerAwareInterface
 
 
     /**
-     * @param array $tokenList
      * @return string|null
      */
     private function getNameSpaceFromToken(array $tokenList): ?string
@@ -172,7 +165,6 @@ class PHPClassScanner implements LoggerAwareInterface
 
 
     /**
-     * @param array $tokenList
      * @return array
      */
     private function getClassNameFromFile(array $tokenList): array

@@ -12,17 +12,7 @@ class PHPClassName
     /**
      * @var string
      */
-    private $className;
-
-    /**
-     * @var string
-     */
     private $classShortName;
-
-    /**
-     * @var string
-     */
-    private $as;
 
     /**
      * @var string
@@ -31,16 +21,11 @@ class PHPClassName
 
     /**
      * PHPClassName constructor.
-     *
-     * @param string $className
-     * @param string|null $as
      */
-    public function __construct(string $className, string $as = null)
+    public function __construct(private readonly string $className, private readonly ?string $as = null)
     {
-        $this->as = $as;
-        $this->className = $className;
-        $this->namespaceName = StringUtil::getStartBeforeLast($className, "\\");
-        $this->classShortName =  ($as !== null) ? $as : StringUtil::getEndAfterLast($className, "\\");
+        $this->namespaceName = StringUtil::getStartBeforeLast($this->className, "\\");
+        $this->classShortName =  $this->as ?? StringUtil::getEndAfterLast($this->className, "\\");
     }
 
     /**

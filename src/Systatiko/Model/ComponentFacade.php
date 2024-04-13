@@ -10,22 +10,12 @@ use Systatiko\Reader\PHPMethod;
 class ComponentFacade
 {
 
-    const FACADE_SUFFIX = "Facade";
-
-    /**
-     * @var Project
-     */
-    private $project;
+    public const FACADE_SUFFIX = "Facade";
 
     /**
      * @var ProjectClass
      */
     private $projectClass;
-
-    /**
-     * @var ComponentFactory
-     */
-    private $componentFactory;
 
     /**
      * @var string
@@ -45,24 +35,15 @@ class ComponentFacade
 
     /**
      * ComponentFacade constructor.
-     *
-     * @param Project $project
-     * @param FacadeExposition $facadeExposition
-     * @param ComponentFactory $componentFactory
      */
-    public function __construct(Project $project, FacadeExposition $facadeExposition, ComponentFactory $componentFactory)
+    public function __construct(private readonly Project $project, FacadeExposition $facadeExposition, private readonly ComponentFactory $componentFactory)
     {
-        $this->project = $project;
-        $this->componentFactory = $componentFactory;
         $this->componentFacadeNamespace = $facadeExposition->getNamespace();
         $this->componentFacadeMethodList = [];
         $this->eventHandlerList = [];
     }
 
 
-    /**
-     * @param Project $project
-     */
     public function update(Project $project)
     {
         foreach ($this->componentFacadeMethodList as $method) {
@@ -85,10 +66,6 @@ class ComponentFacade
     }
 
 
-    /**
-     * @param FacadeExposition $exposition
-     * @param ProjectClass $projectClass
-     */
     public function addFacadeMethodList(FacadeExposition $exposition, ProjectClass $projectClass)
     {
         foreach ($projectClass->getPHPMethodList() as $phpMethod) {
@@ -97,10 +74,6 @@ class ComponentFacade
     }
 
 
-    /**
-     * @param ProjectClass $projectClass
-     * @param PHPMethod $phpMethod
-     */
     private function addFacadeMethod(ProjectClass $projectClass, PHPMethod $phpMethod)
     {
         $facadeExposition = $phpMethod->getMethodAnnotation(FacadeExposition::class);
@@ -129,9 +102,6 @@ class ComponentFacade
     }
 
 
-    /**
-     * @param ComponentFacadeMethod $method
-     */
     private function handleEventHandler(ComponentFacadeMethod $method)
     {
         $handledEvent = $method->getHandledEvent();
@@ -219,11 +189,9 @@ class ComponentFacade
 
 
     /**
-     * @param string $facadeClassName
-     *
      * @return null|string
      */
-    public function getBackboneAccessor(string $facadeClassName)
+    public function getBackboneAccessor(string $facadeClassName): ?string
     {
         if ($facadeClassName === $this->getClassName()) {
             return $this->getFactoryMethodName();

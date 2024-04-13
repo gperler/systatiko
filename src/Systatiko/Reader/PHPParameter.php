@@ -10,11 +10,6 @@ class PHPParameter
 {
 
     /**
-     * @var PHPMethod
-     */
-    private $phpMethod;
-
-    /**
      * @var PHPDocCommentType
      */
     private $docBlockType;
@@ -59,20 +54,14 @@ class PHPParameter
 
     /**
      * PHPParameter constructor.
-     *
-     * @param PHPMethod $method
-     * @param ReflectionParameter $reflectionParameter
      */
-    public function __construct(PHPMethod $method, ReflectionParameter $reflectionParameter)
+    public function __construct(private readonly PHPMethod $phpMethod, ReflectionParameter $reflectionParameter)
     {
-        $this->phpMethod = $method;
         $this->readSignaturePart($reflectionParameter);
     }
 
 
     /**
-     * @param ReflectionParameter $reflectionParameter
-     *
      * @throws \ReflectionException
      */
     private function readSignaturePart(ReflectionParameter $reflectionParameter): void
@@ -85,9 +74,6 @@ class PHPParameter
     }
 
 
-    /**
-     * @param ReflectionParameter $reflectionParameter
-     */
     private function extractType(ReflectionParameter $reflectionParameter): void
     {
         $type = $reflectionParameter->getType();
@@ -105,8 +91,6 @@ class PHPParameter
 
 
     /**
-     * @param ReflectionParameter $reflectionParameter
-     *
      * @throws \ReflectionException
      */
     private function extractDefaultValue(ReflectionParameter $reflectionParameter): void
@@ -211,9 +195,6 @@ class PHPParameter
     }
 
 
-    /**
-     * @param string $name
-     */
     public function setName(string $name)
     {
         $this->name = $name;
@@ -247,9 +228,6 @@ class PHPParameter
     }
 
 
-    /**
-     * @param string $default
-     */
     public function setDefault(string $default = null)
     {
         $this->default = StringUtil::trimToNull($default);

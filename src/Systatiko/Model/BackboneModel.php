@@ -13,23 +13,15 @@ class BackboneModel
 
 
     /**
-     * @var PHPClass
-     */
-    private $phpClass;
-
-    /**
      * @var PHPMethod[]
      */
     private $exposeList;
 
     /**
      * BackboneModel constructor.
-     *
-     * @param PHPClass $phpClass
      */
-    public function __construct(PHPClass $phpClass)
+    public function __construct(private readonly PHPClass $phpClass)
     {
-        $this->phpClass = $phpClass;
         $this->exposeList = [];
         $this->findExposeAll();
     }
@@ -44,9 +36,6 @@ class BackboneModel
         }
     }
 
-    /**
-     * @param PHPMethod $method
-     */
     private function analyzeMethod(PHPMethod $method)
     {
         $annotation = $method->getMethodAnnotation(ExposeInAllFactories::class);

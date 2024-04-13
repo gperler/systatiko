@@ -8,13 +8,10 @@ use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRect
 
 return RectorConfig::configure()
     ->withPaths([
-        __DIR__ . '/tests',
+        __DIR__ . '/src',
     ])
-    // uncomment to reach your current PHP version
-    // ->withPhpSets()
-//    ->withRules([
-////        AddVoidReturnTypeWhereNoReturnRector::class,
-//    ])
-    ->withSets([
-        __DIR__ . '/annotations-to-attributes.php'
-    ]);
+    ->withRules([
+        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictNativeCallRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnTypeFromStrictScalarReturnExprRector::class,
+    ])
+;

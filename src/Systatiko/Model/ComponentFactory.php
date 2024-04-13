@@ -10,12 +10,7 @@ use Systatiko\Reader\PHPClassName;
 class ComponentFactory
 {
 
-    const FACTORY_SUFFIX = "Factory";
-
-    /**
-     * @var Project
-     */
-    private $project;
+    public const FACTORY_SUFFIX = "Factory";
 
     /**
      * @var string
@@ -49,23 +44,17 @@ class ComponentFactory
 
     /**
      * ComponentFactory constructor.
-     *
-     * @param Project $project
-     * @param Factory $factory
      */
-    public function __construct(Project $project, Factory $factory)
+    public function __construct(private readonly Project $project, Factory $factory)
     {
-        $this->project = $project;
         $this->componentFactoryNamespace = $factory->getNamespace();
         $this->componentFactoryMethodList = [];
         $this->componentEventList = [];
         $this->componentFacade = null;
-        $this->injectionConfiguration = $project->getInjectionConfiguration();
+        $this->injectionConfiguration = $this->project->getInjectionConfiguration();
     }
 
     /**
-     * @param string $namespace
-     *
      * @return bool
      */
     public function isResponsible(string $namespace): bool
@@ -73,9 +62,6 @@ class ComponentFactory
         return $this->componentFactoryNamespace === $namespace;
     }
 
-    /**
-     * @param ComponentFacade $componentFacade
-     */
     public function setComponentFacade(ComponentFacade $componentFacade)
     {
         $this->componentFacade = $componentFacade;
@@ -89,27 +75,17 @@ class ComponentFactory
         return $this->componentFacade;
     }
 
-    /**
-     * @param ComponentEvent $componentEvent
-     */
     public function addComponentEvent(ComponentEvent $componentEvent)
     {
         $componentEvent->setResponsibleFactory($this);
         $this->componentEventList[] = $componentEvent;
     }
 
-    /**
-     * @param Factory $factory
-     * @param ProjectClass $projectClass
-     */
     public function addFactoryMethod(Factory $factory, ProjectClass $projectClass)
     {
         $this->componentFactoryMethodList[] = new ComponentFactoryMethod($this, $factory, $projectClass);
     }
 
-    /**
-     * @param Project $project
-     */
     public function update(Project $project)
     {
         foreach ($this->componentFactoryMethodList as $componentFactoryClass) {
@@ -118,8 +94,6 @@ class ComponentFactory
     }
 
     /**
-     * @param PHPClassName $className
-     *
      * @return null|ComponentFactoryMethod
      */
     public function getComponentFactoryMethodByClassName(PHPClassName $className)
@@ -177,8 +151,6 @@ class ComponentFactory
     }
 
     /**
-     * @param string $className
-     *
      * @return ComponentFactoryMethod|null
      */
     public function getFactoryMethodByClassName(string $className)

@@ -12,37 +12,12 @@ class ComponentFacadeMethod
 {
 
     /**
-     * @var ProjectClass
-     */
-    private $projectClass;
-
-    /**
-     * @var ComponentFactoryMethod
-     */
-    private $factoryMethod;
-
-    /**
-     * @var PHPMethod
-     */
-    private $phpMethod;
-
-    /**
      * ComponentFacadeMethod constructor.
-     *
-     * @param ProjectClass $projectClass
-     * @param ComponentFactoryMethod $factoryMethod
-     * @param PHPMethod $phpMethod
      */
-    public function __construct(ProjectClass $projectClass, ComponentFactoryMethod $factoryMethod, PHPMethod $phpMethod)
+    public function __construct(private readonly ProjectClass $projectClass, private readonly ComponentFactoryMethod $factoryMethod, private readonly PHPMethod $phpMethod)
     {
-        $this->projectClass = $projectClass;
-        $this->factoryMethod = $factoryMethod;
-        $this->phpMethod = $phpMethod;
     }
 
-    /**
-     * @param Project $project
-     */
     public function update(Project $project)
     {
 
@@ -97,7 +72,7 @@ class ComponentFacadeMethod
     /**
      * @return string
      */
-    public function getFactoryMethodName()
+    public function getFactoryMethodName(): string
     {
         return $this->factoryMethod->getFactoryMethodName();
     }
@@ -157,7 +132,7 @@ class ComponentFacadeMethod
     /**
      * @return string
      */
-    public function getDelegatedClassName()
+    public function getDelegatedClassName(): string
     {
         return $this->projectClass->getClassName();
     }

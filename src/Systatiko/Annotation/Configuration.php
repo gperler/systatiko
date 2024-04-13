@@ -12,18 +12,8 @@ use Attribute;
 class Configuration
 {
 
-    /**
-     * @var string
-     */
-    public string $namespace;
-
-
-    /**
-     * @param string $namespace
-     */
-    public function __construct(string $namespace)
+    public function __construct(public string $namespace)
     {
-        $this->namespace = $namespace;
     }
 
     /**

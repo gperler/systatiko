@@ -7,47 +7,47 @@ use Psr\Log\LoggerInterface;
 
 class CodeceptionLogger implements LoggerInterface
 {
-    public function emergency($message, array $context = array()): void
+    public function emergency($message, array $context = []): void
     {
         Debug::debug("[emergency] " . $message);
     }
 
-    public function alert($message, array $context = array()): void
+    public function alert($message, array $context = []): void
     {
         Debug::debug("[alert] " . $message);
     }
 
-    public function critical($message, array $context = array()): void
+    public function critical($message, array $context = []): void
     {
         Debug::debug("[critical] " . $message);
     }
 
-    public function error($message, array $context = array()): void
+    public function error($message, array $context = []): void
     {
         Debug::debug("[error] " . $message);
     }
 
-    public function warning($message, array $context = array()): void
+    public function warning($message, array $context = []): void
     {
         Debug::debug("[warning] " . $message);
     }
 
-    public function notice($message, array $context = array()): void
+    public function notice($message, array $context = []): void
     {
         Debug::debug("[notice] " . $message);
     }
 
-    public function info($message, array $context = array()): void
+    public function info($message, array $context = []): void
     {
         Debug::debug("[info] " . $message);
     }
 
-    public function debug($message, array $context = array()): void
+    public function debug($message, array $context = []): void
     {
         Debug::debug("[debug] " . $message);
     }
 
-    public function log($level, $message, array $context = array()): void
+    public function log($level, $message, array $context = []): void
     {
         Debug::debug("[log] " . $message);
     }

@@ -13,50 +13,50 @@ use Systatiko\Reader\PHPClassName;
 class GeneratorConfiguration
 {
 
-    const EXCEPTION_FILE_DOES_NOT_EXIST = "Configuration file '%s' does not exist.";
+    public const EXCEPTION_FILE_DOES_NOT_EXIST = "Configuration file '%s' does not exist.";
 
-    const EXCEPTION_CONFIGURATION_INVALID_OR_EMPTY = "Configuration file '%s' either empty or invalid json.";
+    public const EXCEPTION_CONFIGURATION_INVALID_OR_EMPTY = "Configuration file '%s' either empty or invalid json.";
 
-    const EXCEPTION_BACKBONE_CLASS_NOT_DEFINED = "Configuration file '%s' does not contain backbone.className";
+    public const EXCEPTION_BACKBONE_CLASS_NOT_DEFINED = "Configuration file '%s' does not contain backbone.className";
 
-    const EXCEPTION_NO_INCLUDE_DIR = "Configuration file '%s' parameter includeDir must be defined as an array with at least one directory";
+    public const EXCEPTION_NO_INCLUDE_DIR = "Configuration file '%s' parameter includeDir must be defined as an array with at least one directory";
 
-    const EXCEPTION_FACADE_GENERATOR_EXTENSION_NO_ARRAY = "'facadeGeneratorExtension' is not an array []";
+    public const EXCEPTION_FACADE_GENERATOR_EXTENSION_NO_ARRAY = "'facadeGeneratorExtension' is not an array []";
 
-    const EXCEPTION_FACADE_GENERATOR_EXTENSION_DOES_NOT_IMPLEMENT = "Facade generator extension '%s' does not implement '%s'";
+    public const EXCEPTION_FACADE_GENERATOR_EXTENSION_DOES_NOT_IMPLEMENT = "Facade generator extension '%s' does not implement '%s'";
 
-    const EXCEPTION_NO_PSR4_PREFIX = "For PSR-4 a the psr4Prefix must be set";
+    public const EXCEPTION_NO_PSR4_PREFIX = "For PSR-4 a the psr4Prefix must be set";
 
-    const FACADE_GENERATOR_EXTENSION_INTERFACE = 'Systatiko\Contract\FacadeGeneratorExtension';
+    public const FACADE_GENERATOR_EXTENSION_INTERFACE = 'Systatiko\Contract\FacadeGeneratorExtension';
 
-    const BACKBONE = "backbone";
+    public const BACKBONE = "backbone";
 
-    const BACKBONE_CLASS = "className";
+    public const BACKBONE_CLASS = "className";
 
-    const BACKBONE_EXTENDS = "extendsClassName";
+    public const BACKBONE_EXTENDS = "extendsClassName";
 
-    const BACKBONE_EXTENDS_DEFAULT = "Systatiko\\Runtime\\BackboneBase";
+    public const BACKBONE_EXTENDS_DEFAULT = "Systatiko\\Runtime\\BackboneBase";
 
-    const BACKBONE_DEPENDENCY_FILE = 'dependencyFile';
+    public const BACKBONE_DEPENDENCY_FILE = 'dependencyFile';
 
-    const FACADE_GENERATOR_EXTENSION = "facadeGeneratorExtension";
+    public const FACADE_GENERATOR_EXTENSION = "facadeGeneratorExtension";
 
-    const INCLUDE_DIR = "includeDir";
+    public const INCLUDE_DIR = "includeDir";
 
-    const LOGGER = "logger";
+    public const LOGGER = "logger";
 
-    const TARGET_DIR = "targetDir";
+    public const TARGET_DIR = "targetDir";
 
 
-    const PSR_MODE = "psrMode";
+    public const PSR_MODE = "psrMode";
 
-    const PSR_MODE_PSR0 = 'psr0';
+    public const PSR_MODE_PSR0 = 'psr0';
 
-    const PSR_MODE_PSR4 = 'psr4';
+    public const PSR_MODE_PSR4 = 'psr4';
 
-    const PSR4_PREFIX = 'psr4Prefix';
+    public const PSR4_PREFIX = 'psr4Prefix';
 
-    const INJECTION_CONFIGURATION = 'injectionList';
+    public const INJECTION_CONFIGURATION = 'injectionList';
 
 
     /**
@@ -92,7 +92,6 @@ class GeneratorConfiguration
 
     /**
      * GeneratorConfiguration constructor.
-     * @param string $fileName
      * @throws ConfigurationException
      * @throws ReflectionException
      */
@@ -207,9 +206,7 @@ class GeneratorConfiguration
     }
 
     /**
-     * @param string $key
      * @param string|null $default
-     *
      * @return null|string|array
      */
     private function getConfigValue(string $key, string $default = null)
@@ -219,8 +216,6 @@ class GeneratorConfiguration
     }
 
     /**
-     * @param string $key
-     * @param string $subkey
      * @param string|null $default
      *
      * @return null|string

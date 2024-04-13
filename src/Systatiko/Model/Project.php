@@ -14,17 +14,17 @@ use Systatiko\Reader\PHPMethod;
 class Project implements LoggerAwareInterface
 {
 
-    const ERROR_NO_FACTORY_FOR_FACADE = "There is no factory defined for '%s'. Include @Factory annotation in exposed class.";
+    public const ERROR_NO_FACTORY_FOR_FACADE = "There is no factory defined for '%s'. Include @Factory annotation in exposed class.";
 
-    const ERROR_NO_FACTORY_FOR_CONFIGURATION = "Could not assign Configuration in class '%s' There is no factory defined for '%s'.";
+    public const ERROR_NO_FACTORY_FOR_CONFIGURATION = "Could not assign Configuration in class '%s' There is no factory defined for '%s'.";
 
-    const ERROR_NO_FACTORY_FOR_EVENT = "Could not assign Event in class '%s' There is no factory defined for '%s'.";
+    public const ERROR_NO_FACTORY_FOR_EVENT = "Could not assign Event in class '%s' There is no factory defined for '%s'.";
 
-    const ERROR_CONFIGURATION_DOES_NOT_IMPLEMENT = "The class '%s' does not implement ComponentConfiguration interface";
+    public const ERROR_CONFIGURATION_DOES_NOT_IMPLEMENT = "The class '%s' does not implement ComponentConfiguration interface";
 
-    const WARNING_MORE_THAN_ONE_CONFIG_FOR_FACTORY = "Class '%s' and '%s' define configuration for namespace '%s'. Using '%s'";
+    public const WARNING_MORE_THAN_ONE_CONFIG_FOR_FACTORY = "Class '%s' and '%s' define configuration for namespace '%s'. Using '%s'";
 
-    const CONFIGURATION_INTERFACE = 'Systatiko\Contract\ComponentConfiguration';
+    public const CONFIGURATION_INTERFACE = 'Systatiko\Contract\ComponentConfiguration';
 
     /**
      * @var string[][]
@@ -103,17 +103,11 @@ class Project implements LoggerAwareInterface
         $this->dependencyList = [];
     }
 
-    /**
-     * @param array $phpClassList
-     */
     public function addPHPClassList(array $phpClassList)
     {
         $this->phpClassList = array_merge($this->phpClassList, $phpClassList);
     }
 
-    /**
-     * @param string $backboneExtendsName
-     */
     public function analyze(string $backboneExtendsName)
     {
         $backboneExtendsBaseClass = $this->getPHPClassByName($backboneExtendsName);
@@ -132,9 +126,6 @@ class Project implements LoggerAwareInterface
         $this->update();
     }
 
-    /**
-     * @param PHPClass $phpClass
-     */
     private function analyzePHPClass(PHPClass $phpClass)
     {
         $projectClass = new ProjectClass($this, $phpClass);
@@ -179,9 +170,6 @@ class Project implements LoggerAwareInterface
 
     }
 
-    /**
-     * @param ComponentConfigurationModel $componentConfiguration
-     */
     private function updateComponentConfiguration(ComponentConfigurationModel $componentConfiguration)
     {
         $namespace = $componentConfiguration->getNamespace();
@@ -213,9 +201,6 @@ class Project implements LoggerAwareInterface
 
     }
 
-    /**
-     * @param ComponentEvent $componentEvent
-     */
     private function updateComponentEvent(ComponentEvent $componentEvent)
     {
         $namespace = $componentEvent->getNamespace();
@@ -232,9 +217,6 @@ class Project implements LoggerAwareInterface
 
 
 
-    /**
-     * @param ProjectClass $projectClass
-     */
     private function handleFactoryAnnotation(ProjectClass $projectClass)
     {
         $factoryAnnotation = $projectClass->getComponentFactoryAnnotation();
@@ -245,9 +227,6 @@ class Project implements LoggerAwareInterface
         $componentFactory->addFactoryMethod($factoryAnnotation, $projectClass);
     }
 
-    /**
-     * @param ProjectClass $projectClass
-     */
     private function handleFacadeAnnotation(ProjectClass $projectClass)
     {
         $facadeAnnotation = $projectClass->getComponentFacadeAnnotation();
@@ -268,9 +247,6 @@ class Project implements LoggerAwareInterface
         $componentFacade->addFacadeMethodList($facadeAnnotation, $projectClass);
     }
 
-    /**
-     * @param ProjectClass $projectClass
-     */
     private function handleComponentConfiguration(ProjectClass $projectClass)
     {
         $configurationAnnotation = $projectClass->getComponentConfigurationAnnotation();
@@ -285,9 +261,6 @@ class Project implements LoggerAwareInterface
         $this->componentConfigurationList[] = $componentConfiguration;
     }
 
-    /**
-     * @param ProjectClass $projectClass
-     */
     private function handleEventAnnotation(ProjectClass $projectClass)
     {
         $eventAnnotation = $projectClass->getEventAnnotation();
@@ -300,8 +273,6 @@ class Project implements LoggerAwareInterface
     }
 
     /**
-     * @param Factory $factory
-     *
      * @return ComponentFactory
      */
     private function getOrCreateResponsibleComponentFactory(Factory $factory): ComponentFactory
@@ -318,21 +289,14 @@ class Project implements LoggerAwareInterface
 
 
     /**
-     * @param string $namespace
-     *
      * @return ComponentFactory|null
      */
     private function getResponsibleComponentFactory(string $namespace)
     {
-        if (isset($this->componentFactoryList[$namespace])) {
-            return $this->componentFactoryList[$namespace];
-        }
-        return null;
+        return $this->componentFactoryList[$namespace] ?? null;
     }
 
     /**
-     * @param string $eventClassName
-     *
      * @return ComponentEvent|null
      */
     public function getComponentEventByName(string $eventClassName)
@@ -346,8 +310,6 @@ class Project implements LoggerAwareInterface
     }
 
     /**
-     * @param FacadeExposition $facadeExposition
-     * @param ComponentFactory $componentFactory
      *
      * @return ComponentFacade
      */
@@ -372,17 +334,11 @@ class Project implements LoggerAwareInterface
      */
     private function getResponsibleComponentFacade(string $namespace)
     {
-        if (isset($this->componentFacadeList[$namespace])) {
-            return $this->componentFacadeList[$namespace];
-        }
-        return null;
+        return $this->componentFacadeList[$namespace] ?? null;
     }
 
 
     /**
-     * @param string $className
-     * @param string $usingComponent
-     *
      * @return null|string
      *
      */
@@ -400,10 +356,6 @@ class Project implements LoggerAwareInterface
     }
 
 
-    /**
-     * @param string $usingComponent
-     * @param string $usedComponent
-     */
     private function addDependency(string $usingComponent, string $usedComponent)
     {
         if (!isset($this->dependencyList[$usedComponent])) {
@@ -426,8 +378,6 @@ class Project implements LoggerAwareInterface
 
 
     /**
-     * @param string $className
-     *
      * @return ProjectClass|null
      */
     public function getProjectClassByName(string $className)
@@ -442,8 +392,6 @@ class Project implements LoggerAwareInterface
 
 
     /**
-     * @param string $className
-     *
      * @return PHPClass|null
      */
     public function getPHPClassByName(string $className)
@@ -460,7 +408,7 @@ class Project implements LoggerAwareInterface
     /**
      * @return ComponentFactory[]
      */
-    public function getComponentFactoryList()
+    public function getComponentFactoryList(): array
     {
         return array_values($this->componentFactoryList);
     }
@@ -469,7 +417,7 @@ class Project implements LoggerAwareInterface
     /**
      * @return ComponentFacade[]
      */
-    public function getComponentFacadeList()
+    public function getComponentFacadeList(): array
     {
         return array_values($this->componentFacadeList);
     }
@@ -484,9 +432,6 @@ class Project implements LoggerAwareInterface
     }
 
 
-    /**
-     * @param string $message
-     */
     public function logWarning(string $message)
     {
         $this->warningCount++;
@@ -497,9 +442,6 @@ class Project implements LoggerAwareInterface
     }
 
 
-    /**
-     * @param string $message
-     */
     public function logError(string $message)
     {
         $this->errorCount++;
@@ -510,9 +452,6 @@ class Project implements LoggerAwareInterface
     }
 
 
-    /**
-     * @param string $message
-     */
     public function logInfo(string $message)
     {
         if ($this->loggerInterface === null) {
@@ -522,9 +461,6 @@ class Project implements LoggerAwareInterface
     }
 
 
-    /**
-     * @param string $message
-     */
     public function logDebug(string $message)
     {
         if ($this->loggerInterface === null) {
@@ -567,9 +503,6 @@ class Project implements LoggerAwareInterface
         return $this->generatorConfiguration;
     }
 
-    /**
-     * @param GeneratorConfiguration $generatorConfiguration
-     */
     public function setGeneratorConfiguration(GeneratorConfiguration $generatorConfiguration): void
     {
         $this->generatorConfiguration = $generatorConfiguration;

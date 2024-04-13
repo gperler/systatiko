@@ -14,16 +14,6 @@ class BackboneGenerator
 {
 
     /**
-     * @var ComponentFacade[]
-     */
-    private $componentFacadeList;
-
-    /**
-     * @var ComponentEvent[]
-     */
-    private $componentEventList;
-
-    /**
      * @var ClassGenerator
      */
     private $classGenerator;
@@ -39,15 +29,10 @@ class BackboneGenerator
      * @param ComponentFacade[] $componentFacadeList
      * @param ComponentEvent[] $componentEventList
      */
-    public function __construct(array $componentFacadeList, array $componentEventList)
+    public function __construct(private readonly array $componentFacadeList, private readonly array $componentEventList)
     {
-        $this->componentFacadeList = $componentFacadeList;
-        $this->componentEventList = $componentEventList;
     }
 
-    /**
-     * @param GeneratorConfiguration $configuration
-     */
     public function generate(GeneratorConfiguration $configuration)
     {
         $this->configuration = $configuration;
@@ -82,7 +67,7 @@ class BackboneGenerator
         $backboneClassName = $this->configuration->getBackboneClassName();
         $backboneClassShortName = $this->configuration->getBackboneClassShortName();
 
-        $this->classGenerator->addUsedClassName('Civis\Common\File');
+        $this->classGenerator->addUsedClassName(\Civis\Common\File::class);
         $this->classGenerator->addProtectedStaticProperty('instance', $backboneClassName, 'null');
 
         $method = $this->classGenerator->addPublicStaticMethod("getInstance");
@@ -134,9 +119,6 @@ class BackboneGenerator
         }
     }
 
-    /**
-     * @param ComponentFacade $componentFacade
-     */
     private function addFacadeAccess(ComponentFacade $componentFacade)
     {
 
@@ -150,9 +132,6 @@ class BackboneGenerator
 
     }
 
-    /**
-     * @param ComponentFacade $componentFacade
-     */
     private function addFactoryAccess(ComponentFacade $componentFacade)
     {
         $factoryClassShortName = $componentFacade->getFactoryClassShortName();
@@ -214,10 +193,6 @@ class BackboneGenerator
         }
     }
 
-    /**
-     * @param ComponentEvent $componentEvent
-     * @param Method $method
-     */
     private function addComponentEventDispatcher(ComponentEvent $componentEvent, Method $method)
     {
         if (!$componentEvent->isAsynchronousEvent()) {

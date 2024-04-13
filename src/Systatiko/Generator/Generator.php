@@ -49,7 +49,6 @@ class Generator implements LoggerAwareInterface
 
 
     /**
-     * @param string $configFile
      *
      * @throws \ReflectionException
      * @throws ReflectionException

@@ -11,24 +11,8 @@ use Attribute;
 class FacadeExposition
 {
 
-    /**
-     * @var string|null
-     */
-    public ?string $namespace;
-
-    /**
-     * @var string|null
-     */
-    public ?string $factoryClassName;
-
-    /**
-     * @param string|null $namespace
-     * @param string|null $factoryClassName
-     */
-    public function __construct(string $namespace = null, string $factoryClassName = null)
+    public function __construct(public ?string $namespace = null, public ?string $factoryClassName = null)
     {
-        $this->namespace = $namespace;
-        $this->factoryClassName = $factoryClassName;
     }
 
     /**
@@ -36,7 +20,7 @@ class FacadeExposition
      */
     public function getNamespace(): ?string
     {
-        return trim($this->namespace, "\\");
+        return trim((string) $this->namespace, "\\");
     }
 
 

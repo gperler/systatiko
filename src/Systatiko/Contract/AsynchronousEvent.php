@@ -10,8 +10,6 @@ interface AsynchronousEvent extends Event
     public function getPayload() : array;
 
     /**
-     * @param array $payload
-     *
      * @return void
      */
     public function fromPayload(array $payload);
