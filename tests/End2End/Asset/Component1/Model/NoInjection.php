@@ -16,10 +16,9 @@ class NoInjection
     protected $entity;
 
     /**
-     * @Factory(namespace="SystatikoTest\End2End\Asset\Generated\Component1", singleton=true, noInjection="$entity")
-     *
      * @param SampleEntity $entity
      */
+    #[Factory(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1', singleton: true, noInjection: '$entity')]
     public function __construct(SampleEntity $entity)
     {
         $this->entity = $entity;

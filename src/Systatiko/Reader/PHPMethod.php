@@ -3,8 +3,10 @@
 namespace Systatiko\Reader;
 
 use Civis\Common\StringUtil;
+use Codeception\Util\Debug;
 use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use ReflectionMethod;
+use Systatiko\Annotation\Factory;
 
 class PHPMethod
 {
@@ -125,13 +127,18 @@ class PHPMethod
      *
      * @return null|mixed
      */
-    public function getMethodAnnotation(string $annotationName)
+    public function getMethodAnnotation(string $annotationName): mixed
     {
-        $className = new PHPClassName($annotationName);
-        new $annotationName();
-        $reader = new SimpleAnnotationReader();
-        $reader->addNamespace($className->getNamespaceName());
-        return $reader->getMethodAnnotation($this->reflectionMethod, $annotationName);
+        $attributeList = $this->reflectionMethod->getAttributes();
+        foreach($attributeList as $attribute) {
+            if ($attribute->getName() === $annotationName) {
+                if ($annotationName === Factory::class) {
+                    Debug::debug($attribute->newInstance());
+                }
+                return $attribute->newInstance();
+            }
+        }
+        return null;
     }
 
 

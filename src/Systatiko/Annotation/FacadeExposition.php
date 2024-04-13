@@ -2,16 +2,34 @@
 
 namespace Systatiko\Annotation;
 
+use Attribute;
+
 /**
  * @Annotation
  */
+#[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_CLASS)]
 class FacadeExposition
 {
 
-    public $namespace;
+    /**
+     * @var string|null
+     */
+    public ?string $namespace;
 
-    public $factoryClassName;
+    /**
+     * @var string|null
+     */
+    public ?string $factoryClassName;
 
+    /**
+     * @param string|null $namespace
+     * @param string|null $factoryClassName
+     */
+    public function __construct(string $namespace = null, string $factoryClassName = null)
+    {
+        $this->namespace = $namespace;
+        $this->factoryClassName = $factoryClassName;
+    }
 
     /**
      * @return string|null

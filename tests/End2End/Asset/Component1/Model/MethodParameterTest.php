@@ -10,21 +10,15 @@ use Systatiko\Annotation\Factory;
 
 
 /**
- * @FacadeExposition(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
  * @author Gregor Müller
  */
+#[FacadeExposition(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1')]
 class MethodParameterTest
 {
 
     const SOME_CONSTANT = 'some_value';
 
-    /**
-     * @Factory(
-     *     namespace="SystatikoTest\End2End\Asset\Generated\Component1",
-     *     singleton=false,
-     * )
-     * ServiceClass constructor.
-     */
+    #[Factory(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1', singleton: false)] // ServiceClass constructor.
     public function __construct()
     {
 
@@ -32,14 +26,13 @@ class MethodParameterTest
 
 
     /**
-     * @FacadeExposition(namespace="\test\namespace")
      * @param Test|null $file
      * @param string[] $array
      * @param mixed $mixed
      * @param string $test
-     *
      * @return Test[]|null
      */
+    #[FacadeExposition(namespace: '\test\namespace')]
     public function methodReaderTestMe(
         Test $file = null,
         array $array,
@@ -49,33 +42,31 @@ class MethodParameterTest
     }
 
     /**
-     * @FacadeExposition()
      *
      * @param string $test
      * @param array|null $array
      * @param array $typeList
      * @return array
      */
+    #[FacadeExposition]
     public function methodReaderTestMeToo(string $test = "null", array $array = null, array $typeList): array
     {
         return [];
     }
 
     /**
-     * @FacadeExposition()
-     *
      * @param int $test
      */
+    #[FacadeExposition]
     public function numberTest(int $test = 2)
     {
 
     }
 
     /**
-     * @FacadeExposition()
-     *
      * @param int $test
      */
+    #[FacadeExposition]
     public function numberTest2(int $test = 0)
     {
 
@@ -83,48 +74,45 @@ class MethodParameterTest
 
 
     /**
-     * @FacadeExposition()
-     *
      * @param bool $test
      */
+    #[FacadeExposition]
     public function boolTestTrue(bool $test = true)
     {
 
     }
 
     /**
-     * @FacadeExposition()
-     *
      * @param bool $test
      */
+    #[FacadeExposition]
     public function boolTestFalse(bool $test = false)
     {
 
     }
 
     /**
-     * @FacadeExposition()
      * @param array $test
      */
+    #[FacadeExposition]
     public function arrayParameter(array $test = ["Gregor"])
     {
 
     }
 
     /**
-     * @FacadeExposition()
      * @param array $test
      */
+    #[FacadeExposition]
     public function arrayParameter2(array $test = [])
     {
 
     }
 
     /**
-     * @FacadeExposition()
-     *
      * @param string $test
      */
+    #[FacadeExposition]
     public function constantParameter(string $test = self::SOME_CONSTANT)
     {
 
@@ -132,30 +120,27 @@ class MethodParameterTest
 
 
     /**
-     * @FacadeExposition()
-     *
      * @return MethodParameterTest[]
      */
+    #[FacadeExposition]
     public function returnTypeTest1(): array
     {
         return [];
     }
 
     /**
-     * @FacadeExposition()
-     *
      * @return MethodParameterTest
      */
+    #[FacadeExposition]
     public function returnTypeTest2(): MethodParameterTest
     {
         return $this;
     }
 
     /**
-     * @FacadeExposition()
-     *
      * @return MethodParameterTest|null
      */
+    #[FacadeExposition]
     public function returnTypeTest3(): ?MethodParameterTest
     {
         return $this;

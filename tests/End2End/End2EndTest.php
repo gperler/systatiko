@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace SystatikoTest\End2End;
 
 use Civis\Common\File;
+use Psr\Log\NullLogger;
 use Systatiko\Generator\Generator;
 use Systatiko\Logger\CodeceptionLogger;
 
@@ -21,7 +22,8 @@ class End2EndTest extends \PHPUnit_Framework_TestCase
         $genDir->deleteRecursively();
 
         $generator = new Generator();
-        $generator->setLogger(new CodeceptionLogger());
+        //$generator->setLogger(new CodeceptionLogger());
+        $generator->setLogger(new NullLogger());
         $generator->start(self::GENERATOR_CONFIG);
     }
 

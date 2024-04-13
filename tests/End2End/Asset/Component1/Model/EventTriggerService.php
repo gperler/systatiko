@@ -9,9 +9,9 @@ use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Factory;
 
 /**
- * @FacadeExposition(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
  * @author Gregor Müller
  */
+#[FacadeExposition(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1')]
 class EventTriggerService
 {
 
@@ -21,21 +21,18 @@ class EventTriggerService
     protected $factory;
 
     /**
-     * @Factory(namespace="SystatikoTest\End2End\Asset\Generated\Component1", singleton=true)
-     * EventTriggerService constructor.
-     *
      * @param Component1Factory $factory
      */
+    #[Factory(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1', singleton: true)] // EventTriggerService constructor.
     public function __construct(Component1Factory $factory)
     {
         $this->factory = $factory;
     }
 
     /**
-     * @FacadeExposition()
-     *
      * @param array $payload
      */
+    #[FacadeExposition]
     public function triggerAsyncEvent(array $payload)
     {
         $event = $this->factory->newAsyncEvent();
@@ -45,10 +42,9 @@ class EventTriggerService
 
 
     /**
-     * @FacadeExposition()
-     *
      * @param null|string $test
      */
+    #[FacadeExposition]
     public function testNullableParameter(?string $test) {
 
     }

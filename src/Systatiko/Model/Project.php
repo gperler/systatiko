@@ -538,10 +538,9 @@ class Project implements LoggerAwareInterface
      *
      * @return null
      */
-    public function setLogger(LoggerInterface $logger)
+    public function setLogger(LoggerInterface $logger): void
     {
         $this->loggerInterface = $logger;
-        return null;
     }
 
     /**

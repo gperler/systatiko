@@ -9,9 +9,7 @@ use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Component1\Component1Configuration;
 use SystatikoTest\End2End\Asset\Generated\Component1\Component1Factory;
 
-/**
- * @FacadeExposition(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
- */
+#[FacadeExposition(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1')]
 class DependencyInjection
 {
 
@@ -26,15 +24,11 @@ class DependencyInjection
     protected $configuration;
 
     /**
-     * @Factory(
-     *     namespace="SystatikoTest\End2End\Asset\Generated\Component1",
-     *     singleton=false,
-     * )
-     * ServiceClass constructor.
      *
      * @param Component1Factory $factory
      * @param Component1Configuration $configuration
      */
+    #[Factory(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1', singleton: false)] // ServiceClass constructor.
     public function __construct(Component1Factory $factory, Component1Configuration $configuration)
     {
         $this->factory = $factory;
@@ -42,9 +36,9 @@ class DependencyInjection
     }
 
     /**
-     * @FacadeExposition()
      * @return bool
      */
+    #[FacadeExposition]
     public function getInjectionStatus() : bool
     {
         return $this->factory !== null && $this->configuration !== null;

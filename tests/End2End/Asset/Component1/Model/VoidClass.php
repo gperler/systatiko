@@ -8,66 +8,59 @@ use Systatiko\Annotation\FacadeExposition;
 use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 
-/**
- * @FacadeExposition(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
- */
+#[FacadeExposition(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1')]
 class VoidClass
 {
 
-    /**
-     * @Factory(namespace="SystatikoTest\End2End\Asset\Generated\Component1", singleton=true)
-     * ServiceClass constructor.
-     */
+    #[Factory(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1', singleton: true)] // ServiceClass constructor.
     public function __construct()
     {
     }
 
 
     /**
-     * @FacadeExposition
      *
      *
      * @param SampleEntity $entity
-     *
      * @return void
      */
+    #[FacadeExposition]
     public function hasVoidReturn(SampleEntity $entity): void
     {
     }
 
 
     /**
-     * @FacadeExposition
      *
      *
      * @param SampleEntity $entity
-     *
      * @return void
      */
+    #[FacadeExposition]
     public function hasVoidReturn1(SampleEntity $entity)
     {
     }
 
 
     /**
-     * @FacadeExposition
      *
      *
      * @param SampleEntity $entity
      *
      */
+    #[FacadeExposition]
     public function hasVoidReturn2(SampleEntity $entity): void
     {
     }
 
 
     /**
-     * @FacadeExposition
      *
      *
      * @param SampleEntity $entity
      *
      */
+    #[FacadeExposition]
     public function hasVoidReturn3(SampleEntity $entity)
     {
     }

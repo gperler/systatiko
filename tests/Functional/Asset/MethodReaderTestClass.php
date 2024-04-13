@@ -14,14 +14,13 @@ class MethodReaderTestClass
 {
 
     /**
-     * @FacadeExposition(namespace="\test\namespace")
      * @param Test $file
      * @param string[] $array
      * @param mixed $mixed
      * @param string $test
-     *
      * @return Test[]|null
      */
+    #[FacadeExposition(namespace: '\test\namespace')]
     public function testMe(Test $file, array $array, $mixed = null): ?array
     {
         return [];

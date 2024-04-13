@@ -1,17 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\Functional\Asset;
 
+use Civis\Common\File as Test;
 use Systatiko\Annotation\Event;
 use Systatiko\Reader\PHPClass;
-use Civis\Common\File as Test;
 
 /**
- * @Event(namespace="\test\namespace")
  *
  */
+#[Event(namespace: '\test\namespace',name: "")]
 class ClassReaderTestClass extends \DateTime implements \Serializable
 {
     /**

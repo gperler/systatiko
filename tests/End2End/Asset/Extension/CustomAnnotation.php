@@ -1,17 +1,25 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Extension;
 
-/**
- * @Annotation
- */
+use Attribute;
+
+#[Attribute(Attribute::TARGET_CLASS|Attribute::TARGET_METHOD)]
 class CustomAnnotation
 {
 
-    public $index;
 
-    public $roleRequired;
+    public string $roleRequired;
+
+
+    /**
+     * @param string $roleRequired
+     */
+    public function __construct(string $roleRequired)
+    {
+        $this->roleRequired = $roleRequired;
+    }
 
 }
