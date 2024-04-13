@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Extension;
 
@@ -14,9 +14,9 @@ class GeneratorExtension implements FacadeGeneratorExtension
     /**
      * @return string
      */
-    public function getAnnotationClassName() : string
+    public function getAnnotationClassName(): string
     {
-        return 'SystatikoTest\End2End\Asset\Extension\CustomAnnotation';
+        return CustomAnnotation::class;
     }
 
     /**
@@ -29,7 +29,7 @@ class GeneratorExtension implements FacadeGeneratorExtension
      */
     public function beforeDelegation(Method $method, $annotation, string $facadeName, string $delegatedClass, string $delegatedMethodName, array $parameterList)
     {
-        $method->addCodeLine('$this->backbone->getComponent2Facade()->isInRole("' . $annotation->roleRequired .  '");');
+        $method->addCodeLine('$this->backbone->getComponent2Facade()->isInRole("' . $annotation->roleRequired . '");');
     }
 
     /**

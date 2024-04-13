@@ -9,97 +9,85 @@ use Systatiko\Annotation\Factory;
 use SystatikoTest\End2End\Asset\Component1\Entity\InjectContext;
 use SystatikoTest\End2End\Asset\Component1\Entity\SampleEntity;
 
-/**
- * @FacadeExposition(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
- */
+#[FacadeExposition(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1')]
 class ServiceClass
 {
 
-    /**
-     * @Factory(namespace="SystatikoTest\End2End\Asset\Generated\Component1", singleton=true)
-     * ServiceClass constructor.
-     */
+    #[Factory(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1', singleton: true)] // ServiceClass constructor.
     public function __construct()
     {
     }
 
     /**
-     * @FacadeExposition
      *
      *
      * @param SampleEntity $entity
-     *
      * @return SampleEntity
      */
+    #[FacadeExposition]
     public function hasReturnType(SampleEntity $entity): SampleEntity
     {
         return $entity;
     }
 
     /**
-     * @FacadeExposition
      *
      * @param SampleEntity $entity
-     *
      * @return SampleEntity
      */
+    #[FacadeExposition]
     public function hasOptionalReturnType(SampleEntity $entity)
     {
         return null;
     }
 
     /**
-     * @FacadeExposition
      *
      * @param SampleEntity $entity
-     *
      * @return SampleEntity[]
      */
+    #[FacadeExposition]
     public function hasArrayReturnType(SampleEntity $entity): array
     {
         return [];
     }
 
     /**
-     * @FacadeExposition
      *
      * @param SampleEntity $entity
-     *
      * @return SampleEntity[]
      */
+    #[FacadeExposition]
     public function hasOptionalArrayReturnType(SampleEntity $entity)
     {
         return [];
     }
 
     /**
-     * @FacadeExposition
      *
      * @param mixed $x
-     *
      * @return void
      */
+    #[FacadeExposition]
     public function noReturnType($x)
     {
     }
 
     /**
-     * @FacadeExposition
      *
      * @param mixed $x
-     *
      * @return mixed
      */
+    #[FacadeExposition]
     public function mixedReturnType($x)
     {
         return 7;
     }
 
     /**
-     * @FacadeExposition()
-     *
      * @return InjectContext
      */
+    #[FacadeExposition]
     public function getInjectContext(): InjectContext
     {
         return new InjectContext();

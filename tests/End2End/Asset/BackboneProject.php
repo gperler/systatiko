@@ -11,9 +11,7 @@ use Systatiko\Runtime\BackboneBase;
 abstract class BackboneProject extends BackboneBase
 {
 
-    /**
-     * @ExposeInAllFactories()
-     */
+    #[ExposeInAllFactories]
     public function exposeToAllFactories() : string
     {
         return "hello!";

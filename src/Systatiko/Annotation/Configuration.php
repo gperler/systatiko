@@ -2,18 +2,34 @@
 
 namespace Systatiko\Annotation;
 
+use Attribute;
+
+
 /**
  * @Annotation
  */
+#[Attribute(Attribute::TARGET_CLASS)]
 class Configuration
 {
 
-    public $namespace;
+    /**
+     * @var string
+     */
+    public string $namespace;
+
+
+    /**
+     * @param string $namespace
+     */
+    public function __construct(string $namespace)
+    {
+        $this->namespace = $namespace;
+    }
 
     /**
      * @return string
      */
-    public function getNamespace()
+    public function getNamespace(): string
     {
         return trim($this->namespace, "\\");
     }

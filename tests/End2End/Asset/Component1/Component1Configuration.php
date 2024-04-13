@@ -1,14 +1,16 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace SystatikoTest\End2End\Asset\Component1;
 
+use Systatiko\Annotation\Configuration;
 use Systatiko\Runtime\ComponentConfigurationBase;
 
 /**
- * @Configuration(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
+ *
  */
+#[Configuration(namespace: "SystatikoTest\End2End\Asset\Generated\Component1")]
 class Component1Configuration extends ComponentConfigurationBase
 {
 

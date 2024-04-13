@@ -6,38 +6,30 @@ namespace SystatikoTest\End2End\Asset\Component1\Model;
 
 use Systatiko\Annotation\FacadeExposition;
 use Systatiko\Annotation\Factory;
+use SystatikoTest\End2End\Asset\Component1\Constant\Role;
 use SystatikoTest\End2End\Asset\Extension\CustomAnnotation;
 
 /**
- * @FacadeExposition(namespace="SystatikoTest\End2End\Asset\Generated\Component1")
- * @CustomAnnotation(roleRequired=SystatikoTest\End2End\Asset\Component1\Constant\Role::MY_ROLE)
+ *
  */
+#[FacadeExposition(namespace: 'SystatikoTest\End2End\Asset\Generated\Component1')]
+#[CustomAnnotation(roleRequired: Role::MY_ROLE)]
 class CustomAnnotationClass
 {
 
-    /**
-     * @Factory(
-     *     namespace="SystatikoTest\End2End\Asset\Generated\Component1",
-     *     singleton=false,
-     * )
-     * ServiceClass constructor.
-     */
+    #[Factory(namespace: "SystatikoTest\End2End\Asset\Generated\Component1", singleton: false)]
     public function __construct()
     {
     }
 
 
-    /**
-     * @FacadeExposition()
-     */
+    #[FacadeExposition]
     public function testMethod1()
     {
     }
 
 
-    /**
-     * @FacadeExposition
-     */
+    #[FacadeExposition]
     public function testMethod2()
     {
     }

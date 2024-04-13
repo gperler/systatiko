@@ -162,6 +162,14 @@ class PHPClass
      */
     public function getClassAnnotation($annotationName): mixed
     {
+        $attributeList = $this->reflectClass->getAttributes();
+        foreach($attributeList as $attribute) {
+            if ($attribute->getName() === $annotationName) {
+                return $attribute->newInstance();
+            }
+        }
+        return null;
+
         $annotationClass = new PHPClassName($annotationName);
         new $annotationName;
         $reader = new SimpleAnnotationReader();
@@ -216,11 +224,11 @@ class PHPClass
         }
 
         foreach ($this->usedClassNameList as $usedClassName) {
-            Debug::debug('------------------------');
-            Debug::debug($shortName);
-            Debug::debug('as       ' .$usedClassName->getAs());
-            Debug::debug('clas     ' .$usedClassName->getClassName());
-            Debug::debug('short    ' . $usedClassName->getClassShortName());
+//            Debug::debug('------------------------');
+//            Debug::debug($shortName);
+//            Debug::debug('as       ' .$usedClassName->getAs());
+//            Debug::debug('clas     ' .$usedClassName->getClassName());
+//            Debug::debug('short    ' . $usedClassName->getClassShortName());
             if ($usedClassName->getClassShortName() === $shortName) {
                 return $usedClassName;
             }
