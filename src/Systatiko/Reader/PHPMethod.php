@@ -4,7 +4,6 @@ namespace Systatiko\Reader;
 
 use Civis\Common\StringUtil;
 use Codeception\Util\Debug;
-use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use ReflectionMethod;
 use Systatiko\Annotation\Factory;
 

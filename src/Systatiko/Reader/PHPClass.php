@@ -4,8 +4,6 @@ namespace Systatiko\Reader;
 
 use Civis\Common\ArrayUtil;
 use Civis\Common\File;
-use Codeception\Util\Debug;
-use Doctrine\Common\Annotations\SimpleAnnotationReader;
 use ReflectionException;
 
 /**
@@ -163,18 +161,12 @@ class PHPClass
     public function getClassAnnotation($annotationName): mixed
     {
         $attributeList = $this->reflectClass->getAttributes();
-        foreach($attributeList as $attribute) {
+        foreach ($attributeList as $attribute) {
             if ($attribute->getName() === $annotationName) {
                 return $attribute->newInstance();
             }
         }
         return null;
-
-        $annotationClass = new PHPClassName($annotationName);
-        new $annotationName;
-        $reader = new SimpleAnnotationReader();
-        $reader->addNamespace($annotationClass->getNamespaceName());
-        return $reader->getClassAnnotation($this->reflectClass, $annotationName);
     }
 
 
@@ -216,7 +208,6 @@ class PHPClass
         if ($shortName === null) {
             return null;
         }
-
 
 
         if ($shortName === $this->getClassShortName()) {
