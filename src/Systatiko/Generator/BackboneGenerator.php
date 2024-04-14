@@ -16,22 +16,22 @@ class BackboneGenerator
     /**
      * @var ComponentFacade[]
      */
-    private $componentFacadeList;
+    private array $componentFacadeList;
 
     /**
      * @var ComponentEvent[]
      */
-    private $componentEventList;
+    private array $componentEventList;
 
     /**
      * @var ClassGenerator
      */
-    private $classGenerator;
+    private ClassGenerator $classGenerator;
 
     /**
      * @var GeneratorConfiguration
      */
-    private $configuration;
+    private GeneratorConfiguration $configuration;
 
     /**
      * BackboneGenerator constructor.
@@ -48,7 +48,7 @@ class BackboneGenerator
     /**
      * @param GeneratorConfiguration $configuration
      */
-    public function generate(GeneratorConfiguration $configuration)
+    public function generate(GeneratorConfiguration $configuration): void
     {
         $this->configuration = $configuration;
 
@@ -77,7 +77,10 @@ class BackboneGenerator
         }
     }
 
-    private function addSingleton()
+    /**
+     * @return void
+     */
+    private function addSingleton(): void
     {
         $backboneClassName = $this->configuration->getBackboneClassName();
         $backboneClassShortName = $this->configuration->getBackboneClassShortName();
@@ -103,7 +106,7 @@ class BackboneGenerator
     /**
      *
      */
-    private function addMember()
+    private function addMember(): void
     {
 
         foreach ($this->componentFacadeList as $componentFacade) {
@@ -113,7 +116,10 @@ class BackboneGenerator
         }
     }
 
-    private function addResetSingleton()
+    /**
+     * @return void
+     */
+    private function addResetSingleton(): void
     {
         $resetMethod = $this->classGenerator->addMethod("resetSingleton");
 
@@ -126,7 +132,7 @@ class BackboneGenerator
     /**
      *
      */
-    private function addAccessMethodList()
+    private function addAccessMethodList(): void
     {
         foreach ($this->componentFacadeList as $componentFacade) {
             $this->addFacadeAccess($componentFacade);
@@ -137,7 +143,7 @@ class BackboneGenerator
     /**
      * @param ComponentFacade $componentFacade
      */
-    private function addFacadeAccess(ComponentFacade $componentFacade)
+    private function addFacadeAccess(ComponentFacade $componentFacade): void
     {
 
         $methodName = $componentFacade->getFactoryMethodName();
@@ -153,7 +159,7 @@ class BackboneGenerator
     /**
      * @param ComponentFacade $componentFacade
      */
-    private function addFactoryAccess(ComponentFacade $componentFacade)
+    private function addFactoryAccess(ComponentFacade $componentFacade): void
     {
         $factoryClassShortName = $componentFacade->getFactoryClassShortName();
 
@@ -170,7 +176,10 @@ class BackboneGenerator
         $method->addCodeLine('return ' . $memberName . ';');
     }
 
-    private function addNewAsynchronousEvent()
+    /**
+     * @return void
+     */
+    private function addNewAsynchronousEvent(): void
     {
         $this->classGenerator->addUsedClassName(EventNotDefinedException::class);
 
@@ -204,7 +213,7 @@ class BackboneGenerator
     /**
      *
      */
-    private function addDispatchInboundAsynchronousEvent()
+    private function addDispatchInboundAsynchronousEvent(): void
     {
         $method = $this->classGenerator->addPublicMethod("dispatchInboundAsynchronousEvent");
         $method->addParameter(AsynchronousEvent::class, "event");
@@ -218,7 +227,7 @@ class BackboneGenerator
      * @param ComponentEvent $componentEvent
      * @param Method $method
      */
-    private function addComponentEventDispatcher(ComponentEvent $componentEvent, Method $method)
+    private function addComponentEventDispatcher(ComponentEvent $componentEvent, Method $method): void
     {
         if (!$componentEvent->isAsynchronousEvent()) {
             return;

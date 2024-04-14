@@ -2,10 +2,10 @@
 
 namespace Systatiko\Logger;
 
+use Civis\Common\ArrayUtil;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
-use Civis\Common\ArrayUtil;
 
 class SymphonyConsoleLogger implements LoggerInterface
 {
@@ -57,7 +57,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function emergency($message, array $context = [])
+    public function emergency($message, array $context = []): void
     {
         $message = $this->compileMessage(LogLevel::EMERGENCY, $message, $context);
         $this->outputInterfase->writeln('<error>' . $message . '</error>');
@@ -72,7 +72,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function alert($message, array $context = [])
+    public function alert($message, array $context = []): void
     {
         $message = $this->compileMessage(LogLevel::ALERT, $message, $context);
         $this->outputInterfase->writeln('<error>' . $message . '</error>');
@@ -86,7 +86,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function critical($message, array $context = [])
+    public function critical($message, array $context = []): void
     {
         $message = $this->compileMessage(LogLevel::CRITICAL, $message, $context);
         $this->outputInterfase->writeln('<error>' . $message . '</error>');
@@ -100,7 +100,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function error($message, array $context = [])
+    public function error($message, array $context = []): void
     {
         $message = $this->compileMessage(LogLevel::ERROR, $message, $context);
         $this->outputInterfase->writeln('<error>' . $message . '</error>');
@@ -115,7 +115,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function warning($message, array $context = [])
+    public function warning($message, array $context = []): void
     {
         $message = $this->compileMessage(LogLevel::WARNING, $message, $context);
         $this->outputInterfase->writeln('<bg=yellow>' . $message . '</>');
@@ -128,7 +128,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function notice($message, array $context = [])
+    public function notice($message, array $context = []): void
     {
         if ($this->outputInterfase->getVerbosity() < OutputInterface::VERBOSITY_VERBOSE) {
             return;
@@ -145,7 +145,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function info($message, array $context = [])
+    public function info($message, array $context = []): void
     {
         $message = $this->compileMessage(LogLevel::INFO, $message, $context);
         $this->outputInterfase->writeln($message);
@@ -158,7 +158,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
         if ($this->outputInterfase->getVerbosity() < OutputInterface::VERBOSITY_DEBUG) {
             return;
@@ -175,7 +175,7 @@ class SymphonyConsoleLogger implements LoggerInterface
      * @param array $context
      *
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         switch ($level) {
             case LogLevel::EMERGENCY:

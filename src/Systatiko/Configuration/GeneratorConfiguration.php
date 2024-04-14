@@ -108,7 +108,7 @@ class GeneratorConfiguration
      * @throws ConfigurationException
      * @throws Exception
      */
-    private function loadConfigValues()
+    private function loadConfigValues(): void
     {
         $fileName = $this->configFile->getAbsoluteFileName();
         if (!$this->configFile->exists()) {
@@ -122,7 +122,7 @@ class GeneratorConfiguration
      * @throws ConfigurationException
      * @throws ReflectionException
      */
-    private function parseConfigFile()
+    private function parseConfigFile(): void
     {
         $this->parseInjectionConfiguration();
         $this->parseBackboneConfig();
@@ -134,7 +134,7 @@ class GeneratorConfiguration
     /**
      *
      */
-    private function parseInjectionConfiguration()
+    private function parseInjectionConfiguration(): void
     {
         $injectionConfiguration = $this->getConfigValue(self::INJECTION_CONFIGURATION);
         $this->injectionConfiguration = new InjectionConfiguration($injectionConfiguration);
@@ -143,7 +143,7 @@ class GeneratorConfiguration
     /**
      * @throws ConfigurationException
      */
-    private function parseBackboneConfig()
+    private function parseBackboneConfig(): void
     {
         $backboneClassName = $this->getSubConfigValue(self::BACKBONE, self::BACKBONE_CLASS);
         if (!$backboneClassName) {
@@ -159,10 +159,10 @@ class GeneratorConfiguration
     /**
      * @throws ConfigurationException
      */
-    private function parseIncludeDirectoryConfig()
+    private function parseIncludeDirectoryConfig(): void
     {
         $includeDir = $this->getIncludeDirectories();
-        if ($includeDir === null || !is_array($includeDir) || sizeof($includeDir) === 0) {
+        if (!is_array($includeDir) || sizeof($includeDir) === 0) {
             throw new ConfigurationException(sprintf(self::EXCEPTION_NO_INCLUDE_DIR, $this->configFile->getAbsoluteFileName()));
         }
     }
@@ -170,7 +170,7 @@ class GeneratorConfiguration
     /**
      * @throws ConfigurationException
      */
-    private function parsePSR4Prefix()
+    private function parsePSR4Prefix(): void
     {
         if (!$this->isPSR4() || $this->getPSR4Prefix() !== null) {
             return;
@@ -182,7 +182,7 @@ class GeneratorConfiguration
      * @throws ConfigurationException
      * @throws ReflectionException
      */
-    private function parseFacadeGeneratorExtensionConfig()
+    private function parseFacadeGeneratorExtensionConfig(): void
     {
         $generatorExtensionClassList = ArrayUtil::getFromArray($this->configurationValueList, self::FACADE_GENERATOR_EXTENSION);
         if ($generatorExtensionClassList === null) {
@@ -212,7 +212,7 @@ class GeneratorConfiguration
      *
      * @return null|string|array
      */
-    private function getConfigValue(string $key, string $default = null)
+    private function getConfigValue(string $key, string $default = null): mixed
     {
         $value = ArrayUtil::getFromArray($this->configurationValueList, $key);
         return $value ?: $default;
@@ -225,7 +225,7 @@ class GeneratorConfiguration
      *
      * @return null|string
      */
-    private function getSubConfigValue(string $key, string $subkey, string $default = null)
+    private function getSubConfigValue(string $key, string $subkey, string $default = null): ?string
     {
         $subConfig = $this->getConfigValue($key);
         $value = ArrayUtil::getFromArray($subConfig, $subkey);
@@ -235,7 +235,7 @@ class GeneratorConfiguration
     /**
      * @return null|string
      */
-    public function getIncludeDirectories()
+    public function getIncludeDirectories(): mixed
     {
         return $this->getConfigValue(self::INCLUDE_DIR);
     }
