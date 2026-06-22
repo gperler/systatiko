@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Systatiko\Reader;
 
 use Civis\Common\File;
-use Codeception\Util\Debug;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
 use ReflectionException;

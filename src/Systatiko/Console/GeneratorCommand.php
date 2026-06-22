@@ -47,10 +47,10 @@ class GeneratorCommand extends Command
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
-     * @return int|null|void
+     * @return int
      * @throws ReflectionException
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->output = $output;
         $this->input = $input;
